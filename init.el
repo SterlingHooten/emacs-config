@@ -1,6 +1,6 @@
-;;; GNU Emacs initialization file ("~/.emacs"). -*- mode: Emacs-Lisp -*-
+;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-10-21 12:33:48 Emilio C. Lopes>
+;;; Time-stamp: <2010-10-21 14:10:50 Emilio C. Lopes>
 
 ;;; TODO:
 ;; o Use `add-to-list' and similars for adding things to alists.
@@ -48,7 +48,8 @@
 (setq at-home (string-match "\\`manaira\\b" system-name))
 (setq at-bmw (equal (getenv "BMW") "BMW"))
 
-(setq user-emacs-directory "~/.emacs.d/")
+(unless (boundp 'user-emacs-directory)
+  (setq user-emacs-directory "~/.emacs.d/"))
 
 (defun add-to-path (path dir &optional append)
   "*Add directory DIR to path PATH.
@@ -98,8 +99,8 @@ results "
 
 ;;}}}
 ;;{{{ Load-path
-(add-to-path 'load-path "~/.emacs.d")
-(add-to-path 'load-path "~/.emacs.d/lib")
+(add-to-path 'load-path user-emacs-directory)
+(add-to-path 'load-path (concat user-emacs-directory "lib"))
 (add-to-path 'load-path "~/.lib/emacs/elisp")
 (add-to-path 'load-path "~/.lib/emacs/rc")
 
@@ -1230,10 +1231,6 @@ Only intended for interactive use."
 (eval-after-load "sh-script"
   '(set-face-foreground 'sh-heredoc-face (face-foreground 'font-lock-constant-face)))
 
-;; Message
-(eval-after-load "message" '(load (expand-file-name "~/.message")))
-
-
 ;; the-the is a nice thing for text processing:
 (autoload 'the-the "the-the"
   "Search forward for for a duplicated word." t nil)
@@ -1602,11 +1599,15 @@ With prefix argument ARG behave as usual."
 (global-defkey "C-c j" (make-sparse-keymap))
 (global-defkey "C-c j h"        (lambda () (interactive) (dired     "~")))
 (global-defkey "C-c j D"        (lambda () (interactive) (dired     "~/Downloads")))
-(global-defkey "C-c j d"        (lambda () (interactive) (find-file "~/.lib/emacs/rc/dired_rc.el")))
+(global-defkey "C-c j d"        (lambda () (interactive) (find-library "dired_rc")))
 (global-defkey "C-c j e"        (lambda () (interactive) (find-file user-init-file)))
-(global-defkey "C-c j m"        (lambda () (interactive) (find-file "~/.message")))
-(global-defkey "C-c j g"        (lambda () (interactive) (find-file "~/.gnus")))
-(global-defkey "C-c j s"        (lambda () (interactive) (find-file "~/.lib/emacs/rc/shell_rc.el")))
+(global-defkey "C-c j m"        (lambda () (interactive) (find-library "message_rc")))
+(global-defkey "C-c j g"        (lambda ()
+                                  (interactive)
+                                  (if (boundp 'gnus-init-file)
+                                      (find-file  gnus-init-file)
+                                    (find-library  "gnus_rc"))))
+(global-defkey "C-c j s"        (lambda () (interactive) (find-library "shell_rc")))
 (global-defkey "C-c j t"        (lambda () (interactive) (find-file "u:/ORG/TODO")))
 
 (global-defkey "C-c j ."        (lambda () (interactive) (find-file "~/.ee.sh")))
@@ -2416,9 +2417,8 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 (add-hook 'mail-setup-hook 'mail-abbrevs-setup)
 
 
-;;; Message (see "~/.message")
-(eval-after-load "message" '(load (expand-file-name "~/.message")))
-
+;;; Message
+(add-hook 'message-load-hook (lambda () (require-soft 'message_rc)))
 
 
 ;;; Resume/Server configuration.
@@ -2448,16 +2448,13 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 
 
 ;;; Abbrevs
-(setq save-abbrevs t)
-(setq abbrev-file-name (expand-file-name "~/.abbrevs"))
-(when (file-readable-p abbrev-file-name)
-  (quietly-read-abbrev-file))
-
+(setq save-abbrevs 'silently)
+(quietly-read-abbrev-file)
 
 
 ;;; Bookmarks
+(setq bookmark-default-file (locate-user-emacs-file "bookmarks" ".emacs.bookmarks"))
 (setq bookmark-save-flag 1)
-(setq bookmark-default-file "~/.emacs.bookmarks")
 
 (defadvice bookmark-load (before prefix-arg-revert activate)
   "A prefix arg is interpreted to specify (non-nil) REVERT."
@@ -3013,7 +3010,6 @@ A new buffer is created containing the disc file's contents and
 ;;}}}
 
 ;;; Calc
-(setq calc-settings-file "~/.calc")
 (setq calc-full-mode t)
 (setq calc-display-trail nil)
 
@@ -3085,7 +3081,7 @@ A new buffer is created containing the disc file's contents and
 
 
 ;;; Custom
-(setq custom-file "~/.custom")
+(setq custom-file (locate-user-emacs-file "custom.el" ".custom"))
 (when (file-readable-p custom-file)
   (load-file custom-file))
 
@@ -3330,4 +3326,4 @@ A new buffer is created containing the disc file's contents and
 (when at-bmw
   (setq bmw-suppress-local-keybindings t)
   (setq bmw-suppress-local-look-and-feel t))
-;;; "~/.emacs" ends here
+;;; EOF

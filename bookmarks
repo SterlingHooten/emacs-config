@@ -1,0 +1,46 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("e:/tools auf dem Build-Server smuc2190.muc"
+  (filename . "//smuc2190.muc/toolchain/")
+  (front-context-string . "System Volume In")
+  (rear-context-string . " 0 Jul  8 12:57 ")
+  (position . 124))
+ ("Installationsverzeichnis INSTALL_DME"
+  (filename . "//easerv.muc/EA-DIR/EA_SOFTW/INSTALL_DME/")
+  (front-context-string . "@Zugriffskontrol")
+  (rear-context-string . " 0 Jun 16 15:35 ")
+  (position . 143))
+ ("checkin.bat"
+  (filename . "e:/temp/ccm64/bms08/lib/notify/Windows/checkin.bat")
+  (front-context-string . "@rem = '--*-Perl")
+  (rear-context-string)
+  (position . 1))
+ ("Diesel Projektlaufwerk DDE7"
+  (filename . "//easerv.muc/projekte/Antriebsprojekte/Diesel_Motoren/Projekt_DDE7/")
+  (front-context-string . "00_Info/\n  drwxr")
+  (rear-context-string . " 0 Jan 26 12:26 ")
+  (position . 165))
+ ("Diesel/DDE Austausch"
+  (filename . "//easerv.muc/projekte/Antriebsprojekte/Diesel_Motoren/Projekt_DDE7/99_Austauschlaufwerk/")
+  (front-context-string . "/\n  drwxr-xr-x  ")
+  (rear-context-string . "Jan 28 15:48 ecl")
+  (position . 1845))
+ ("EA-41 Austausch"
+  (filename . "//easerv.muc/Organisation/EA-4_Org/EA-41/EA-41/40_Allgemein/04_Austausch/")
+  (front-context-string . "/\n  drwxr-xr-x  ")
+  (rear-context-string . "May 26 12:29 ecl")
+  (position . 3223))
+ ("shared_vision_EA41/wiki-backup"
+  (filename . "p:/shared_vision_EA41/")
+  (front-context-string . "wiki-backup/\n  d")
+  (rear-context-string . " 0 Jun 11 13:01 ")
+  (position . 123))
+ ("Make Info"
+  (front-context-string . "\nMake\n****\n\n   T")
+  (rear-context-string . "\n(make.info)Top\n")
+  (position . 1384)
+  (filename . "e:/tools/gnu/usr/info/make.info")
+  (info-node . "Top")
+  (handler . Info-bookmark-jump)))
