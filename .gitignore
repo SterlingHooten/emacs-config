@@ -2,3 +2,4 @@
 *.elc
 server/
 /history
+/tramp
