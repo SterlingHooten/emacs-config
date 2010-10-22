@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-10-21 14:10:50 Emilio C. Lopes>
+;;; Time-stamp: <2010-10-22 10:56:31 Emilio C. Lopes>
 
 ;;; TODO:
 ;; o Use `add-to-list' and similars for adding things to alists.
@@ -1789,6 +1789,7 @@ With prefix argument ARG behave as usual."
 
 ;;; kill-ring
 (setq kill-ring-max 1024)
+(setq save-interprogram-paste-before-kill t)
 
 ;; Thanks to Karl Fogel:
 ;; http://svn.red-bean.com/repos/kfogel/trunk/.emacs
@@ -1817,8 +1818,11 @@ in the minibuffer history."
   (interactive (list (read-string "Yank from kill-ring: " nil 'kill-ring)))
   (insert-for-yank string))
 
-(defadvice kill-new (around browse-kill-ring activate)
-  "STRING is only inserted in the kill-ring if not already there."
+;; Emacs 23.2 introduced `kill-do-not-save-duplicates': if it is
+;; non-nil, identical subsequent kills are not duplicated in the
+;; `kill-ring'.
+(defadvice kill-new (around kill-ring-avoid-duplicates activate)
+  "Only insert STRING in the kill-ring if not already there."
   (setq kill-ring (delete (ad-get-arg 0) kill-ring))
   ad-do-it)
 
