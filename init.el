@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-10-25 15:02:14 Emilio C. Lopes>
+;;; Time-stamp: <2010-10-25 15:14:17 Emilio C. Lopes>
 
 ;;; TODO:
 ;; o Use `add-to-list' and similars for adding things to alists.
@@ -1079,18 +1079,11 @@ Z          Zeppelin         Zulu
 ;; (global-defkey "<apps>" 'imenu)
 
 
-;; Kyle Jones' redo
-;; (when (require-soft 'redo)
-;;   (global-defkey "M-_" 'redo))
-                                        ; `undo' is on "C-_"
-
 (when (require-soft 'goto-last-change)
   (global-set-key "\C-x\C-\\" 'goto-last-change))
 
 (when running-nt
-  (global-defkey "<apps>" 'undo)
-  ;; (global-defkey "S-<apps>" 'redo)
-  )
+  (global-defkey "<apps>" 'undo))
 
 ;; Hippie-expand
 (setq hippie-expand-try-functions-list
@@ -1143,13 +1136,6 @@ Z          Zeppelin         Zulu
 
 (global-defkey "C-," 'chop-move-up)
 (global-defkey "C-." 'chop-move-down)
-
-;; Insert paired delimiters
-;; (when (require-soft 'insert-delims)
-;;   (mapcar
-;;    (lambda (char)
-;;      (global-set-key (read-kbd-macro (concat "H-" (char-to-string char))) 'insert-delimiter-pair))
-;;    "\"()[]{}<>`'"))
 
 ;; (when (require-soft 'skeleton)
 ;;   (mapcar
@@ -1284,9 +1270,6 @@ whose major-mode matches REGEXP."
 
 (global-defkey "C-x S" 'iswitchb-shell-buffers)
 
-
-;; (require-soft 'iswitchb-filters)
-
 ;; Kin Cho
 (defun iswitchb-exclude-nonmatching ()
   "*Exclude non matching buffer names."
@@ -1326,10 +1309,6 @@ set to non-nil."
   (iswitchb-rescan))
 
 
-;; minibuffer-complete-cycle
-;; (when (require-soft 'minibuffer-complete-cycle)
-;;   (setq minibuffer-complete-cycle t))
-
 (require-soft 'minibuf-isearch)
 
 
@@ -1868,7 +1847,6 @@ in the minibuffer history."
 ;; ;; XXML binds `M-_' to something else. Restore the original binding here.
 ;; (add-hook 'sgml-mode-hook
 ;;           (lambda ()
-;;             (when (fboundp 'redo) (local-defkey "M-_" 'redo))
 ;;             (local-defkey "<S-f9>" 'sgml-validate-it)
 ;;             (local-defkey "C-c M-k" 'sgml-kill-element-contents)
 ;;             (local-defkey "C-x n d" 'sgml-narrow-to-current-element)) 'append)
@@ -2264,8 +2242,6 @@ If VAR begins with one of `@%$' use `Data::Dumper'."
 
 ;;; PHP
 (require-soft 'php-mode)
-;; (when (require-soft 'html-script)
-;;   (defkey html-mode-map "C-c C-c" 'html-script-pop-to-script-buffer))
 
 (defun php (symbol)
   (require 'thingatpt)
@@ -2276,29 +2252,6 @@ If VAR begins with one of `@%$' use `Data::Dumper'."
                     (read-string "Symbol: ")))))
   
   (browse-url (format "http://www.php.net/%s" (string-make-unibyte symbol))))
-
-;; (add-to-path 'load-path "~/Emacs/mmm-mode-0.4.8")
-;; (when (require-soft 'mmm-auto)
-;;   (setq mmm-global-mode 'maybe)
-;;   (set-face-background 'mmm-default-submode-face "gray90")
-;;   ;; (setq mmm-mode-ext-classes-alist nil)
-;;   (mmm-add-mode-ext-class 'html-mode "\\.php\\'" 'html-php)
-;;   ;; (mmm-add-mode-ext-class 'html-mode "" 'fancy-html)
-;;   ;; (mmm-add-group 'fancy-html
-;;   ;;                '((html-php-tagged
-;;   ;;                   :submode php-mode
-;;   ;;                   :face mmm-code-submode-face
-;;   ;;                   :front "<[?]php"
-;;   ;;                   :back "[?]>")))
-
-;;   ;; (mmm-add-classes
-;;   ;;  '((php-here-doc
-;;   ;;     :front "<<<\\([a-zA-Z0-9_-]+\\)"
-;;   ;;     :back "^~1[;]?$"
-;;   ;;     :save-matches 1
-;;   ;;     :submode html-mode
-;;   ;;     :delimiter-mode nil)))
-;;   )
 
 
 ;;; Compile
@@ -2973,10 +2926,6 @@ A new buffer is created containing the disc file's contents and
 
 (global-defkey "C-c p" (make-sparse-keymap))
 
-;; (if (require-soft 'printer)
-;;     (global-defkey "C-c p p" 'printer-print)
-;;   (global-defkey "C-c p p" (if window-system 'ps-print-buffer-with-faces 'ps-print-buffer)))
-
 (global-defkey "C-c p p" (if window-system 'ps-print-buffer-with-faces 'ps-print-buffer))
 
 (global-defkey "C-c p s" (if window-system 'ps-spool-buffer-with-faces 'ps-spool-buffer))
@@ -2998,26 +2947,6 @@ A new buffer is created containing the disc file's contents and
 (setq calc-full-mode t)
 (setq calc-display-trail nil)
 
-
-
-;;; timeclock
-;; (setq timeclock-workday (* 9 60 60))
-;; (setq timeclock-relative nil)
-;; (setq timeclock-get-project-function nil)
-;; (setq timeclock-ask-before-exiting t)
-
-;; (require-soft 'timeclock)
-;; (timeclock-modeline-display)
-;; (add-hook 'kill-emacs-hook 'timeclock-query-out)
-
-
-;; (global-defkey "C-c t" (make-sparse-keymap))
-;; (global-defkey "C-c t i" 'timeclock-in)
-;; (global-defkey "C-c t o" 'timeclock-out)
-;; (global-defkey "C-c t s" 'timeclock-status-string)
-;; (global-defkey "C-c t r" 'timeclock-reread-log)
-;; (global-defkey "C-c t u" 'timeclock-update-modeline)
-;; (global-defkey "C-c t w" 'timeclock-when-to-leave-string)
 
 
 ;;; Man
