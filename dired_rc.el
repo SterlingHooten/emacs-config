@@ -1,5 +1,5 @@
 ;; dired_rc: Dired initialization
-;; Time-stamp: <2006-08-24 18:29:45 Emilio C. Lopes>
+;; Time-stamp: <2010-10-25 16:07:43 Emilio C. Lopes>
 
 (setq dired-x-hands-off-my-keys t)
 (require 'dired-x)
@@ -211,19 +211,7 @@ Optional prefix ARG says how move to next ARGth file; default is one."
 (setq ls-lisp-verbosity nil)
 (setq ls-lisp-ignore-case nil)
 
-
-;; (mapc (lambda (cmd)
-;;         (autoload cmd "dired-isearch" 
-;;           "Incremental search in Dired matching only file names." t))
-;;       '(dired-isearch-forward
-;;         dired-isearch-backward
-;;         dired-isearch-forward-regexp
-;;         dired-isearch-backward-regexp))
-
-;; (defkey dired-mode-map "C-s" 'dired-isearch-forward)
-;; (defkey dired-mode-map "C-r" 'dired-isearch-backward)
-;; (defkey dired-mode-map "C-M-s" 'dired-isearch-forward-regexp)
-;; (defkey dired-mode-map "C-M-r" 'dired-isearch-backward-regexp)
+(setq dired-isearch-filenames 'dwim)
 
 (defkey dired-mode-map "n" 'dired-next-file)
 (defkey dired-mode-map "p" 'dired-previous-file)
