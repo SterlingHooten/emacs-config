@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-10-22 10:56:31 Emilio C. Lopes>
+;;; Time-stamp: <2010-10-25 15:02:14 Emilio C. Lopes>
 
 ;;; TODO:
 ;; o Use `add-to-list' and similars for adding things to alists.
@@ -12,8 +12,7 @@
 ;; o Index, with page breaks between the "sections".
 ;; o Other things. Search for "TODO".
 
-;;{{{ Language things
-;;(setq default-enable-multibyte-characters nil)
+;;{{{ Language settings
 (setq edmacro-eight-bits t)
 
 ;; (add-hook 'set-language-environment-hook
@@ -39,11 +38,10 @@
 ;;}}}
 ;;{{{ Useful defs
 
-(setq hostname (substring system-name 0 (string-match "\\..+" system-name)))
+(setq hostname (car (split-string system-name "\\." )))
 
 (setq running-interactively (not noninteractive))
 (setq running-nt (equal system-type 'windows-nt))
-
 
 (setq at-home (string-match "\\`manaira\\b" system-name))
 (setq at-bmw (equal (getenv "BMW") "BMW"))
@@ -2432,23 +2430,6 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 (add-hook 'suspend-hook 'resume-suspend-hook)
 (add-hook 'suspend-resume-hook 'resume-process-args)
 (server-start)
-;; (when window-system 
-;;   (server-start))
-;; (setq server-program "e:/tools/emacs/gnuserv/gnuserv.exe")
-;; (when (require-soft 'gnuserv)
-;;   ;;  (gnuserv-start)
-;;   (defun server-make-window-visible ()
-;;     "*Try to make the window visible.
-;; Fixes a bug in gnuserv.el 2.1."
-;;     (make-frame-visible)
-;;     (raise-frame (selected-frame)))
-;;   (setq gnuserv-frame (selected-frame)))
-
-;; (when (load "e:/tools/emacs/emacs-cvs/EmacsW32/bin/gnuserv" 'no-error)
-;;   (unless gnuserv-process
-;;     (setq gnuserv-program "e:/tools/emacs/emacs-cvs/EmacsW32/bin/gnuserv.exe")
-;;     (gnuserv-start))
-;;   (setq gnuserv-frame (selected-frame)))
 
 
 ;;; Abbrevs
@@ -3012,7 +2993,7 @@ A new buffer is created containing the disc file's contents and
 
 
 ;;}}}
-
+
 ;;; Calc
 (setq calc-full-mode t)
 (setq calc-display-trail nil)
@@ -3089,19 +3070,6 @@ A new buffer is created containing the disc file's contents and
 (when (file-readable-p custom-file)
   (load-file custom-file))
 
-
-
-;;; X11
-;; Add a new submenu to the font menu
-(let ((submenu '("ETL"
-                 ("12" "-etl-fixed-medium-r-normal-*-*-120-*-*-*-*-iso8859-1")
-                 ("14" "-etl-fixed-medium-r-normal-*-*-140-*-*-*-*-iso8859-1")
-                 ("16" "-etl-fixed-medium-r-normal-*-*-160-*-*-*-*-iso8859-1")
-                 ("18" "-etl-fixed-medium-r-normal-*-*-180-*-*-*-*-iso8859-1")
-                 ("24" "-etl-fixed-medium-r-normal-*-*-240-*-*-*-*-iso8859-1"))))
-  (unless (member submenu (cdr x-fixed-font-alist))
-    (setcdr x-fixed-font-alist
-            (append (cdr x-fixed-font-alist) (list submenu)))))
 
 
 ;;; isearch
