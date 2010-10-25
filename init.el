@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-10-25 15:26:55 Emilio C. Lopes>
+;;; Time-stamp: <2010-10-25 15:32:16 Emilio C. Lopes>
 
 ;;; TODO:
 ;; o Use `add-to-list' and similars for adding things to alists.
@@ -43,7 +43,6 @@
 (setq running-interactively (not noninteractive))
 (setq running-nt (equal system-type 'windows-nt))
 
-(setq at-home (string-match "\\`manaira\\b" system-name))
 (setq at-bmw (equal (getenv "BMW") "BMW"))
 
 (unless (boundp 'user-emacs-directory)
@@ -2936,24 +2935,7 @@ A new buffer is created containing the disc file's contents and
 
 ;;; Browse URL
 (setq browse-url-new-window-flag nil)
-(cond
- ((and running-nt at-bmw)
-  (setq browse-url-browser-function 'browse-url-default-windows-browser)
-  ;; (setq browse-url-mozilla-program "C:/Program Files/Mozilla Firefox/firefox.exe")
-  ;; (setq browse-url-browser-function 'browse-url-mozilla)
-  (setq browse-url-mozilla-new-window-is-tab t)
-  )
- (at-home
-  (setq browse-url-browser-function 'browse-url-netscape)
-  (setq browse-url-netscape-program "mozilla"))
- ((require-soft 'w3-auto)
-  (setq browse-url-browser-function 'browse-url-w3)))
-
-;;(setq browse-url-browser-function 'browse-url-lynx-xterm)
-;; (setq browse-url-xterm-program "xterm")
-;; (setq browse-url-xterm-args
-;;       '("+sb" "-T" "Lynx" "-n" "Lynx" "-g" "100x50" "-tn" "xterm-color"))
-
+(setq browse-url-mozilla-new-window-is-tab t)
 
 
 ;;; W3
