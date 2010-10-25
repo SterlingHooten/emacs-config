@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-10-25 15:32:16 Emilio C. Lopes>
+;;; Time-stamp: <2010-10-25 15:44:33 Emilio C. Lopes>
 
 ;;; TODO:
 ;; o Use `add-to-list' and similars for adding things to alists.
@@ -1068,10 +1068,6 @@ Z          Zeppelin         Zulu
 ;;   '(modify-syntax-entry ?% "$"  bat-mode-syntax-table))
 (autoload 'ntcmd-mode "ntcmd"
   "Major mode for editing CMD scripts." t)
-
-;; find-library-file
-;; (autoload 'find-library-file "find-library-file"
-;;   "Visit file LIBRARY in `load-path'." t)
 
 ;; imenu
 (setq imenu-always-use-completion-buffer-p 'never)
@@ -2499,7 +2495,6 @@ none is marked."
   )
 
 ;;; Dired
-;;(eval-after-load "ls-lisp" '(require-soft 'ls-lisp-bugfix))
 (setq ls-lisp-use-insert-directory-program t)
 (add-hook 'dired-load-hook (lambda () (require-soft 'dired_rc)))
 
