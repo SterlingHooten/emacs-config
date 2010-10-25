@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-10-25 15:14:17 Emilio C. Lopes>
+;;; Time-stamp: <2010-10-25 15:26:55 Emilio C. Lopes>
 
 ;;; TODO:
 ;; o Use `add-to-list' and similars for adding things to alists.
@@ -2823,49 +2823,21 @@ A new buffer is created containing the disc file's contents and
 
 
 ;;{{{ Printing
-(require-soft 'printing)
-
-(if running-nt
-    ;; (progn                              ; Windows NT settings
-;;       (setq lpr-command "")             ; write directly to the printer port
-;;       (when at-bmw
-;;         (setq pr-path-alist '((windows   PATH ghostview)
-;;                               (ghostview "e:/tools/GSTools/GSView/4.0/gsview")))
-;;         (setq pr-ps-printer-alist
-;;               (mapcar (lambda (prt)
-;;                         (list (make-symbol (file-name-nondirectory prt)) "print" nil "/D:" prt))
-;;                       '("\\\\eepmuc02\\pm193000"
-;;                         "\\\\eepmuc01\\pm193001"
-;;                         "\\\\eepmuc02\\pm192304"
-;;                         "\\\\gmuc0119\\pmuc0516")))
-;;         (setq pr-ps-name 'pmuc0516))
-;;       (setq printer-name
-;;             (cond
-;;              (at-bmw "//gmuc0119/PMUC0516")
-;; ;;             (at-bmw "//eepmuc02/PM192304")
-;;              (t "LPT1"))))
-
-    (progn                              ; Windows NT settings
-      (setq lpr-command "")            ; write directly to the printer port
-      (setq printer-name
-            (cond
-             (at-bmw "//gmuc0153.muc/PMUC0716")
-             (t "LPT1")))
-      (when at-bmw
-        (setenv "GS_LIB" "e:/tools/GSTools/gs8.14/gs8.14/lib;e:/tools/GSTools/gs8.14/fonts")
-        (setq ps-lpr-command "e:/tools/GSTools/gs8.14/gs8.14/bin/gswin32c.exe")
-        (setq ps-lpr-switches '("-q" "-dNOPAUSE" "-dBATCH" "-sDEVICE=mswinpr2"))
-        (setq ps-printer-name t)))
-  (progn                                ; Unix settings
-    (setq lpr-command "lpr")
-    (setq printer-name
-          (cond
-           (at-home
-            "stylus810-draft")))))
-
-
 (when (require-soft 'printing)
   (pr-update-menus t))
+
+(when running-nt
+  (progn                          ; Windows NT settings
+    (setq lpr-command "")         ; write directly to the printer port
+    (setq printer-name
+          (cond
+           (at-bmw "//gmuc0222.muc/pmuc4068")
+           (t "LPT1")))
+    (when at-bmw
+      (setenv "GS_LIB" "e:/tools/GSTools/gs7.00/gs7.00/lib;e:/tools/GSTools/gs7.00/fonts")
+      (setq ps-lpr-command "e:/tools/GSTools/gs7.00/gs7.00/bin/gswin32c.exe")
+      (setq ps-lpr-switches '("-q" "-dNOPAUSE" "-dBATCH" "-sDEVICE=mswinpr2"))
+      (setq ps-printer-name t))))
 
 ;; (setq ps-lpr-command lpr-command)
 ;; (setq ps-printer-name printer-name)
