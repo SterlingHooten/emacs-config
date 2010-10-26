@@ -1,8 +1,11 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-10-26 14:14:27 Emilio C. Lopes>
+;;; Time-stamp: <2010-10-26 16:17:25 Emilio C. Lopes>
 
-;;; TODO:
+;;; Note: lines beginning with `;;;_' are headers for Allout outline
+;;; minor mode
+
+;;;_* TODO:
 ;; o Use `add-to-list' and similars for adding things to alists.
 ;; o Review mode-alist changes.
 ;; o Use `eval-after-load' for customization of packages.
@@ -12,7 +15,7 @@
 ;; o Index, with page breaks between the "sections".
 ;; o Other things. Search for "TODO".
 
-;;{{{ Language settings
+;;;_* Language settings
 (setq edmacro-eight-bits t)
 
 ;; (add-hook 'set-language-environment-hook
@@ -36,8 +39,8 @@
 
 (setq input-method-highlight-flag nil)
 (setq input-method-verbose-flag t)
-;;}}}
-;;{{{ Useful defs
+
+;;;_* Useful defs
 
 (setq hostname (car (split-string system-name "\\." )))
 
@@ -95,15 +98,13 @@ results "
   `(mapc (lambda (x)
            (funcall ,proc (car x) (cdr x))) ,seq))
 
-;;}}}
-;;{{{ Load-path
+;;;_* Load-path
 (add-to-path 'load-path user-emacs-directory)
 (add-to-path 'load-path (concat user-emacs-directory "lib"))
 (add-to-path 'load-path "~/.lib/emacs/elisp")
 (add-to-path 'load-path "~/.lib/emacs/rc")
 
-;;}}}
-;;{{{ System-dependent configuration
+;;;_* System-dependent configuration
 
 (when running-nt
 
@@ -227,8 +228,7 @@ to the filename."
   (setenv "SHELL" shell-file-name)
   (setq explicit-shell-file-name shell-file-name))
 
-;;}}}
-;;{{{ General configuration
+;;;_* General configuration
 
 (setq inhibit-startup-message t)
 (setq inhibit-startup-echo-area-message "qx29999")
@@ -364,8 +364,7 @@ to the filename."
 (add-to-path 'Info-default-directory-list "/usr/info")
 (add-to-path 'Info-default-directory-list "/usr/share/info")
 
-;;}}}
-;;{{{ Functions
+;;;_* Functions
 
 (defvar default-register 0)
 
@@ -496,7 +495,7 @@ Works only on Windows."
     (error "This command is not available on this system"))
   (w32-send-sys-command #xf030))
 
-;;{{{ other-window-or-other-buffer
+;;;_ + other-window-or-other-buffer
 
 (defvar buffer-ignore-regexp '("^ ")
   "*Regexp matching buffer names to be ignored by \\[next-buffer].")
@@ -540,8 +539,6 @@ Subject to `buffer-ignore-regexp'."
     (when (> 0 arg)
       (setq arg (+ (length bufflist) arg)))
     (switch-to-buffer (nth arg bufflist))))
-
-;;}}}
 
 (defun resize-window (&optional arg)    ; Hirose Yuuji and Bob Wiener
   "*Resize window interactively."
@@ -1043,8 +1040,8 @@ X          Xanthippe        X-Ray
 Y          Ypsilon          Yankee
 Z          Zeppelin         Zulu
 ")
-;;}}}
-;;{{{ Packages
+
+;;;_* Packages
 
 ;; sooner or later it will be loaded, so do it now.
 (require 'tramp)
@@ -1072,7 +1069,7 @@ Z          Zeppelin         Zulu
 (autoload 'ntcmd-mode "ntcmd"
   "Major mode for editing CMD scripts." t)
 
-;; imenu
+;;;_ + imenu
 (setq imenu-always-use-completion-buffer-p 'never)
 ;; (global-defkey "<apps>" 'imenu)
 
@@ -1083,7 +1080,7 @@ Z          Zeppelin         Zulu
 (when running-nt
   (global-defkey "<apps>" 'undo))
 
-;; Hippie-expand
+;;;_ + Hippie-expand
 (setq hippie-expand-try-functions-list
       '(try-expand-dabbrev
         try-expand-dabbrev-visible
@@ -1117,7 +1114,7 @@ Z          Zeppelin         Zulu
 ;;     (set-display-table-slot standard-display-table 'wrap       wrap-glyph)))
 
 
-;; chop: binary search for a line within a window
+;;;_  + chop: binary search for a line within a window
 (autoload 'chop-move-up "chop")
 (autoload 'chop-move-down "chop")
 (eval-after-load "chop"
@@ -1135,6 +1132,7 @@ Z          Zeppelin         Zulu
 (global-defkey "C-," 'chop-move-up)
 (global-defkey "C-." 'chop-move-down)
 
+;;;_ + pair insertion
 ;; (when (require-soft 'skeleton)
 ;;   (mapcar
 ;;    (lambda (char)
@@ -1162,7 +1160,7 @@ Z          Zeppelin         Zulu
   (autopair-global-mode 1)
   (setq autopair-autowrap t))
 
-;; Find file at point
+;;;_ + Find file at point
 (require 'ffap)
 (setq ffap-require-prefix t)
 (setq ffap-highlight nil)
@@ -1201,13 +1199,13 @@ Only intended for interactive use."
 (global-defkey "C-x 4 R"   'ffap-read-only-other-window-noselect)
 
 
-;; Gnuplot
+;;;_ + Gnuplot
 (autoload 'gnuplot "gnuplot"
   "Run Gnuplot interactively in a Emacs buffer." t nil)
 (autoload 'gnuplot-interaction-mode "gnuplot-interaction"
   "Major mode for editing Gnuplot input files." t nil)
 
-;; Shell-script
+;;;_ + Shell-script
 (autoload 'sh-mode "sh-script" 
   "Major mode for editing shell scripts" t nil)
 (eval-after-load "sh-script"
@@ -1217,7 +1215,7 @@ Only intended for interactive use."
 (autoload 'the-the "the-the"
   "Search forward for for a duplicated word." t nil)
 
-;; apropos
+;;;_ + apropos
 (defun apropos-function ()
   "*Show functions that match REGEXP."
   (interactive)
@@ -1225,8 +1223,7 @@ Only intended for interactive use."
   (let ((apropos-do-all t))
     (call-interactively 'apropos-command)))
 
-
-;; iswitchb
+;;;_ + iswitchb
 (if (fboundp 'iswitchb-mode)
     (iswitchb-mode)
   (iswitchb-default-keybindings))
@@ -1310,7 +1307,7 @@ set to non-nil."
 (require-soft 'minibuf-isearch)
 
 
-;;; autoinsert
+;;;_ + autoinsert
 (setq auto-insert-directory (concat user-emacs-directory "auto-insert/"))
 (auto-insert-mode 1)
 (add-to-list 'auto-insert-alist '(("/\\.?lib/zsh/" . "ZSH function")
@@ -1335,7 +1332,7 @@ emulate -LR zsh
 (add-to-list 'auto-insert-alist '("\\.pl\\'" . "header.pl"))
 
 
-;;; escreen
+;;;_ + escreen
 ;; (setq escreen-install-number-mode-format t)
 ;; (setq escreen-number-mode t)
 ;; (setq escreen-prefix-char "\C-q")
@@ -1346,7 +1343,7 @@ emulate -LR zsh
 ;;   (defkey escreen-map "SPC" 'escreen-goto-next-screen))
 
 
-;;; winring
+;;;_ + winring
 ;; (when (require-soft 'winring)
 ;;   (setq winring-show-names t)
 ;;   (setq winring-prompt-on-create nil)
@@ -1357,11 +1354,12 @@ emulate -LR zsh
 ;;   (winring-initialize))
 
 
-;;; winner
+;;;_ + winner
 (when (require-soft 'winner)
   (winner-mode +1))
 
 
+;;;_ + completion
 ;; Overload completion commands through the ones from `complete':
 ;; (require 'complete)
 ;; (fset 'lisp-complete-symbol 'PC-lisp-complete-symbol)
@@ -1418,7 +1416,7 @@ With prefix argument ARG behave as usual."
 (setq completion-ignored-extensions (delete ".pdf" completion-ignored-extensions))
 
 
-;; Get the little rodent out of way
+;;;_ + Get the little rodent out of way
 (when (and (display-mouse-p)
            (require-soft 'avoid))
   ;; (mouse-avoidance-mode 'banish)
@@ -1427,7 +1425,7 @@ With prefix argument ARG behave as usual."
     (mouse-avoidance-mode)))
 
 
-;; Filladapt
+;;;_ + Filladapt
 (when (require-soft 'filladapt)
   (setq filladapt-fill-column-tolerance 6)
   (setq filladapt-mode-line-string nil)
@@ -1435,7 +1433,7 @@ With prefix argument ARG behave as usual."
   (add-hook 'text-mode-hook 'turn-on-filladapt-mode)
   )
 
-;;; Uniquify
+;;;_ + Uniquify
 (require 'uniquify)
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-buffer-name-style 'forward)
@@ -1443,7 +1441,7 @@ With prefix argument ARG behave as usual."
       "\\(news\\|mail\\|reply\\|followup\\) message\\*")
 ;; (add-to-list 'uniquify-list-buffers-directory-modes 'shell-mode)
 
-;;; Time-stamp 
+;;;_ + Time-stamp 
 (add-hook 'write-file-hooks 'time-stamp)
 (setq time-stamp-active t)
 (setq time-stamp-warn-inactive t)
@@ -1452,7 +1450,7 @@ With prefix argument ARG behave as usual."
   (setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S %U"))
 
 
-;;; Turn on font-lock mode just for color displays
+;;;_ + font-lock mode
 (when (display-color-p)
   (require-soft 'font-latex)
   (setq font-lock-support-mode 'jit-lock-mode)
@@ -1474,9 +1472,7 @@ With prefix argument ARG behave as usual."
   ;; (font-lock-add-keywords 'fortran-mode '(("\\<ECL:?" 0 'show-paren-mismatch-face t)))
   )
 
-;;}}}
-
-;;{{{ Keybindings
+;;;_* Keybindings
 
 ;; extra "C-x" for Dvorak keyboard layouts, in the same hand as "s",
 ;; "f", "w", "v".
@@ -1716,14 +1712,11 @@ With prefix argument ARG behave as usual."
 (global-defkey "<print>"        'ps-spool-buffer-with-faces)
 (global-defkey "S-<print>"      'set-default-printer)
 
-;;}}}
-
-
-;;; Frame parameters
+;;;_* Frame parameters
 (add-to-list 'initial-frame-alist '(cursor-type . box))
 (add-to-list 'default-frame-alist '(cursor-type . box))
 
-;;; Time (and date) display setup.
+;;;_* Time (and date) display setup.
 (display-time-mode 1)
 (setq display-time-interval 5)
 (setq display-time-day-and-date nil)
@@ -1731,7 +1724,7 @@ With prefix argument ARG behave as usual."
 (setq display-time-use-mail-icon t)
 (and running-nt (set-time-zone-rule "CET-1CDT"))
 
-;;; Mode-line and Frame-title format:
+;;;_* Mode-line and Frame-title format:
 
 (setq line-number-display-limit-width 512)
 
@@ -1739,7 +1732,7 @@ With prefix argument ARG behave as usual."
 
 (setq-default icon-title-format frame-title-format)
 
-;;; Common modes stuff
+;;;_* Common modes stuff
 ;; Add some suffix defs to auto-mode-alist:
 (setq auto-mode-alist (append '(
                                 ("\\.\\(pl\\|pm\\)\\'" . cperl-mode)
@@ -1761,8 +1754,8 @@ With prefix argument ARG behave as usual."
 
 (when at-bmw
   (setq auto-mode-alist (append '(("\\.dat?\\'" . c-mode)) auto-mode-alist)))
-
-;;; kill-ring
+
+;;;_* kill-ring
 (setq kill-ring-max 1024)
 (setq save-interprogram-paste-before-kill t)
 
@@ -1801,8 +1794,10 @@ in the minibuffer history."
   (setq kill-ring (delete (ad-get-arg 0) kill-ring))
   ad-do-it)
 
-
-;;; Ispell
+;;;_* Major modes
+
+;;;_ + Ispell
+
 (setq-default ispell-local-dictionary "deutsch8")
 
 (global-defkey "C-c i w" 'ispell-word)
@@ -1834,9 +1829,7 @@ in the minibuffer history."
 
 (global-defkey "C-c i w" 'show-current-ispell-dictionary)
 
-
-
-;;; PSGML
+;;;_ + PSGML
 ;; (setq sgml-auto-activate-dtd t)
 ;; (setq-default sgml-set-face t)
 ;; (setq sgml-auto-activate-dtd t)
@@ -1884,7 +1877,7 @@ in the minibuffer history."
 ;;    (progn (sgml-beginning-of-element) (point))))
 
 
-;;; nxml
+;;;_ + nxml
 ;; (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
 ;; (defun nxml-kill-element (&optional arg)
 ;;   "*Kill the following element.
@@ -1916,7 +1909,7 @@ in the minibuffer history."
 
 
 
-;;; TeX
+;;;_ + TeX
 (setq tex-dvi-view-command
       (if (eq window-system 'x) "xdvi" "dvi2tty -q * | cat -s"))
 (setq tex-dvi-print-command "dvips")
@@ -1925,7 +1918,8 @@ in the minibuffer history."
 (setq tex-open-quote "\"")              ; disable "smart quoting".
 (setq tex-close-quote "\"")
 
-;;; AUCTeX
+
+;;;_ + AUCTeX
 (when (require-soft 'tex-site)
   (setq LaTeX-math-abbrev-prefix "#")
   (setq TeX-open-quote "\"")              ; disable "smart quoting".
@@ -1941,14 +1935,14 @@ in the minibuffer history."
                                          (TeX-command "LaTeX" 'TeX-master-file))))
               (local-defkey "<f9>" 'TeX-next-error))))
 
-
-;;; reftex
+
+;;;_ + reftex
 (setq reftex-insert-label-flags '("s" "sfte"))
 (setq reftex-label-alist
       '(("equation" ?e "eq:" "~\\eqref{%s}" t (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))))
 
 
-;;; BBDB
+;;;_ + BBDB
 (when (require-soft 'bbdb)
   (bbdb-initialize 'gnus 'message)
   (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
@@ -1990,12 +1984,12 @@ in the minibuffer history."
 ;;     (expand-abbrev)))
 
 
-;;; SES
+;;;_ + SES
 (eval-after-load "ses" '(require-soft 'ses-formulas))
 
 
 
-;;; text
+;;;_ + text
 ;; (add-hook 'text-mode-hook 'turn-on-auto-fill)
 ;; (add-hook 'text-mode-hook (lambda ()
 ;;                             (flyspell-mode +1)))
@@ -2030,7 +2024,7 @@ in the minibuffer history."
               (goto-char (point-max))
               (insert "\n" sig))))))))
 
-;;; Fortran
+;;;_ + Fortran
 (defun fortran-uncomment-empty-lines (beg end)
   "*Remove comment characters from empty lines in region."
   (interactive "*r")
@@ -2070,7 +2064,7 @@ in the minibuffer history."
 
 
 
-;;; Stick REPL
+;;;_ + Stick REPL
 ;; (autoload 'sticky-repl-display "sticky-repl" nil t)
 ;; (setq special-display-function 'sticky-repl-display)
 ;; (setq compilation-window-height 12)
@@ -2097,7 +2091,7 @@ in the minibuffer history."
 ;;         "\\*sldb .*\\*"))
 
 
-;;; Scheme/Lisp modes
+;;;_ + Scheme/Lisp modes
 
 (require 'ecl_lisp)
 ;; (defun scheme-scratch (&optional arg)
@@ -2211,7 +2205,7 @@ With prefix arg generate a fresh buffer."
 ;;                          (with-current-input-port . 1)))))
 
 
-;;; Perl mode
+;;;_ + Perl mode
 ;; use cperl-mode as default
 ;; (defalias 'perl-mode 'cperl-mode)
 (setq cperl-hairy nil)
@@ -2238,7 +2232,7 @@ If VAR begins with one of `@%$' use `Data::Dumper'."
 	    (set-compile-command "perl -cw %s")))
 
 
-;;; PHP
+;;;_ + PHP
 (require-soft 'php-mode)
 
 (defun php (symbol)
@@ -2252,7 +2246,7 @@ If VAR begins with one of `@%$' use `Data::Dumper'."
   (browse-url (format "http://www.php.net/%s" (string-make-unibyte symbol))))
 
 
-;;; Compile
+;;;_ + Compile
 (setq compile-command "make ")
 (setq compilation-read-command nil)
 (setq compilation-ask-about-save t)
@@ -2342,14 +2336,14 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 ;;     (ad-activate 'compilation-goto-locus)))
 
 
-;;; Makefile mode
+;;;_ + Makefile mode
 ;; (setq makefile-electric-keys t)
 (add-hook 'makefile-mode-hook
           (lambda ()
             (modify-syntax-entry ?. "_"  makefile-mode-syntax-table)))
 
 
-;;; Sendmail configuration
+;;;_ + Sendmail configuration
 ;;(setq mail-user-agent 'gnus-user-agent)
 (setq mail-user-agent 'message-user-agent)
 
@@ -2370,11 +2364,11 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 (add-hook 'mail-setup-hook 'mail-abbrevs-setup)
 
 
-;;; Message
+;;;_ + Message
 (add-hook 'message-load-hook (lambda () (require-soft 'message_rc)))
 
 
-;;; Resume/Server configuration.
+;;;_ + Resume/Server configuration.
 ;; With these hooks and using emacs.bash (or emacs.csh), both from
 ;; "etc" dir, it is possible to specify arguments when resuming emacs
 ;; after a suspension.
@@ -2383,12 +2377,12 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 (server-start)
 
 
-;;; Abbrevs
+;;;_ + Abbrevs
 (setq save-abbrevs 'silently)
 (quietly-read-abbrev-file)
 
 
-;;; Bookmarks
+;;;_ + Bookmarks
 (setq bookmark-default-file (locate-user-emacs-file "bookmarks" ".emacs.bookmarks"))
 (setq bookmark-save-flag 1)
 
@@ -2422,13 +2416,14 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
   (bookmark-jump bname))
 (substitute-key-definition 'bookmark-jump 'iswitchb-bookmark-jump global-map)
 
-;;; folding
+
+;;;_ + folding
 (autoload 'folding-mode          "folding" "Folding mode" t)
 (autoload 'turn-off-folding-mode "folding" "Folding mode" t)
 (autoload 'turn-on-folding-mode  "folding" "Folding mode" t)
 
 
-;;; TMM
+;;;_ + TMM
 (setq tmm-completion-prompt nil)
 (setq tmm-mid-prompt ": ")
 (setq tmm-shortcut-style 'downcase)
@@ -2436,7 +2431,7 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 
 
 
-;;; ibuffer
+;;;_ + ibuffer
 (when (require-soft 'ibuffer)
   (global-defkey "C-x C-b" 'ibuffer)
   (setq ibuffer-formats
@@ -2504,15 +2499,15 @@ none is marked."
           (setq ad-return-value (list buffer))))))
   )
 
-;;; Dired
+;;;_ + Dired
 (setq ls-lisp-use-insert-directory-program t)
 (add-hook 'dired-load-hook (lambda () (require-soft 'dired_rc)))
-
-;;; Org-mode
+
+;;;_ + Org-mode
 (require-soft 'orgrc)
 
 
-;;; eshell
+;;;_ + eshell
 ;; TODO: Make it more generic (`next-buffer-satisfying') and use "ring.el"
 (defun eshell-next-buffer (arg)
 "Switch to the next EShell buffer.
@@ -2533,7 +2528,7 @@ no EShell session is currently active."
 
 
 
-;;; Shell and Comint
+;;;_ + Shell and Comint
 (defun shell-dwim (&optional create)
   "Start or switch to an inferior shell process, in a smart way.
 If a buffer with a running shell process exists, simply switch to
@@ -2573,7 +2568,7 @@ With prefix argument CREATE always start a new shell."
 (eval-after-load "shell" '(require-soft 'shell_rc))
 
 
-;;; view-file
+;;;_ + view-file
 (eval-after-load "view"
   '(progn
      (substitute-key-definition 'View-quit 'View-exit-no-restore view-mode-map)
@@ -2588,7 +2583,7 @@ With prefix argument CREATE always start a new shell."
 
 
 
-;;; grep
+;;;_ + grep
 (setq grep-command "grep -s -n ")
 
 (eval-after-load "grep"
@@ -2598,8 +2593,8 @@ With prefix argument CREATE always start a new shell."
 ;;       '("find . \\( -path '*/_darcs' -o -path '*/CVS' -o -path '*/RCS' -o -path '*/{arch}' \\) -prune -o -type f -and \"!\" \\( -name '*~' -o -name '*#' \\) -exec grep -s -n  {} NUL \\;" . 160))
 
 ;; (setq grep-find-template "find . <X> -type f -and \"!\" \\( -name '*~' -o -name '*#' \\) <F> -exec grep <C> -n -e <R> {} NUL \\;")
-
-;;; igrep
+
+;;;_ + igrep
 (autoload 'igrep "igrep"
   "*Run `grep' PROGRAM to match EXPRESSION in FILES..." t)
 (autoload 'igrep-find "igrep"
@@ -2617,7 +2612,7 @@ With prefix argument CREATE always start a new shell."
 (setq igrep-expression-option nil)
 
 
-;;; calendar
+;;;_ + calendar
 (add-hook 'calendar-load-hook
           (lambda ()
             (european-calendar)
@@ -2725,7 +2720,7 @@ Interactively asks for YEAR only when called with a prefix argument."
               christian-holidays solar-holidays))
 
 
-;;; Occur
+;;;_ + Occur
 (defun my-occur-mode-hook ()
   (defkey occur-mode-map "n" 'occur-next)
   (defkey occur-mode-map "<down>" 'occur-next)
@@ -2742,7 +2737,7 @@ Interactively asks for YEAR only when called with a prefix argument."
 
 
 
-;;; Diff/Ediff
+;;;_ + Diff/Ediff
 
 (setq diff-switches "-u")
 
@@ -2819,14 +2814,7 @@ A new buffer is created containing the disc file's contents and
       (ediff-buffers (buffer-name) current))))
 
 
-;;{{{ which-function-mode
-;; (eval-after-load "which-func"
-;;   '(setq  which-func-modes (remove 'emacs-lisp-mode which-func-modes)))
-;; (which-function-mode +1)
-;;}}}
-
-
-;;{{{ Printing
+;;;_ + Printing
 (when (require-soft 'printing)
   (pr-update-menus t))
 
@@ -2916,16 +2904,14 @@ A new buffer is created containing the disc file's contents and
 
 (global-defkey "C-c p S" 'set-default-printer)
 
-
-;;}}}
 
-;;; Calc
+;;;_ + Calc
 (setq calc-full-mode t)
 (setq calc-display-trail nil)
 
 
 
-;;; Man
+;;;_ + Man
 (eval-after-load "man"
   '(progn
      (setq Man-notify-method 'friendly)
@@ -2933,17 +2919,17 @@ A new buffer is created containing the disc file's contents and
 
 
 
-;;; Woman
+;;;_ + Woman
 (setq woman-use-own-frame nil)
 
 
 
-;;; Browse URL
+;;;_ + Browse URL
 (setq browse-url-new-window-flag nil)
 (setq browse-url-mozilla-new-window-is-tab t)
 
 
-;;; W3
+;;;_ + W3
 (when (or (require-soft 'w3-auto)
           (require-soft 'url))
   (cond
@@ -2953,14 +2939,14 @@ A new buffer is created containing the disc file's contents and
 
 
 
-;;; Custom
+;;;_ + Custom
 (setq custom-file (locate-user-emacs-file "custom.el" ".custom"))
 (when (file-readable-p custom-file)
   (load-file custom-file))
 
 
 
-;;; isearch
+;;;_ + isearch
 ;; (setq lazy-highlight-initial-delay 3)
 (setq isearch-allow-scroll t)
 
@@ -3033,7 +3019,7 @@ A new buffer is created containing the disc file's contents and
 (defkey isearch-mode-map "M->" 'isearch-end-of-buffer)
 
 
-;;; Misc
+;;;_* Misc
 
 (defadvice describe-function (after where-is activate)
   "Call `\\[where-is] FUNCTION' iff it's interactive."
@@ -3095,7 +3081,7 @@ A new buffer is created containing the disc file's contents and
             (set-face-foreground 'show-paren-match-face "orange")
             (set-face-background 'show-paren-match-face "moccasin")))
 
-;;; Local Configuration
+;;;_* Local Configuration
 (when at-bmw
   ;;(set-register ?A '(file . "//smuc1805/EE-ORG/Austausch/EE-22/ecl/"))
   (defun bmw-jump-to-exchange-dir (&optional arg)
