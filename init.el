@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-10-26 12:29:47 Emilio C. Lopes>
+;;; Time-stamp: <2010-10-26 14:14:27 Emilio C. Lopes>
 
 ;;; TODO:
 ;; o Use `add-to-list' and similars for adding things to alists.
@@ -24,6 +24,7 @@
 
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8)
+
 (setq default-input-method "latin-1-prefix")
 
 (defun activate-default-input-method ()
@@ -107,6 +108,8 @@ results "
 (when running-nt
 
   (setq user-login-name (downcase user-login-name))
+
+  (modify-coding-system-alist 'process "svn" '(latin-1 . latin-1))
 
   (setq focus-follows-mouse nil)
   (auto-raise-mode -1)
