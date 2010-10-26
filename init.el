@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-10-25 15:44:33 Emilio C. Lopes>
+;;; Time-stamp: <2010-10-26 12:29:47 Emilio C. Lopes>
 
 ;;; TODO:
 ;; o Use `add-to-list' and similars for adding things to alists.
@@ -1263,7 +1263,7 @@ whose major-mode matches REGEXP."
   (let ((iswitchb-buffer-ignore '(iswitchb-only-shell-buffers)))
     (call-interactively 'iswitchb-buffer)))
 
-(global-defkey "C-x S" 'iswitchb-shell-buffers)
+;; (global-defkey "C-x S" 'iswitchb-shell-buffers)
 
 ;; Kin Cho
 (defun iswitchb-exclude-nonmatching ()
@@ -2460,6 +2460,13 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
            ("Gnus" (saved . "gnus"))
            ("Help" (predicate memq major-mode ibuffer-help-buffer-modes))
            ("Volatile" (name . "^\\*")))))
+
+  (defun ibuffer-list-shells ()
+    "Show a list of buffers using `shell-mode' using `ibuffer'."
+    (interactive)
+    (ibuffer nil "*Ibuffer Shells*" '((mode . shell-mode)) nil t))
+
+  (global-defkey "C-x S" 'ibuffer-list-shells)
 
   (setq ibuffer-show-empty-filter-groups nil)
 
