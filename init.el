@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-10-26 16:17:25 Emilio C. Lopes>
+;;; Time-stamp: <2010-10-27 15:18:44 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -43,6 +43,8 @@
 ;;;_* Useful defs
 
 (setq hostname (car (split-string system-name "\\." )))
+
+(setenv "PAGER" "cat")
 
 (setq running-interactively (not noninteractive))
 (setq running-nt (equal system-type 'windows-nt))
