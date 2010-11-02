@@ -1,5 +1,5 @@
 ;; shell_rc: Shell/Comint initialization
-;; Time-stamp: <2010-11-02 14:18:04 Emilio C. Lopes>
+;; Time-stamp: <2010-11-02 16:30:17 Emilio C. Lopes>
 
 ;; Newer versions of comint don't use prompt regexp anymore
 (if (boundp 'comint-use-prompt-regexp-instead-of-fields)
@@ -16,11 +16,12 @@
 
 (setq comint-process-echoes nil)
 
-;; make "," a word constituent so that we can use it in abbrevs (and
-;; also filenames):
 (add-hook 'shell-mode-hook
           (lambda ()
-            (modify-syntax-entry ?\, "w")))
+            ;; make "," a word constituent so that we can use it in
+            ;; abbrevs (and also filenames)
+            (modify-syntax-entry ?\, "w")
+            (abbrev-mode 1)))
 
 (defmacro define-shell-abbrev (abbrev expansion)
   "*Define ABBREV to expand to EXPANSION in `shell-mode'."
@@ -36,12 +37,9 @@
 (define-shell-abbrev ",t" "| tee")
 (define-shell-abbrev ",tt" "2>&1| tee")
 (define-shell-abbrev ",h" "--help")
+(define-shell-abbrev ",v" "--verbose")
 
 (fset 'sh 'shell)
-
-(add-hook 'shell-mode-hook
-          (lambda ()
-            (abbrev-mode 1)))
 
 (defun shell-setup-keys ()
   "*Key bindings for shell-mode."
@@ -62,7 +60,7 @@
 
 ;; (defun shell-snarf-aliases ()
 ;;   "Return a list of all defined shell aliases."
-;;   ;; (comint-redirect-results-list "alias" "^\\([^=]+\\)=.+\n" 1)
+;;   ;; (comint-redirect-results-list "alias" "^alias \\([^=]+\\)=.+\n" 1)
 ;;   (comint-redirect-results-list "alias -rL" "^alias \\([^=]+\\)=.+\n" 1))
 
 ;; (defvar shell-aliases '())
