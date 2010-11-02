@@ -1,5 +1,5 @@
 ;; shell_rc: Shell/Comint initialization
-;; Time-stamp: <2010-10-15 13:47:47 Emilio C. Lopes>
+;; Time-stamp: <2010-11-02 14:18:04 Emilio C. Lopes>
 
 ;; Newer versions of comint don't use prompt regexp anymore
 (if (boundp 'comint-use-prompt-regexp-instead-of-fields)
@@ -35,6 +35,7 @@
 (define-shell-abbrev ",nn" "> /dev/null 2>&1")
 (define-shell-abbrev ",t" "| tee")
 (define-shell-abbrev ",tt" "2>&1| tee")
+(define-shell-abbrev ",h" "--help")
 
 (fset 'sh 'shell)
 
