@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-11-02 13:59:58 Emilio C. Lopes>
+;;; Time-stamp: <2010-11-02 15:02:28 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -2136,9 +2136,12 @@ With prefix arg clear the buffers content."
 With prefix arg generate a fresh buffer."
   (interactive "P")
   (let ((buffer-name "*text scratch*"))
-    (switch-to-buffer-create (if arg (generate-new-buffer-name buffer-name) buffer-name)
-                             default-major-mode
-                             nil)))
+    (switch-to-buffer-create
+     (if arg (generate-new-buffer-name buffer-name) buffer-name)
+     (if (fboundp 'org-mode)
+         'org-mode
+       'text-mode)
+     nil)))
 
 ;; (defun backward-down-list (&optional arg)
 ;;   "Move backward down one level of parentheses.
