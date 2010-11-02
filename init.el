@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-10-27 15:18:44 Emilio C. Lopes>
+;;; Time-stamp: <2010-11-02 13:59:58 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -1724,7 +1724,8 @@ With prefix argument ARG behave as usual."
 (setq display-time-day-and-date nil)
 (setq display-time-24hr-format t)
 (setq display-time-use-mail-icon t)
-(and running-nt (set-time-zone-rule "CET-1CDT"))
+(when running-nt
+  (set-time-zone-rule (or (getenv "TZ") "WEST-1WEDT-2,M3.5.0/2,M10.5.0/3")))
 
 ;;;_* Mode-line and Frame-title format:
 
