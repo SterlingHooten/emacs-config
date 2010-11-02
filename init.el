@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-11-02 15:02:28 Emilio C. Lopes>
+;;; Time-stamp: <2010-11-02 16:42:01 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -246,10 +246,10 @@ to the filename."
 
 ;; set up the mode based on the buffer name.  Thanks to `__jim__'.
 ;; http://www.reddit.com/r/emacs/comments/d2t4q/scratch_buffers_for_emacs/c0x7a68
-(setq default-major-mode
-      (lambda ()
-        (let ((buffer-file-name (or buffer-file-name (buffer-name))))
-          (set-auto-mode))))
+(setq-default major-mode
+              (lambda ()
+                (let ((buffer-file-name (or buffer-file-name (buffer-name))))
+                  (set-auto-mode))))
 
 (setq view-read-only nil)
 
@@ -338,7 +338,7 @@ to the filename."
 (setq next-line-add-newlines nil)
 (setq require-final-newline t)
 
-(setq default-indicate-empty-lines t)
+(setq-default indicate-empty-lines t)
 ;; (setq-default show-trailing-whitespace t)
 
 (setq enable-local-eval 'ask)
