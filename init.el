@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-11-02 16:42:01 Emilio C. Lopes>
+;;; Time-stamp: <2010-11-03 14:50:55 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -2650,6 +2650,7 @@ Interactively asks for YEAR only when called with a prefix argument."
             (defkey calendar-mode-map "g w" 'calendar-goto-iso-week)
             (setq calendar-week-start-day 1)))
 
+(add-hook 'calendar-today-visible-hook 'calendar-mark-today)
 
 ;; display the ISO week numbers (from the help of `calendar-intermonth-text')
 (setq calendar-intermonth-text
