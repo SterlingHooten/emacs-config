@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Steyrer Diesel/DDE-Laufwerk"
+(("eas254.muc:wikiconfig.py"
+ (filename . "/sudo:root@eas254.muc:/usr/local/wiki/share/moin/config/wikiconfig.py")
+ (front-context-string . "# -*- coding: is")
+ (rear-context-string)
+ (position . 1))
+("Steyrer Diesel/DDE-Laufwerk"
  (filename . "//EUROPE.BMW.CORP/winfs/W05-EWZ-Data/DDE/")
  (front-context-string . "Entwicklung/\n  d")
  (rear-context-string . " 0 Jul 15 10:37 ")
