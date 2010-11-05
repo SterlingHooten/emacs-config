@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-11-03 14:50:55 Emilio C. Lopes>
+;;; Time-stamp: <2010-11-05 13:02:07 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -1235,6 +1235,7 @@ Only intended for interactive use."
 (setq iswitchb-prompt-newbuffer nil)
 (setq iswitchb-default-method 'samewindow)
 (setq iswitchb-all-frames 'no)
+(add-to-list 'iswitchb-buffer-ignore "^\\*Ibuffer")
 
 (defun major-mode-matches (buffer regexp)
   "*Return t if `mode-name' in  BUFFER matches REGEXP.
