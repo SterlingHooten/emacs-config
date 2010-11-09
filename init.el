@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-11-05 13:02:07 Emilio C. Lopes>
+;;; Time-stamp: <2010-11-09 15:08:36 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -43,6 +43,23 @@
 ;;;_* Useful defs
 
 (setq hostname (car (split-string system-name "\\." )))
+
+;; Windows sets the environment variable USERNAME, but neither USER
+;; nor LOGNAME.  Bash defines only LOGNAME, but not USER.  Make sure
+;; the variables USER and LOGNAME are available since some
+;; programs/libraries expect one of them to be accordingly set.
+
+(if (and (null (getenv "USER"))
+         (getenv "USERNAME"))
+    (setenv "USER" (getenv "USERNAME")))
+
+(if (and (getenv "LOGNAME")
+         (null (getenv "USER")))
+    (setenv "USER" (getenv "LOGNAME")))
+
+(if (and (getenv "USER")
+         (null (getenv "LOGNAME")))
+    (setenv "LOGNAME" (getenv "USER")))
 
 (setenv "PAGER" "cat")
 
