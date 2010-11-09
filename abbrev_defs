@@ -81,9 +81,7 @@
 
 (define-abbrev-table 'eshell-mode-abbrev-table '())
 
-(define-abbrev-table 'fortran-mode-abbrev-table
-  '(
-   ))
+(define-abbrev-table 'fortran-mode-abbrev-table '())
 
 (define-abbrev-table 'ftp-mode-abbrev-table '())
 
@@ -159,6 +157,8 @@
 
 (define-abbrev-table 'nslookup-mode-abbrev-table '())
 
+(define-abbrev-table 'ntcmd-mode-abbrev-table '())
+
 (define-abbrev-table 'objc-mode-abbrev-table
   '(
    ))
@@ -219,8 +219,9 @@
 
 (define-abbrev-table 'shell-mode-abbrev-table
   '(
-    (",g" "| grep" nil 2)
+    (",g" "| grep" nil 5)
     (",gg" "2>&1 | grep" nil 0)
+    (",gi" "| grep -i" nil 0)
     (",h" "--help" nil 2)
     (",nn" "> /dev/null 2>&1" nil 1)
     (",nul" "/dev/null" nil 0)
@@ -254,7 +255,7 @@
     ("gr" "Gruß
 
  Emílio
-" nil 41)
+" nil 45)
     ("gre" "are" nil 0)
     ("hlk" "Hallo liebe Kollegen!" nil 5)
     ("mfg" "Mit freundlichen Grüßen

@@ -1,5 +1,5 @@
 ;; shell_rc: Shell/Comint initialization
-;; Time-stamp: <2010-11-02 16:30:17 Emilio C. Lopes>
+;; Time-stamp: <2010-11-09 15:37:28 Emilio C. Lopes>
 
 ;; Newer versions of comint don't use prompt regexp anymore
 (if (boundp 'comint-use-prompt-regexp-instead-of-fields)
@@ -28,6 +28,7 @@
   `(define-abbrev shell-mode-abbrev-table ,abbrev ,expansion))
 
 (define-shell-abbrev ",g" "| grep")
+(define-shell-abbrev ",gi" "| grep -i")
 (define-shell-abbrev ",gg" "2>&1 | grep")
 (define-shell-abbrev ",s" "| sort ")
 (define-shell-abbrev ",sn" "| sort --numeric-sort")
