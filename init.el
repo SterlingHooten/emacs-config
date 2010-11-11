@@ -1743,7 +1743,7 @@ With prefix argument ARG behave as usual."
 (setq display-time-24hr-format t)
 (setq display-time-use-mail-icon t)
 (when running-nt
-  (set-time-zone-rule (or (getenv "TZ") "WEST-1WEDT-2,M3.5.0/2,M10.5.0/3")))
+  (set-time-zone-rule "CET-1CEDT-2,M3.5.0/2,M10.5.0/3"))
 
 ;;;_* Mode-line and Frame-title format:
 
