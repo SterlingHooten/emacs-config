@@ -1,11 +1,16 @@
-;;; Lisp/Scheme configuration
+;;; init-lisp: Lisp/Scheme configuration
 
 ;;; Stuff common to all Lisp modes
 
 (mapc (lambda (mode)
         (font-lock-add-keywords mode '(("[()]" 0 '((:foreground "grey60"))))))
-      '(emacs-lisp-mode lisp-mode lisp-interaction-mode inferior-lisp-mode scheme-mode scheme48-mode inferior-scheme-mode))
-
+      '(emacs-lisp-mode
+        lisp-mode
+        lisp-interaction-mode
+        inferior-lisp-mode
+        scheme-mode
+        scheme48-mode
+        inferior-scheme-mode))
 
 (defun mouse-insert-sexp-at-point (start-event)
   "Insert the sexp under the mouse cursor at point.
@@ -383,4 +388,4 @@ and indents."
 ;;             (define-key inferior-scheme-mode-map (string s48-command-dispatch-char) 's48-handle-command)))
 
 
-(provide 'ecl_lisp)
+(provide 'init-lisp)

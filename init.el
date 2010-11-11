@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-11-09 15:08:36 Emilio C. Lopes>
+;;; Time-stamp: <2010-11-11 15:06:53 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -1590,7 +1590,7 @@ With prefix argument ARG behave as usual."
 (global-defkey "C-c j" (make-sparse-keymap))
 (global-defkey "C-c j h"        (lambda () (interactive) (dired     "~")))
 (global-defkey "C-c j D"        (lambda () (interactive) (dired     "~/Downloads")))
-(global-defkey "C-c j d"        (lambda () (interactive) (find-library "dired_rc")))
+(global-defkey "C-c j d"        (lambda () (interactive) (find-library "init-dired")))
 (global-defkey "C-c j e"        (lambda () (interactive) (find-file user-init-file)))
 (global-defkey "C-c j m"        (lambda () (interactive) (find-library "message_rc")))
 (global-defkey "C-c j g"        (lambda ()
@@ -1598,7 +1598,7 @@ With prefix argument ARG behave as usual."
                                   (if (boundp 'gnus-init-file)
                                       (find-file  gnus-init-file)
                                     (find-library  "gnus_rc"))))
-(global-defkey "C-c j s"        (lambda () (interactive) (find-library "shell_rc")))
+(global-defkey "C-c j s"        (lambda () (interactive) (find-library "init-shell")))
 (global-defkey "C-c j t"        (lambda () (interactive) (find-file "u:/ORG/TODO")))
 
 (global-defkey "C-c j ."        (lambda () (interactive) (find-file "~/.ee.sh")))
@@ -2114,7 +2114,7 @@ in the minibuffer history."
 
 ;;;_ + Scheme/Lisp modes
 
-(require 'ecl_lisp)
+(require 'init-lisp)
 ;; (defun scheme-scratch (&optional arg)
 ;;   "*Switch to buffer `*Scheme scratch*', creating it if necessary.
 ;; The buffer is put in Scheme mode.
@@ -2525,7 +2525,7 @@ none is marked."
 
 ;;;_ + Dired
 (setq ls-lisp-use-insert-directory-program t)
-(add-hook 'dired-load-hook (lambda () (require-soft 'dired_rc)))
+(add-hook 'dired-load-hook (lambda () (require-soft 'init-dired)))
 
 ;;;_ + Org-mode
 (require-soft 'orgrc)
@@ -2548,7 +2548,7 @@ no EShell session is currently active."
         (eshell t)
       (switch-to-buffer (car (delete (current-buffer) eshell-buffers))))))
 
-(add-hook 'eshell-load-hook (lambda () (require-soft 'eshell_rc)))
+(add-hook 'eshell-load-hook (lambda () (require-soft 'init-eshell)))
 
 
 
@@ -2589,7 +2589,7 @@ With prefix argument CREATE always start a new shell."
           (shell (generate-new-buffer-name "*shell*")))
       (shell (car buffs)))))
 
-(eval-after-load "shell" '(require-soft 'shell_rc))
+(eval-after-load "shell" '(require-soft 'init-shell))
 
 
 ;;;_ + view-file

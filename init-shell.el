@@ -1,5 +1,5 @@
-;; shell_rc: Shell/Comint initialization
-;; Time-stamp: <2010-11-09 15:37:28 Emilio C. Lopes>
+;; init-shell: Shell/Comint initialization
+;; Time-stamp: <2010-11-11 15:10:02 Emilio C. Lopes>
 
 ;; Newer versions of comint don't use prompt regexp anymore
 (if (boundp 'comint-use-prompt-regexp-instead-of-fields)
@@ -120,4 +120,4 @@
 
 (add-hook 'comint-mode-hook 'comint-setup)
 
-(provide 'shell_rc)
+(provide 'init-shell)
