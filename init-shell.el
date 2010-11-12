@@ -1,5 +1,5 @@
 ;; init-shell: Shell/Comint initialization
-;; Time-stamp: <2010-11-11 15:10:02 Emilio C. Lopes>
+;; Time-stamp: <2010-11-12 15:43:52 Emilio C. Lopes>
 
 ;; Newer versions of comint don't use prompt regexp anymore
 (if (boundp 'comint-use-prompt-regexp-instead-of-fields)
@@ -83,10 +83,12 @@
 (setq-default comint-scroll-to-bottom-on-output nil)
 (setq-default comint-scroll-show-maximum-output t)
 
+;; http://www.emacswiki.org/emacs/ShellMode
 (defun comint-clear-buffer ()
   "*Clear the process buffer, deleting its entire contents."
   (interactive "*")
-  (delete-region (point-min) (overlay-start comint-last-prompt-overlay)))
+  (let ((comint-buffer-maximum-size 0))
+    (comint-truncate-buffer)))
 
 ;; http://www.emacswiki.org/emacs-en/comint-kill-output-to-kill-ring.el
 (defun comint-kill-output-to-kill-ring ()
