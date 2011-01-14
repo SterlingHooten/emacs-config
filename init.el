@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2010-11-11 15:06:53 Emilio C. Lopes>
+;;; Time-stamp: <2011-01-14 15:21:34 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -39,6 +39,18 @@
 
 (setq input-method-highlight-flag nil)
 (setq input-method-verbose-flag t)
+
+;; extend the `latin-1-prefix' input method
+(eval-after-load "latin-pre"
+  `(progn
+     (quail-select-package "latin-1-prefix")
+     (quail-define-rules
+      ((append . t))
+      ("\"." ,(vector (string #xa0 #x2026))) ; ellipses, preceeded by nbsp.
+      ("\"$" #x20ac)                         ; euro sign
+      ("\"`" #x201e)                         ; gaensefuesschen links
+      ("\"'" #x201c)                         ; gaensefuesschen rechts
+      )))
 
 ;;;_* Useful defs
 
