@@ -12,9 +12,11 @@
         scheme48-mode
         inferior-scheme-mode))
 
+;; http://carcaddar.blogspot.com/2011/01/mouse-copy-for-emacs.html
+;; http://paste.lisp.org/display/118722
 (defun mouse-insert-sexp-at-point (start-event)
   "Insert the sexp under the mouse cursor at point.
-This must be bound to a mouse event."
+This command must be bound to a mouse event."
   (interactive "*e")
   (let ((posn (event-start start-event)))
     (let ((sexp-at-mouse-pos
@@ -23,7 +25,20 @@ This must be bound to a mouse event."
                (goto-char (posn-point posn))
                (thing-at-point 'sexp)))))
       (if sexp-at-mouse-pos
-          (insert sexp-at-mouse-pos)
+          (progn
+            (unless (or (bolp)
+                        (and (minibufferp)
+                             (= (point) (minibuffer-prompt-end)))
+                        (save-excursion
+                          (backward-char)
+                          (looking-at "\\s-\\|\\s\(")))
+              (insert " "))
+            (insert sexp-at-mouse-pos)
+            (unless (or (eolp)
+                        (and (minibufferp)
+                             (= (point) (minibuffer-prompt-end)))
+                        (looking-at "\\s-\\|\\s\)"))
+              (insert " ")))
         (error "Mouse not at a sexp")))))
 
 (global-set-key [S-mouse-3] 'mouse-insert-sexp-at-point)
