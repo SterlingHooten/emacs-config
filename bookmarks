@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("eas254.muc:wikiconfig.py"
+(("PANAMA-Laufwerk DDE"
+ (filename . "//nvgm062.muc/PLW_EA$/DDE_SWE/")
+ (front-context-string . "_hide_email_reci")
+ (rear-context-string . "55 Dec 16 09:30 ")
+ (position . 191))
+("eas254.muc:wikiconfig.py"
  (filename . "/sudo:root@eas254.muc:/usr/local/wiki/share/moin/config/wikiconfig.py")
  (front-context-string . "# -*- coding: is")
  (rear-context-string)
