@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2011-01-14 15:23:30 Emilio C. Lopes>
+;;; Time-stamp: <2011-02-02 10:15:24 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -1241,6 +1241,8 @@ Only intended for interactive use."
   "Major mode for editing shell scripts" t nil)
 (eval-after-load "sh-script"
   '(set-face-foreground 'sh-heredoc-face (face-foreground 'font-lock-constant-face)))
+(add-hook 'after-save-hook
+  'executable-make-buffer-file-executable-if-script-p)
 
 ;; the-the is a nice thing for text processing:
 (autoload 'the-the "the-the"
