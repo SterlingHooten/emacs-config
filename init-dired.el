@@ -1,5 +1,5 @@
 ;; init-dired: Dired initialization
-;; Time-stamp: <2010-11-11 15:09:18 Emilio C. Lopes>
+;; Time-stamp: <2011-02-07 12:19:49 Emilio C. Lopes>
 
 (setq dired-x-hands-off-my-keys t)
 (require 'dired-x)
@@ -10,7 +10,7 @@
   (setq dired-details-initially-hide nil)
   (dired-details-install))
 
-(setq dired-listing-switches "-lFGh")
+(setq dired-listing-switches "-lFGht")
 (setq dired-ls-F-marks-symlinks t)
 (setq dired-guess-shell-gnutar "tar")
 (setq dired-bind-jump nil)
