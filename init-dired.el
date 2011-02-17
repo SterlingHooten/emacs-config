@@ -1,5 +1,5 @@
 ;; init-dired: Dired initialization
-;; Time-stamp: <2011-02-07 12:19:49 Emilio C. Lopes>
+;; Time-stamp: <2011-02-10 17:35:17 Emilio C. Lopes>
 
 (setq dired-x-hands-off-my-keys t)
 (require 'dired-x)
@@ -204,6 +204,18 @@ Optional prefix ARG says how move to next ARGth file; default is one."
 ;;       (sort-regexp-fields t "^.*$" "[ ]*." (point) (point-max))))
 ;;   (set-buffer-modified-p nil))
 ;; (add-hook 'dired-after-readin-hook 'dired-sort-directories-first)
+
+(defun dired-mark* (char arg)
+  "*Mark the current (or next ARG) files with CHAR.
+If on a subdir headerline, mark all its files except `.' and `..'."
+  (interactive (list (read-char "Mark using: ")
+                     current-prefix-arg))
+  (let ((dired-marker-char char))
+    (dired-mark arg)))
+
+;; this key is normally bound to `dired-mark', but since this command
+;; is also avaliable on "m" use the binding for the "extended" version.
+(defkey dired-mode-map "* m" 'dired-mark*)
 
 (require 'ls-lisp)
 (setq ls-lisp-emulation nil)            ; means GNU
