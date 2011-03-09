@@ -48,7 +48,7 @@
  (rear-context-string . "Jan 28 15:48 ecl")
  (position . 1845))
 ("EA-41 Austausch"
- (filename . "//easerv.muc/Organisation/EA-4_Org/EA-41/EA-41/40_Allgemein/04_Austausch/")
+ (filename . "//nvgm091.muc/Organisation/EA-4_Org/EA-41/EA-41/40_Allgemein/04_Austausch/")
  (front-context-string . "/\n  drwxr-xr-x  ")
  (rear-context-string . "May 26 12:29 ecl")
  (position . 3223))
