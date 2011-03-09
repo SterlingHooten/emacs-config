@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2011-02-02 10:15:24 Emilio C. Lopes>
+;;; Time-stamp: <2011-03-09 13:56:51 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -2779,13 +2779,14 @@ Interactively asks for YEAR only when called with a prefix argument."
 
 ;;;_ + Diff/Ediff
 
-(setq diff-switches "-u")
+(setq diff-switches "--unified")
 
 (setq ediff-keep-variants nil)
 
 (add-hook 'ediff-load-hook
           (lambda ()
-            (setq ediff-diff-options (concat ediff-diff-options " --minimal --ignore-all-space"))
+            (setq ediff-custom-diff-options "--unified")
+            ;; (setq ediff-diff-options (concat ediff-diff-options " --minimal --ignore-all-space"))
             (mapc (lambda (face)
                     (set-face-foreground face "black")
                     (set-face-background face "sky blue"))
