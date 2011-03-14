@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2011-03-09 13:56:51 Emilio C. Lopes>
+;;; Time-stamp: <2011-03-14 13:06:03 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -180,7 +180,6 @@ results "
 
   (setq w32-enable-num-lock nil)
   (global-defkey "<kp-numlock>" 'w32-toggle-meta-tab)
-  ;;(global-defkey "<apps>" 'w32-toggle-meta-tab)
 
   (defun normalize-file-path-on-kill-ring ()
     "*Substitute the filename on the kill-ring with its canonical form.
@@ -193,15 +192,9 @@ to the filename."
               'replace))
   (global-defkey "C-c k" 'normalize-file-path-on-kill-ring)
 
-  ;; handle cygwin mount points
-  (when (require-soft 'cygwin-mount)
-    (cygwin-mount-activate))
-
   (let ((bg-mode 'light)
         (bg "white")                    ; or "tan"
         (fg "black"))
-;;     (set-background-color bg)
-;;     (set-foreground-color fg)
     (add-to-list 'initial-frame-alist `(background-mode  . ,bg-mode))
     (add-to-list 'initial-frame-alist `(background-color . ,bg))
     (add-to-list 'initial-frame-alist `(foreground-color . ,fg))
@@ -212,11 +205,8 @@ to the filename."
       (progn
         (set-face-foreground 'mode-line "white")
         (set-face-background 'mode-line "royalblue")
-;;         (set-face-foreground 'fringe "white")
-;;         (set-face-background 'fringe "deepskyblue")
         (set-face-foreground 'fringe "slategray")
         (set-face-background 'fringe "white")
-        ;; (set-cursor-color "blue")
         (set-cursor-color "MediumSeaGreen")
         (set-mouse-color "red"))
     (progn
@@ -225,36 +215,11 @@ to the filename."
       (set-face-foreground 'fringe "black")
       (set-face-background 'fringe "gray")))
   ;; Fontname comes from (insert (prin1-to-string (w32-select-font)))
-  ;; for the small laptop display
-  (progn
-;;    (set-default-font "-outline-Andale Mono-normal-r-normal-normal-13-97-96-96-c-*-iso10646-1")
-;;    (set-face-font 'mode-line "-outline-Andale Mono-normal-r-normal-normal-12-90-96-96-c-*-iso10646-1")
-;;    (setq-default line-spacing 1)
-;;    (set-default-font "-raster-ProggyClean-normal-r-normal-normal-11-82-96-96-c-*-iso10646-1")
-;;    (set-default-font "-raster-SPEEDY-normal-r-normal-normal-12-90-96-96-c-*-ms-oemlatin")
-;;    (set-default-font "-raster-Sheldon Narrow-normal-r-normal-normal-12-90-96-96-c-*-iso8859-1")
-    ;; (set-default-font "-outline-Terminus-medium-r-normal-normal-16-120-96-96-c-*-iso8859-1")
-    ;; (set-default-font "-outline-Andale Mono-normal-r-normal-normal-19-142-96-96-c-*-iso8859-1")
-    ;; (set-face-font 'mode-line "-outline-Andale Mono-normal-r-normal-normal-16-120-96-96-c-*-iso8859-1")
-    (set-default-font "-outline-Consolas-normal-r-normal-normal-19-142-96-96-c-*-iso8859-1")
-    )
-  ;; for the large monitor
-;;   (progn
-;;     (set-default-font "-outline-Andale Mono-normal-r-normal-normal-11-82-96-96-c-70-iso8859-1")
-;;     (set-face-font 'mode-line "-outline-Andale Mono-normal-r-normal-normal-10-90-96-96-c-*-iso10646-1")
-;;     (setq-default line-spacing 1))
-  ;; (setq w32-use-w32-font-dialog nil)    ; Unix-like font-dialog
+  (set-default-font "-outline-Consolas-normal-r-normal-normal-19-142-96-96-c-*-iso8859-1")
 
-  (setq archive-zip-use-pkzip nil)
   (setq w32-quote-process-args t)
-  ;; needed for running M$-DOG batches under ZSH
-;;   (let ((cygwin (getenv "CYGWIN")))
-;;     (unless (and cygwin (string-match "\\<tty\\>" cygwin))
-;;       (setenv "CYGWIN" (concat "tty " cygwin))))
   (setq process-coding-system-alist '(("bash" . undecided-unix) ("zsh" . undecided-unix)))
-;;  (setq shell-file-name "zsh")
-   (setq shell-file-name "bash")
- ;; (setq shell-file-name "e:/tools/git-1.6.5.1/bin/bash.exe")
+  (setq shell-file-name "bash")
   (setq explicit-bash-args '("-i"))
   (setenv "SHELL" shell-file-name)
   (setq explicit-shell-file-name shell-file-name))
@@ -287,15 +252,6 @@ to the filename."
 ;; Setting this should not be necessary anymore
 ;; (setq sentence-end "[.?!][]\"')]*\\($\\|\t\\| \\)[ \t\n]*")
 
-;; (defadvice forward-sentence (around skip-period activate)
-;;   "Position point before the period.
-;; More exactly, position the point before `sentence-end'."
-;;   (when (and (looking-at (sentence-end))
-;;              (eq last-command this-command))
-;;     (goto-char (match-end 0)))
-;;   ad-do-it
-;;   (goto-char (match-beginning 0)))
-
 (setq disabled-command-function nil)    ; no disabled commands.
 (put 'rmail 'disabled t)                ; avoid mbox destruction
 
@@ -303,9 +259,6 @@ to the filename."
 (setq message-log-max 1024)     ; max size of the "*Messages*" buffer.
 
 (setq eval-expression-print-length nil)
-
-;; (setq scroll-step 1)
-;; (setq scroll-conservatively 10000000)
 
 (setq scroll-step 0)
 (setq scroll-conservatively 0)
@@ -351,7 +304,6 @@ to the filename."
 (setq-default ctl-arrow t)
 (setq meta-flag t)
 
-;;(setq echo-keystrokes 1)
 (setq echo-keystrokes 0.000001)
 
 (setq-default case-fold-search t)
@@ -368,7 +320,6 @@ to the filename."
 (setq require-final-newline t)
 
 (setq-default indicate-empty-lines t)
-;; (setq-default show-trailing-whitespace t)
 
 (setq enable-local-eval 'ask)
 (setq enable-local-variables t)
@@ -377,7 +328,6 @@ to the filename."
 
 (setq mouse-yank-at-point t)
 
-;; (setq kill-whole-line t)
 (setq kill-read-only-ok t)
 
 (setq windmove-wrap-around t)
@@ -596,12 +546,6 @@ Subject to `buffer-ignore-regexp'."
 	     (t (beep)))
 	  (error (beep)))))
     (message "Done.")))
-
-
-;; (defadvice recenter (before recenter-at-line-10 activate)
-;;   "When recentering place point on eyes level."
-;;   (when (and (interactive-p) (not (ad-get-arg 0)))
-;;     (ad-set-arg 0 20)))
 
 ;; The following two functions written by Noah Friedman
 ;; http://www.splode.com/users/friedman/software/emacs-lisp/src/buffer-fns.el
@@ -885,14 +829,6 @@ in current frame."
 ;;     (if winfunc (funcall winfunc) (delete-other-windows))
 ;;     (recursive-edit)))
 
-;; (defun insert-date (&optional arg)
-;;   "*Insert date in current buffer.
-;; With optional prefix argument also insert time."
-;;   (interactive "*P")
-;;   (insert (format-time-string
-;;            (concat "%-d %b %Y" (when arg ", %H:%M (%Z)")) 
-;;            (current-time))))
-
 (defun insert-date (&optional arg)
   "*Insert date in current buffer using German format DD.MM.YYYY.
 With optional prefix argument use ISO format instead."
@@ -1076,11 +1012,14 @@ Z          Zeppelin         Zulu
 
 ;; sooner or later it will be loaded, so do it now.
 (require 'tramp)
-(setq tramp-default-method "sshx")
 
-;; /sudo:eas254.muc:/etc/fstab
-(add-to-list 'tramp-default-proxies-alist
-             '("eas254\\.muc\\'" "\\`root\\'" "/sshx:eas254@%h:"))
+(when running-nt
+  (setq tramp-default-method "sshx"))
+
+(when at-bmw
+  ;; /sudo:eas254.muc:/etc/fstab
+  (add-to-list 'tramp-default-proxies-alist
+               '("eas254\\.muc\\'" "\\`root\\'" "/sshx:eas254@%h:")))
 
 ;; jka-compr provides transparent access to compressed files.
 (require 'jka-compr)
@@ -1127,23 +1066,8 @@ Z          Zeppelin         Zulu
 (global-defkey "M-/" 'hippie-expand)
 (global-defkey "C-M-/" 'dabbrev-completion)
 
-;; I like to have truncated lines and use `hscroll' to automatically
-;; scroll horizontally:
-;; (setq-default truncate-lines t)
-;; (setq truncate-partial-width-windows t)
-;; (setq hscroll-mode-name nil)
-;; (setq hscroll-margin 1)
-;; (hscroll-global-mode 1)
-
 (setq-default truncate-lines nil)
 (setq truncate-partial-width-windows nil)
-
-;; (when window-system
-;;   (let ((truncation-glyph (+ ?$ (lsh (face-id 'modeline) 19)))
-;;         (wrap-glyph       (+ ?\\ (lsh (face-id 'modeline) 19))) )
-;;     (set-display-table-slot standard-display-table 'truncation truncation-glyph)
-;;     (set-display-table-slot standard-display-table 'wrap       wrap-glyph)))
-
 
 ;;;_  + chop: binary search for a line within a window
 (autoload 'chop-move-up "chop")
@@ -1864,53 +1788,6 @@ in the minibuffer history."
 
 (global-defkey "C-c i w" 'show-current-ispell-dictionary)
 
-;;;_ + PSGML
-;; (setq sgml-auto-activate-dtd t)
-;; (setq-default sgml-set-face t)
-;; (setq sgml-auto-activate-dtd t)
-;; (autoload 'xxml-mode-routine "xxml")
-;; (add-hook 'sgml-mode-hook 'xxml-mode-routine)
-;; ;; XXML binds `M-_' to something else. Restore the original binding here.
-;; (add-hook 'sgml-mode-hook
-;;           (lambda ()
-;;             (local-defkey "<S-f9>" 'sgml-validate-it)
-;;             (local-defkey "C-c M-k" 'sgml-kill-element-contents)
-;;             (local-defkey "C-x n d" 'sgml-narrow-to-current-element)) 'append)
-
-;; ;; Dominique Quatravaux [http://www.geocrawler.com/archives/3/7086/2002/5/0/8656969/]
-;; (defadvice sgml-parse-external (before sgml-xml-pubid-ok activate)
-;;   "Allow parsing of doctypes without a system ID, as XML requires."
-;;   (ad-set-arg 0 t))
-
-;; (defun sgml-validate-it (&optional arg)
-;;   "Validate the current SGML document.
-;; By default use `sgml-validate-command' to validate the document. For
-;; XML documents use `sgml-xml-validate-command' instead.
-;; If an optional prefix argument is given, ask for the command to be
-;; used to validate the document."
-;;   (interactive "P")
-;;   (if arg
-;;       (call-interactively 'sgml-validate)
-;;     (sgml-validate (sgml-default-validate-command))))
-
-;; (defun sgml-narrow-to-current-element ()
-;;   "*Narrow to the current element, making text outside it invisible."
-;;   (interactive)
-;;   (narrow-to-region
-;;    (save-excursion
-;;      ;; use `skip-chars-backward' so that indentation is preserved
-;;      (sgml-backward-up-element) (skip-chars-backward " \t") (point))
-;;    (save-excursion
-;;      (sgml-up-element) (point))))
-
-;; (defun sgml-kill-element-contents ()
-;;   "*Kill the contents of the current element.
-;; Point is left at the beginning of the element."
-;;   (interactive)
-;;   (kill-region
-;;    (save-excursion (sgml-end-of-element) (point))
-;;    (progn (sgml-beginning-of-element) (point))))
-
 
 ;;;_ + nxml
 ;; (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
@@ -2099,63 +1976,9 @@ in the minibuffer history."
 
 
 
-;;;_ + Stick REPL
-;; (autoload 'sticky-repl-display "sticky-repl" nil t)
-;; (setq special-display-function 'sticky-repl-display)
-;; (setq compilation-window-height 12)
-;; (setq same-window-buffer-names nil)
-;; (setq special-display-buffer-names
-;;       '("*Apropos*"
-;;         "*Backtrace*"
-;;         "*Calculator*"
-;;         "*Compile-log*"
-;;         "*Help*"
-;;         "*Messages*"
-;;         "*Occur*"
-;;         "*Shell Command Output*"
-;;         "*compilation*"
-;;         "*grep*"
-;;         "*ielm*"
-;;         "*inferior-lisp*"
-;;         "*scheme*"
-;;         "*vc*"
-;;         "*vc-diff*"))
-;; (setq special-display-regexps
-;;       '("\\*shell\\(<[0-9]+>\\)?\\*"
-;;         "\\*slime-repl .*\\*"
-;;         "\\*sldb .*\\*"))
-
-
 ;;;_ + Scheme/Lisp modes
 
 (require 'init-lisp)
-;; (defun scheme-scratch (&optional arg)
-;;   "*Switch to buffer `*Scheme scratch*', creating it if necessary.
-;; The buffer is put in Scheme mode.
-;; With prefix arg clear the buffers content."
-;;   (interactive "P")
-;;   (switch-to-buffer-create "*Scheme scratch*" 'scheme-mode arg))
-
-;; (defun comment-sexp (&optional arg)
-;;   "Comment out the following sexp.
-;; With argument ARG comment that many sexps out."
-;;   (interactive "p")
-;;   (comment-region (point) (save-excursion (forward-sexp arg) (point))))
-
-;; (defun lisp-comment-dwim (&optional arg)
-;;   "Comment or uncomment the next \"chunk\" of code.
-;; If looking at a comment start, uncomment it.  Else comment the
-;; next ARG sexps."
-;;   (interactive "p")
-;;   (let ((looking-at-comment (looking-at (concat "\\s-*" comment-start-skip))))
-;;     (if looking-at-comment
-;;         (uncomment-region (point) (save-excursion (forward-comment (point-max)) (point)))
-;;       (comment-sexp arg))))
-
-;; (setq same-window-buffer-names (delete "*scheme*" same-window-buffer-names))
-;; (mapc (lambda (mode)
-;;         (font-lock-add-keywords mode '(("[()]" 0 '(((:foreground "gray50")))))))
-;;       '(emacs-lisp-mode lisp-mode lisp-interaction-mode inferior-lisp-mode scheme-mode inferior-scheme-mode))
 
 (defun jump-to-scratch-buffer (&optional arg)
   "*Switch to buffer `*scratch*', creating it if necessary.
@@ -2174,73 +1997,6 @@ With prefix arg generate a fresh buffer."
          'org-mode
        'text-mode)
      nil)))
-
-;; (defun backward-down-list (&optional arg)
-;;   "Move backward down one level of parentheses.
-;; With ARG, do this that many times.
-;; A negative argument means move forward but still down a level."
-;;   (interactive "p")
-;;   (down-list (- (or arg 1))))
-
-;; ;; From http://www.cs.indiana.edu/chezscheme/emacs/iuscheme.el
-;; (defun scheme-return ()
-;;   "Newline and indent, or evaluate the sexp before the prompt.
-;; Complete sexps are evaluated; for incomplete sexps inserts a newline
-;; and indents."
-;;   (interactive)
-;;   (let ((input-start (process-mark (get-buffer-process (current-buffer)))))
-;;     (if (< (point) input-start)
-;;         (comint-send-input)             ; this does magic stuff
-;;       (let ((state (save-excursion
-;;                      (parse-partial-sexp input-start (point)))))
-;;         (if (and (< (car state) 1)      ; depth in parens is zero
-;;                  (not (nth 3 state))    ; not in a string
-;;                  (not (save-excursion   ; nothing after the point
-;;                         (search-forward-regexp "[^ \t\n\r]" nil t))))
-;;             (comint-send-input)         ; then go for it.
-;;           (newline-and-indent))))))
-
-;; ;; From http://www.cs.indiana.edu/chezscheme/emacs/iuscheme.el
-;; (defun scheme-indent-definition ()
-;;   "Fix indentation of the current definition."
-;;   (interactive)
-;;   (save-excursion
-;;     (beginning-of-defun)
-;;     (indent-sexp)))
-
-;; (add-hook 'scheme-mode-hook
-;;           (lambda ()
-;;             (defkey scheme-mode-map "C-c <tab>" 'scheme-indent-definition)
-;;             (defkey scheme-mode-map "C-c S" 'scheme-scratch)
-;;             (defkey scheme-mode-map "C-M-S-d" 'backward-down-list)))
-
-;; (add-hook 'inferior-scheme-mode-hook
-;;           (lambda ()
-;;             (defkey inferior-scheme-mode-map "C-c <tab>" 'scheme-indent-definition)
-;;             (defkey inferior-scheme-mode-map "<return>" 'scheme-return)
-;;             (defkey inferior-scheme-mode-map "C-j" 'comint-send-input)))
-
-;; ;; Automode
-;; (add-to-list 'interpreter-mode-alist '("scsh" . scheme-mode))
-
-;;  (setenv "SCSH_LIB_DIRS" "\"/usr/local/scsh-packages/0.6\"")
-
-;; ;;(setq scheme-program-name "scsh")
-;; ;;(setq scheme-program-name "e:/tools/PLT-Scheme/MzScheme.exe")
-;; (setq scheme-program-name "e:/home/ecl/.bin/i686-cygwin/s48.bat")
-;; (add-hook 'scheme-mode-hook
-;;           (lambda ()
-;;             (modify-syntax-entry ?\| "_")
-;;             (mapc-pair (lambda (x y)
-;;                          (font-lock-add-keywords
-;;                           nil
-;;                           `((,(format "\\<%s\\>" x) . font-lock-keyword-face)))
-;;                          (put x 'scheme-indent-function y))
-;;                        '((begin0 . 0)
-;;                          (when . 1)
-;;                          (unless . 1)
-;;                          (scheme-indent-function . scheme-let-indent)
-;;                          (with-current-input-port . 1)))))
 
 
 ;;;_ + Perl mode
@@ -2302,76 +2058,6 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
               (null buffer-file-name))
     (set (make-local-variable 'compile-command)
          (format command (file-name-nondirectory buffer-file-name)))))
-
-;; ;; Hilight error-line, by Kevin Rodgers and Klaus Berndl
-;; (defvar compilation-source-overlay (make-overlay 1 1)
-;;   "Internal overlay used for the source-line in the source-buffer")
-
-;; (defcustom compilation-highlight-source 'secondary-selection
-;;   "*Face to highlight the source-line in the source-buffer.
-;; Nil for no highlight."
-;;   :group 'compilation
-;;   :set '(lambda (symbol value)
-;;           (set symbol value)
-;;           (if (and value (facep value))
-;;               (overlay-put compilation-source-overlay 'face value)))
-;;   :type '(radio (const :tag "No highlighting of source-line" :value nil)
-;;                 (face :tag "Face for the source-line")))
-
-;; (defvar compilation-error-overlay (make-overlay 1 1)
-;;   "Internal overlay used for the error-line in the compilation-buffer")
-
-;; (defcustom compilation-highlight-error 'secondary-selection
-;;   "*Face used to highlight the error-line in the compilation-buffer.
-;; Nil for no highlight."
-;;   :group 'compilation
-;;   :set '(lambda (symbol value)
-;;           (set symbol value)
-;;           (if (and value (facep value))
-;;               (overlay-put compilation-error-overlay 'face value)))
-;;   :type '(radio (const :tag "No highlighting of error-line" :value nil)
-;;                 (face :tag "Face for the error-line")))
-
-;; (add-hook 'pre-command-hook
-;;           (lambda ()
-;;             (delete-overlay compilation-source-overlay)))
-
-;; (defadvice compilation-goto-locus (after highlight)
-;;   "If `compilation-highlight-error' is non-nil, highlight the ERROR line.
-;; If `compilation-highlight-source' is non-nil, highlight the SOURCE line."
-;;   (let ((error-marker (car (ad-get-arg 0))) ; (car NEXT-ERROR)
-;;         (source-marker (cdr (ad-get-arg 0)))) ; (cdr NEXT-ERROR)
-;;     (if compilation-highlight-error
-;;         (save-excursion
-;;           (set-buffer (marker-buffer error-marker))
-;;           (goto-char (marker-position error-marker))
-;;           (move-overlay compilation-error-overlay
-;;                         (line-beginning-position)
-;;                         (line-end-position)
-;;                         (current-buffer))))
-;;     (if compilation-highlight-source
-;;         (save-excursion
-;;           (set-buffer (marker-buffer source-marker))
-;;           (goto-char (marker-position source-marker))
-;;           (move-overlay compilation-source-overlay
-;;                         (line-beginning-position)
-;;                         (line-end-position)
-;;                         (current-buffer))))))
-
-;; ;; this function's advice only enables the advice of `compilation-goto-locus'
-;; ;; temporally so the highlighting is performed. This is necessary because
-;; ;; other packages use `compilation-goto-locus' and these packages don't need
-;; ;; the highlight stuff.
-;; (defadvice next-error (around highlight activate)
-;;   "If `compilation-highlight-error' is non-nil, highlight the ERROR line.
-;; If `compilation-highlight-source' is non-nil, highlight the SOURCE line."
-;;   (unwind-protect
-;;       (progn
-;;         (ad-enable-advice 'compilation-goto-locus 'after 'highlight)
-;;         (ad-activate 'compilation-goto-locus)
-;;         ad-do-it)
-;;     (ad-disable-advice 'compilation-goto-locus 'after 'highlight)
-;;     (ad-activate 'compilation-goto-locus)))
 
 
 ;;;_ + Makefile mode
@@ -2859,18 +2545,18 @@ A new buffer is created containing the disc file's contents and
 (when (require-soft 'printing)
   (pr-update-menus t))
 
-(when running-nt
-  (progn                          ; Windows NT settings
-    (setq lpr-command "")         ; write directly to the printer port
-    (setq printer-name
-          (cond
-           (at-bmw "//gmuc0222.muc/pmuc4068")
-           (t "LPT1")))
-    (when at-bmw
-      (setenv "GS_LIB" "e:/tools/GSTools/gs7.00/gs7.00/lib;e:/tools/GSTools/gs7.00/fonts")
-      (setq ps-lpr-command "e:/tools/GSTools/gs7.00/gs7.00/bin/gswin32c.exe")
-      (setq ps-lpr-switches '("-q" "-dNOPAUSE" "-dBATCH" "-sDEVICE=mswinpr2"))
-      (setq ps-printer-name t))))
+;; (when running-nt
+;;   (progn                          ; Windows NT settings
+;;     (setq lpr-command "")         ; write directly to the printer port
+;;     (setq printer-name
+;;           (cond
+;;            (at-bmw "//gmuc0222.muc/pmuc4068")
+;;            (t "LPT1")))
+;;     (when at-bmw
+;;       (setenv "GS_LIB" "e:/tools/GSTools/gs7.00/gs7.00/lib;e:/tools/GSTools/gs7.00/fonts")
+;;       (setq ps-lpr-command "e:/tools/GSTools/gs7.00/gs7.00/bin/gswin32c.exe")
+;;       (setq ps-lpr-switches '("-q" "-dNOPAUSE" "-dBATCH" "-sDEVICE=mswinpr2"))
+;;       (setq ps-printer-name t))))
 
 ;; (setq ps-lpr-command lpr-command)
 ;; (setq ps-printer-name printer-name)
@@ -2988,19 +2674,7 @@ A new buffer is created containing the disc file's contents and
 
 
 ;;;_ + isearch
-;; (setq lazy-highlight-initial-delay 3)
 (setq isearch-allow-scroll t)
-
-;; (add-hook 'isearch-mode-end-hook 'goto-isearch-match-beginning)
-
-;; (defun goto-isearch-match-beginning ()
-;;   (when (and isearch-forward
-;;              (number-or-marker-p isearch-other-end))
-;;     (goto-char isearch-other-end)))
-
-;; (defadvice isearch-exit (after goto-match-beginning activate)
-;;   "Go to beginning of match."
-;;   (goto-isearch-match-beginning))
 
 (defun isearch-recenter ()
   (interactive)
@@ -3174,41 +2848,6 @@ A new buffer is created containing the disc file's contents and
 (require 'midnight)
 
 
-;; ;; save a bunch of variables to the desktop file
-;; ;; for lists specify the len of the maximal saved data also
-;; (setq desktop-globals-to-save
-;;       (append '((extended-command-history . 30)
-;;                 (file-name-history        . 100)
-;;                 (grep-history             . 30)
-;;                 (compile-history          . 30)
-;;                 (minibuffer-history       . 50)
-;;                 (query-replace-history    . 60)
-;;                 (read-expression-history  . 60)
-;;                 (regexp-history           . 60)
-;;                 (regexp-search-ring       . 20)
-;;                 (search-ring              . 20)
-;;                 (shell-command-history    . 50)
-;;                 tags-file-name
-;;                 register-alist)))
-
-
-(when  (and (fboundp 'escreen-create-screen)
-            running-interactively
-            ;; (yes-or-no-p "Setup desktop?")
-            )
-  (escreen-create-screen)
-  (escreen-create-screen)
-  (escreen-create-screen)
-  (escreen-create-screen)
-  (escreen-create-screen)
-  (escreen-create-screen)
-  (when (fboundp 'escreen-set-screen-number)
-    (escreen-set-screen-number -1))
-  (escreen-create-screen)
-  ;; (when (fboundp 'escreen-set-screen-number) (escreen-set-screen-number 9))
-  ;; (when (yes-or-no-p "Start Gnus?")
-  ;;     (gnus))
-  )
 
 (when at-bmw
   (setq bmw-suppress-local-keybindings t)
