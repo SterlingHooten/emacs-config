@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2011-03-14 13:06:03 Emilio C. Lopes>
+;;; Time-stamp: <2011-03-14 13:07:50 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -2227,6 +2227,9 @@ none is marked."
 ;;;_ + Dired
 (setq ls-lisp-use-insert-directory-program t)
 (add-hook 'dired-load-hook (lambda () (require-soft 'init-dired)))
+(autoload 'dired-jump "dired"
+  "Jump to Dired buffer corresponding to current buffer." t)
+
 
 ;;;_ + Org-mode
 (require-soft 'orgrc)
