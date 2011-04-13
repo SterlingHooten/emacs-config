@@ -1,5 +1,5 @@
 ;; init-shell: Shell/Comint initialization
-;; Time-stamp: <2010-11-12 15:43:52 Emilio C. Lopes>
+;; Time-stamp: <2011-04-05 10:27:51 Emilio C. Lopes>
 
 ;; Newer versions of comint don't use prompt regexp anymore
 (if (boundp 'comint-use-prompt-regexp-instead-of-fields)
@@ -12,7 +12,7 @@
 (setq comint-input-ring-size 4000)
 (setq comint-input-autoexpand nil)
 (setq comint-input-ignoredups t)
-(setq comint-buffer-maximum-size 15000)
+(setq comint-buffer-maximum-size (* 8 1024))
 
 (setq comint-process-echoes nil)
 
