@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2011-03-14 13:07:50 Emilio C. Lopes>
+;;; Time-stamp: <2011-04-27 13:42:19 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -1414,6 +1414,7 @@ With prefix argument ARG behave as usual."
   (setq font-lock-support-mode 'jit-lock-mode)
   (setq font-lock-maximum-decoration t)
   (global-font-lock-mode 1)
+  (setq font-lock-verbose nil)
   (set-face-foreground 'font-lock-comment-face "red")
   ;; (set-face-foreground 'font-lock-string-face "firebrick")
   (set-face-foreground 'font-lock-string-face "indianred")
