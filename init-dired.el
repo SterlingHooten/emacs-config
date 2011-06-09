@@ -1,5 +1,5 @@
 ;; init-dired: Dired initialization
-;; Time-stamp: <2011-02-10 17:35:17 Emilio C. Lopes>
+;; Time-stamp: <2011-06-09 13:38:47 Emilio C. Lopes>
 
 (setq dired-x-hands-off-my-keys t)
 (require 'dired-x)
@@ -216,6 +216,22 @@ If on a subdir headerline, mark all its files except `.' and `..'."
 ;; this key is normally bound to `dired-mark', but since this command
 ;; is also avaliable on "m" use the binding for the "extended" version.
 (defkey dired-mode-map "* m" 'dired-mark*)
+
+(defun dired-mark-region-files (beg end &optional char)
+  "*Mark all files in the current region.
+Interactively, when called with a prefix arg, ask for the mark character to use."
+  (interactive "r\nP")
+  ;; dired-mark-files-in-region assumes `beg' at beginning of line
+  (when char
+    (setq char (read-char "Mark region using: ")))
+  (let ((dired-marker-char (or char dired-marker-char)))
+    (dired-mark-files-in-region (save-excursion
+                                  (goto-char beg)
+                                  (point-at-bol))
+                                end))
+  (dired-move-to-filename))
+
+(defkey dired-mode-map "* w" 'dired-mark-region-files)
 
 (require 'ls-lisp)
 (setq ls-lisp-emulation nil)            ; means GNU
