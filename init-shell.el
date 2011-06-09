@@ -1,5 +1,7 @@
 ;; init-shell: Shell/Comint initialization
-;; Time-stamp: <2011-04-05 10:27:51 Emilio C. Lopes>
+;; Time-stamp: <2011-06-06 15:55:58 Emilio C. Lopes>
+
+;; TODO: http://snarfed.org/why_i_run_shells_inside_emacs
 
 ;; Newer versions of comint don't use prompt regexp anymore
 (if (boundp 'comint-use-prompt-regexp-instead-of-fields)
@@ -39,6 +41,7 @@
 (define-shell-abbrev ",tt" "2>&1| tee")
 (define-shell-abbrev ",h" "--help")
 (define-shell-abbrev ",v" "--verbose")
+(define-shell-abbrev ",x" "| xargs")
 
 (fset 'sh 'shell)
 
@@ -79,7 +82,6 @@
 
 ;;; Comint
 (setq-default comint-scroll-to-bottom-on-input 'this)
-;; (setq-default comint-scroll-to-bottom-on-output 'others)
 (setq-default comint-scroll-to-bottom-on-output nil)
 (setq-default comint-scroll-show-maximum-output t)
 
