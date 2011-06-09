@@ -1,5 +1,5 @@
 ;; init-dired: Dired initialization
-;; Time-stamp: <2011-06-09 13:38:47 Emilio C. Lopes>
+;; Time-stamp: <2011-06-09 13:39:41 Emilio C. Lopes>
 
 (setq dired-x-hands-off-my-keys t)
 (require 'dired-x)
@@ -232,6 +232,9 @@ Interactively, when called with a prefix arg, ask for the mark character to use.
   (dired-move-to-filename))
 
 (defkey dired-mode-map "* w" 'dired-mark-region-files)
+
+;; http://www.masteringemacs.org/articles/2011/03/25/working-multiple-files-dired/
+(setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
 
 (require 'ls-lisp)
 (setq ls-lisp-emulation nil)            ; means GNU
