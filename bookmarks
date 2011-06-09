@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Austausch Diesel (noch einer!)"
+(("PANAMA-Laufwerk DME"
+ (filename . "//nvgm062.muc/PLW_E$/DME/")
+ (front-context-string . "MEVD_17_2/\n  drw")
+ (rear-context-string . " 0 Apr 15 10:24 ")
+ (position . 125))
+("Austausch Diesel (noch einer!)"
  (filename . "//easerv.muc/projekte/Antriebsprojekte/Diesel_Motoren/@Austausch_Diesel/ecl/")
  (front-context-string . "pix/\n  -rwxr-xr-")
  (rear-context-string . " 0 Jul 13  2009 ")
