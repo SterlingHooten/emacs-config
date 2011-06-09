@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2011-04-27 13:42:19 Emilio C. Lopes>
+;;; Time-stamp: <2011-06-09 13:37:08 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -2199,7 +2199,6 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 
   (add-hook 'ibuffer-mode-hook
             (lambda ()
-              (ibuffer-auto-mode 1)
               (ibuffer-switch-to-saved-filter-groups "default")))
 
   (defun ibuffer-dired-buffers ()
