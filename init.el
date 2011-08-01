@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2011-06-09 13:37:08 Emilio C. Lopes>
+;;; Time-stamp: <2011-08-01 16:00:59 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -281,7 +281,7 @@ to the filename."
 
 ;; (setq split-width-threshold nil)
 
-(setq longlines-show-hard-newlines t)
+;; (setq longlines-show-hard-newlines t)
 
 (setq auto-save-default t)
 (setq auto-save-file-format t)
@@ -1186,6 +1186,7 @@ Only intended for interactive use."
   (iswitchb-default-keybindings))
 (setq read-buffer-function 'iswitchb-read-buffer)
 (setq iswitchb-case t)
+(setq iswitchb-use-virtual-buffers t)
 (setq iswitchb-regexp nil)
 (setq iswitchb-prompt-newbuffer nil)
 (setq iswitchb-default-method 'samewindow)
@@ -2489,6 +2490,10 @@ Interactively asks for YEAR only when called with a prefix argument."
 
             (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
+            (add-hook 'ediff-keymap-setup-hook
+                      (lambda ()
+                        (defkey ediff-mode-map "q" 'ediff-quit-no-questions)))
+            
             (add-hook 'ediff-before-setup-hook
                       (lambda ()
                         (setq ediff-saved-window-configuration (current-window-configuration))))
@@ -2511,6 +2516,10 @@ Interactively asks for YEAR only when called with a prefix argument."
               (when (interactive-p)
                 (ad-set-arg 0 (not (ad-get-arg 0)))))))
 
+(defun ediff-quit-no-questions (reverse-default-keep-variants)
+  "Quit ediff without prompting."
+  (interactive "P")
+  (ediff-really-quit reverse-default-keep-variants))
 
 (defun vc-ediff ()
   "*Compare revisions of the visited file using Ediff."
@@ -2767,7 +2776,7 @@ A new buffer is created containing the disc file's contents and
              (blink-cursor-mode . -1)
              (show-paren-mode . +1)
              (line-number-mode . +1)
-             (column-number-mode . +1)
+             (column-number-mode . -1)
              (savehist-mode . +1)))
 
 (global-defkey "<down-mouse-3>" 'mouse-major-mode-menu)
