@@ -2,7 +2,17 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("PANAMA-Laufwerk DME"
+(("BMW Austausch/Transfer"
+ (filename . "//nvgm329.muc/Manufacturing/900_Transfer/")
+ (front-context-string . "!!!_BITTE_LESEN_")
+ (rear-context-string . "1k Jun 24  2008 ")
+ (position . 999))
+("E-Laufwerk vom Chris' Server"
+ (filename . "//smuc0239.muc/e$/")
+ (front-context-string . "rb_000011db_012_")
+ (rear-context-string . " 0 Apr  6  2014 ")
+ (position . 120))
+("PANAMA-Laufwerk DME"
  (filename . "//nvgm062.muc/PLW_E$/DME/")
  (front-context-string . "MEVD_17_2/\n  drw")
  (rear-context-string . " 0 Apr 15 10:24 ")
@@ -21,7 +31,8 @@
  (filename . "/sudo:root@eas254.muc:/usr/local/wiki/share/moin/config/wikiconfig.py")
  (front-context-string . "# -*- coding: is")
  (rear-context-string)
- (position . 1))
+ (position . 1)
+ (annotation . ""))
 ("Steyrer Diesel/DDE-Laufwerk"
  (filename . "//EUROPE.BMW.CORP/winfs/W05-EWZ-Data/DDE/")
  (front-context-string . "Entwicklung/\n  d")
