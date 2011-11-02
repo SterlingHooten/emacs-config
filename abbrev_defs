@@ -111,6 +111,8 @@
   '(
    ))
 
+(define-abbrev-table 'js-mode-abbrev-table '())
+
 (define-abbrev-table 'jython-mode-abbrev-table '())
 
 (define-abbrev-table 'latex-mode-abbrev-table '())
@@ -213,16 +215,18 @@
     ("when" "" tempo-template-scheme-when 0)
    ))
 
+(define-abbrev-table 'select-tags-table-mode-abbrev-table '())
+
 (define-abbrev-table 'sgml-mode-abbrev-table '())
 
 (define-abbrev-table 'sh-mode-abbrev-table '())
 
 (define-abbrev-table 'shell-mode-abbrev-table
   '(
-    (",g" "| grep" nil 5)
+    (",g" "| grep" nil 13)
     (",gg" "2>&1 | grep" nil 0)
     (",gi" "| grep -i" nil 0)
-    (",h" "--help" nil 2)
+    (",h" "--help" nil 5)
     (",nn" "> /dev/null 2>&1" nil 1)
     (",nul" "/dev/null" nil 0)
     (",s" "| sort " nil 0)
@@ -231,6 +235,7 @@
     (",tt" "2>&1| tee" nil 0)
     (",v" "--verbose" nil 1)
     (",wcl" " | wc --lines" nil 0)
+    (",x" "| xargs" nil 2)
    ))
 
 (define-abbrev-table 'slitex-mode-abbrev-table '())
@@ -251,11 +256,11 @@
 
 (define-abbrev-table 'text-mode-abbrev-table
   '(
-    ("ggf" "gegebenenfalls" nil 3)
+    ("ggf" "gegebenenfalls" nil 7)
     ("gr" "Gruß
 
  Emílio
-" nil 45)
+" nil 67)
     ("gre" "are" nil 0)
     ("hlk" "Hallo liebe Kollegen!" nil 5)
     ("mfg" "Mit freundlichen Grüßen
