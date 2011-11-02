@@ -1195,13 +1195,47 @@ Only intended for interactive use."
   (let ((apropos-do-all t))
     (call-interactively 'apropos-command)))
 
+;;;_ + anything
+(when (require-soft 'anything)
+  (setq anything-command-map-prefix-key "M-<RET>")
+  (require 'anything-config)
+  (require-soft 'anything-match-plugin)
+
+  (defkey anything-map "<f4>" 'anything-next-line)
+  (defkey anything-map "<S-f4>" 'anything-previous-line)
+  (defkey anything-map "C-h" 'anything-previous-line)
+
+  ;; override original definition to provide default selection of the
+  ;; symbol at point.
+  (defun anything-imenu ()
+    "*Preconfigured `anything' for `imenu'."
+    (interactive)
+    (anything 'anything-c-source-imenu nil nil nil (thing-at-point 'symbol) "*anything imenu*"))
+
+  ;; http://emacs-fu.blogspot.com/2011/09/finding-just-about-anything.html
+  (defun anything-switch-buffer ()
+    (interactive)
+    (anything
+     :prompt "Switch to: "
+     :candidate-number-limit 10 ;; up to 10 of each 
+     :sources
+     '(anything-c-source-buffers             ;; buffers 
+       anything-c-source-recentf             ;; recent files 
+       anything-c-source-files-in-current-dir+ ;; current dir
+       anything-c-source-bookmarks             ;; bookmarks
+       )))
+
+  (defkey ctl-x-map "b" 'anything-switch-buffer))
+
 ;;;_ + iswitchb
 (if (fboundp 'iswitchb-mode)
     (iswitchb-mode)
   (iswitchb-default-keybindings))
 (setq read-buffer-function 'iswitchb-read-buffer)
 (setq iswitchb-case t)
-(setq iswitchb-use-virtual-buffers t)
+(when (require-soft 'recentf)
+  (recentf-mode 1)
+  (setq iswitchb-use-virtual-buffers t))
 (setq iswitchb-regexp nil)
 (setq iswitchb-prompt-newbuffer nil)
 (setq iswitchb-default-method 'samewindow)
@@ -1632,6 +1666,7 @@ With prefix argument ARG behave as usual."
 
 ;; (global-defkey "<f4>"           'next-buffer)
 (global-defkey "<f4>"           'iswitchb-buffer)
+;; (global-defkey "<f4>"           'anything-switch-buffer)
 (global-defkey "S-<f4>"         'bury-buffer)
 
 ;; (global-defkey "<f5>"           'other-window)
