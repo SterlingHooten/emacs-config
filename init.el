@@ -273,7 +273,8 @@ to the filename."
 
 (setq-default fill-column 70)
 
-;; (setq split-width-threshold nil)
+;; don't split windows horizontally
+(setq split-width-threshold nil)
 
 ;; (setq longlines-show-hard-newlines t)
 
