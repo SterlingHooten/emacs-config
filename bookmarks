@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("BMW Austausch/Transfer"
+(("FuSi-Verzeichnis auf Antriebsprojekte/Otto_Mottoren"
+ (filename . "//easerv.muc/projekte/Antriebsprojekte/Otto_Motoren/Funktionssicherheit/")
+ (front-context-string . "Befaehigung/\n  d")
+ (rear-context-string . " 0 Jul 19 09:08 ")
+ (position . 237))
+("BMW Austausch/Transfer"
  (filename . "//nvgm329.muc/Manufacturing/900_Transfer/")
  (front-context-string . "!!!_BITTE_LESEN_")
  (rear-context-string . "1k Jun 24  2008 ")
@@ -68,11 +73,12 @@
  (front-context-string . "/\n  drwxr-xr-x  ")
  (rear-context-string . "Jan 28 15:48 ecl")
  (position . 1845))
-("EA-41 Austausch"
- (filename . "//nvgm091.muc/Organisation/EA-4_Org/EA-41/EA-41/40_Allgemein/04_Austausch/")
+("EA-51 Austausch"
+ (filename . "//europe.bmw.corp/winfs/EA-org/EA-5_Org/EA-51/EA-510/40_Allgemein/99_Austausch/")
  (front-context-string . "/\n  drwxr-xr-x  ")
  (rear-context-string . "May 26 12:29 ecl")
- (position . 3223))
+ (position . 3223)
+ (annotation . ""))
 ("shared_vision_EA41/wiki-backup"
  (filename . "p:/shared_vision_EA41/")
  (front-context-string . "wiki-backup/\n  d")
