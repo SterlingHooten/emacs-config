@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2011-08-01 16:00:59 Emilio C. Lopes>
+;;; Time-stamp: <2011-11-02 13:36:17 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -1503,13 +1503,6 @@ With prefix argument ARG behave as usual."
 
 (defkey esc-map ")" 'up-list)
 
-;; easy cursor movement with a Dvorak layout
-(global-defkey "M-H" 'backward-char)
-(global-defkey "M-N" 'forward-char)
-(global-defkey "M-C" 'previous-line)
-(global-defkey "M-T" 'next-line)
-
-
 (global-defkey "C-c 0" (recursive-edit-preserving-window-config (delete-window)))
 (global-defkey "C-c 1" (recursive-edit-preserving-window-config
                         (if (one-window-p 'ignore-minibuffer)
@@ -1580,6 +1573,7 @@ With prefix argument ARG behave as usual."
 (global-defkey "C-c j" (make-sparse-keymap))
 (global-defkey "C-c j h"        (lambda () (interactive) (dired     "~")))
 (global-defkey "C-c j D"        (lambda () (interactive) (dired     "~/Downloads")))
+(global-defkey "C-c j p"        (lambda () (interactive) (dired     "~/projs")))
 (global-defkey "C-c j d"        (lambda () (interactive) (find-library "init-dired")))
 (global-defkey "C-c j e"        (lambda () (interactive) (find-file user-init-file)))
 (global-defkey "C-c j m"        (lambda () (interactive) (find-library "message_rc")))
@@ -1621,6 +1615,7 @@ With prefix argument ARG behave as usual."
   ("f" . 'apropos-function)
   ("v" . 'apropos-variable)
   ("d" . 'apropos-documentation)
+  ("i" . 'apropos-info)
   ("l" . 'apropos-value))
 
 (global-defkey "C-x C-q" 'toggle-read-only)
@@ -1724,7 +1719,7 @@ With prefix argument ARG behave as usual."
 (global-defkey "S-<print>"      'set-default-printer)
 
 ;;;_* Frame parameters
-(add-to-list 'initial-frame-alist '(cursor-type . box))
+;; (add-to-list 'initial-frame-alist '(cursor-type . box))
 (add-to-list 'default-frame-alist '(cursor-type . box))
 
 ;;;_* Time (and date) display setup.
@@ -1968,7 +1963,7 @@ in the minibuffer history."
     (when (and (stringp bname)
                (string-match-p "/bmwmail\\." bname))
       (goto-char (point-max))
-      ;; (delete-blank-lines)
+      (delete-blank-lines)
       (goto-char (point-min))
       ;; (delete-blank-lines)
 
