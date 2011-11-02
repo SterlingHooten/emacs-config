@@ -1,6 +1,6 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
-;;; Time-stamp: <2011-11-02 13:36:17 Emilio C. Lopes>
+;;; Time-stamp: <2011-11-02 14:02:09 Emilio C. Lopes>
 
 ;;; Note: lines beginning with `;;;_' are headers for Allout outline
 ;;; minor mode
@@ -1835,6 +1835,13 @@ in the minibuffer history."
     (message "Variable `ispell-dictionary' is not set.")))
 
 (global-defkey "C-c i w" 'show-current-ispell-dictionary)
+
+
+;;;_ + magit
+(add-to-path 'load-path (concat user-emacs-directory "lib/magit"))
+(when at-bmw
+  (setq magit-git-executable "e:/tools/PortableGit-1.7.4/bin/git.exe"))
+(autoload 'magit-status "magit" nil t)
 
 
 ;;;_ + nxml
