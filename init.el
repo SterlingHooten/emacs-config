@@ -192,17 +192,14 @@ to the filename."
               'replace))
   (global-defkey "C-c k" 'normalize-file-path-on-kill-ring)
 
-  (let ((bg-mode 'light)
-        (bg "white")                    ; or "tan"
-        (fg "black"))
-    (add-to-list 'initial-frame-alist `(background-mode  . ,bg-mode))
-    (add-to-list 'initial-frame-alist `(background-color . ,bg))
-    (add-to-list 'initial-frame-alist `(foreground-color . ,fg))
-    (add-to-list 'default-frame-alist `(background-mode  . ,bg-mode))
-    (add-to-list 'default-frame-alist `(background-color . ,bg))
-    (add-to-list 'default-frame-alist `(foreground-color . ,fg)))
+  (add-to-list 'default-frame-alist '(background-mode  . 'light))
+  (add-to-list 'default-frame-alist '(background-color . "white"))
+  (add-to-list 'default-frame-alist '(foreground-color . "black"))
   (if (display-color-p)
       (progn
+        (set-face-attribute 'default nil
+                            ;; Fontname comes from (insert (prin1-to-string (w32-select-font)))
+                            :font "-outline-Consolas-normal-r-normal-normal-19-142-96-96-c-*-iso8859-1")
         (set-face-foreground 'mode-line "white")
         (set-face-background 'mode-line "royalblue")
         (set-face-foreground 'fringe "slategray")
@@ -214,9 +211,6 @@ to the filename."
       (set-face-background 'mode-line "DimGray")
       (set-face-foreground 'fringe "black")
       (set-face-background 'fringe "gray")))
-  ;; Fontname comes from (insert (prin1-to-string (w32-select-font)))
-  (set-default-font "-outline-Consolas-normal-r-normal-normal-19-142-96-96-c-*-iso8859-1")
-
   (setq w32-quote-process-args t)
   (setq process-coding-system-alist '(("bash" . undecided-unix) ("zsh" . undecided-unix)))
   (setq shell-file-name "bash")
