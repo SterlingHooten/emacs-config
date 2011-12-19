@@ -2902,7 +2902,6 @@ A new buffer is created containing the disc file's contents and
     (setenv "MAGIC" (cygpath-windows2unix (concat cygwin-prefix "/usr/share/magic")))
     (setq woman-manpath
           (mapcar (lambda (dir) (concat cygwin-prefix dir)) '("/usr/local/man" "/usr/man"))))
-  (add-to-list 'woman-manpath "/sshx:eas254@eas254.muc:/usr/share/man")
   (setenv "PATH" (mapconcat (if running-nt
                                 (lambda (dir)
                                   (subst-char-in-string ?/ ?\\ dir))
