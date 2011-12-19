@@ -1572,8 +1572,8 @@ With prefix argument ARG behave as usual."
 
 (global-defkey "C-c j" (make-sparse-keymap))
 (global-defkey "C-c j h"        (lambda () (interactive) (dired     "~")))
-(global-defkey "C-c j D"        (lambda () (interactive) (dired     "~/Downloads")))
-(global-defkey "C-c j p"        (lambda () (interactive) (dired     "~/projs")))
+(global-defkey "C-c j D"        (lambda () (interactive) (dired     (concat (or (getenv "USERPROFILE") "~") "/Downloads"))))
+(global-defkey "C-c j p"        (lambda () (interactive) (dired     "e:/qx29999/projs")))
 (global-defkey "C-c j d"        (lambda () (interactive) (find-library "init-dired")))
 (global-defkey "C-c j e"        (lambda () (interactive) (find-file user-init-file)))
 (global-defkey "C-c j m"        (lambda () (interactive) (find-library "message_rc")))
@@ -1840,7 +1840,7 @@ in the minibuffer history."
 ;;;_ + magit
 (add-to-path 'load-path (concat user-emacs-directory "lib/magit"))
 (when at-bmw
-  (setq magit-git-executable "e:/tools/PortableGit-1.7.4/bin/git.exe"))
+  (setq magit-git-executable "f:/apps/PortableGit-1.7.4/bin/git.exe"))
 (autoload 'magit-status "magit" nil t)
 
 
