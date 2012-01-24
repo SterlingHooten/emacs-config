@@ -1740,9 +1740,10 @@ With prefix argument ARG behave as usual."
 
 ;;;_* Common modes stuff
 ;; Add some suffix defs to auto-mode-alist:
-(setq auto-mode-alist (append '(
-                                ("\\.\\(pl\\|pm\\)\\'" . cperl-mode)
-                                ("\\.\\([bB][aA][tT]\\|[cC][mM][dD]\\)\\'" . ntcmd-mode)
+(dolist (f (list auto-mode-alist interpreter-mode-alist))
+  (while (rassq 'perl-mode f)
+    (setcdr (rassq 'perl-mode f) 'cperl-mode)))
+(setq auto-mode-alist (append '(("\\.\\([bB][aA][tT]\\|[cC][mM][dD]\\)\\'" . ntcmd-mode)
                                 ;; ("CONFIG\\." . bat-mode)
                                 ;; ("AUTOEXEC\\." . bat-mode)
                                 ("[^/]\\.dired\\'" . dired-virtual-mode)
