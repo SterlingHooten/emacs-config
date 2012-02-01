@@ -967,6 +967,29 @@ upper case, downcase it."
         (downcase-word 1))))))
 (global-defkey "M-C" 'cycle-word-capitalization)
 
+;; http://thread.gmane.org/gmane.emacs.devel/147660/focus=147675
+(defun cat-command ()
+  "A command for cats."
+  (interactive)
+  (require 'animate)
+  (let ((mouse "
+           ___00
+        ~~/____'>
+          \"  \"")
+        (h-pos (floor (/ (window-height) 2)))
+        (contents (buffer-substring (window-start) (window-end))))
+    (with-temp-buffer
+      (switch-to-buffer (current-buffer))
+      (insert contents)
+      (setq truncate-lines t)
+      (animate-string mouse h-pos 0)
+      (dotimes (_ (window-width))
+        (sit-for 0.01)
+        (dotimes (n 3)
+          (goto-line (+ h-pos n 2))
+          (move-to-column 0)
+          (insert " "))))))
+
 (defun leo (word)
   (require 'thingatpt)
   (interactive (list 
