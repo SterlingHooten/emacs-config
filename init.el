@@ -2280,7 +2280,7 @@ none is marked."
 
 ;;;_ + Dired
 (setq ls-lisp-use-insert-directory-program t)
-(add-hook 'dired-load-hook (lambda () (require-soft 'init-dired)))
+(eval-after-load "dired" '(require-soft 'init-dired))
 (autoload 'dired-jump "dired"
   "Jump to Dired buffer corresponding to current buffer." t)
 
