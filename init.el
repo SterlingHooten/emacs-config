@@ -1205,6 +1205,9 @@ Only intended for interactive use."
   '(set-face-foreground 'sh-heredoc-face (face-foreground 'font-lock-constant-face)))
 (add-hook 'after-save-hook
   'executable-make-buffer-file-executable-if-script-p)
+(add-hook 'sh-mode-hook
+          (lambda ()
+            (setq defun-prompt-regexp "^\\(function[ \t]\\|[^[:space:]]+[ \t]+()[ \t]+\\)")))
 
 ;; the-the is a nice thing for text processing:
 (autoload 'the-the "the-the"
