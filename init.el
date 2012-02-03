@@ -517,9 +517,9 @@ Subject to `buffer-ignore-regexp'."
 
 (defun resize-window (&optional arg)    ; Hirose Yuuji and Bob Wiener
   "*Resize window interactively."
-  (interactive "p")
+  (interactive "P")
   (if (one-window-p) (error "Cannot resize sole window"))
-  (or arg (setq arg 1))
+  (setq arg (if arg (prefix-numeric-value arg) 4))
   (let (c)
     (catch 'done
       (while t
