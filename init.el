@@ -2374,6 +2374,16 @@ With prefix argument CREATE always start a new shell."
           (shell (generate-new-buffer-name "*shell*")))
       (shell (car buffs)))))
 
+(when (memq system-type '(ms-dos windows-nt cygwin))
+  (defun shell-cmd (&optional buffer)
+    (interactive)
+    (let ((explicit-shell-file-name (or (executable-find "cmdproxy.exe")
+                                        (getenv "ComSpec")
+                                        (executable-find "cmd.exe")
+                                        "command.com"))
+          (comint-process-echoes t))
+      (call-interactively 'shell))))
+
 (eval-after-load "shell" '(require-soft 'init-shell))
 
 
