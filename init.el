@@ -194,6 +194,7 @@ to the filename."
   (add-to-list 'default-frame-alist '(background-mode  . 'light))
   (add-to-list 'default-frame-alist '(background-color . "white"))
   (add-to-list 'default-frame-alist '(foreground-color . "black"))
+  (add-to-list 'default-frame-alist '(cursor-color . "MediumSeaGreen"))
   (if (display-color-p)
       (progn
         (set-face-attribute 'default nil
