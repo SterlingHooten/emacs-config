@@ -18,7 +18,7 @@
  (rear-context-string . " 0 Apr  6  2014 ")
  (position . 120))
 ("PANAMA-Laufwerk DME"
- (filename . "//nvgm062.muc/PLW_E$/DME/")
+ (filename . "//europe.bmw.corp/winfs/Panama/PLW_E/DME/")
  (front-context-string . "MEVD_17_2/\n  drw")
  (rear-context-string . " 0 Apr 15 10:24 ")
  (position . 125))
@@ -28,7 +28,7 @@
  (rear-context-string . " 0 Jul 13  2009 ")
  (position . 1062))
 ("PANAMA-Laufwerk DDE"
- (filename . "//nvgm062.muc/PLW_EA$/DDE_SWE/")
+ (filename . "//europe.bmw.corp/winfs/Panama/PLW_EA/DDE_SWE/")
  (front-context-string . "_hide_email_reci")
  (rear-context-string . "55 Dec 16 09:30 ")
  (position . 191))
