@@ -145,7 +145,6 @@ results "
   (setq focus-follows-mouse nil)
   (auto-raise-mode -1)
 
-  ;;(set-selection-coding-system 'cp1252)
   (setq w32-enable-synthesized-fonts nil)
 
   ;;(setq w32-enable-caps-lock nil)
@@ -156,12 +155,6 @@ results "
   (setq w32-lwindow-modifier 'hyper)
   (setq w32-pass-rwindow-to-system nil)
   (setq w32-rwindow-modifier 'hyper)
-
-  ;; Make `C-Tab' an alias for `M-Tab'
-  ;;(define-key function-key-map [(control tab)] [?\M-\t])
-
-  ;; Don't pass `M-Tab´ to the system
-  ;;(w32-register-hot-key [(alt tab)])
 
   (defun w32-toggle-meta-tab ()
     "*Toggle passing of the key combination M-TAB to the system."
@@ -241,11 +234,6 @@ to the filename."
 
 (setq view-read-only nil)
 
-;; (setq colon-double-space nil)
-;; (setq sentence-end-double-space nil)
-;; Setting this should not be necessary anymore
-;; (setq sentence-end "[.?!][]\"')]*\\($\\|\t\\| \\)[ \t\n]*")
-
 (setq disabled-command-function nil)    ; no disabled commands.
 (put 'rmail 'disabled t)                ; avoid mbox destruction
 
@@ -276,8 +264,6 @@ to the filename."
 ;; don't split windows horizontally
 (setq split-width-threshold nil)
 
-;; (setq longlines-show-hard-newlines t)
-
 (setq auto-save-default t)
 (setq auto-save-file-format t)
 (setq auto-save-visited-file-name nil)
@@ -294,10 +280,7 @@ to the filename."
 (setq kept-old-versions 2)
 (setq delete-old-versions t)
 
-;;(setq inhibit-eol-conversion t)
-
 (setq-default ctl-arrow t)
-(setq meta-flag t)
 
 (setq echo-keystrokes 0.000001)
 
@@ -358,16 +341,6 @@ to the filename."
 With prefix arg, append it."
   (interactive "r\nP")
   (funcall (if append 'append-to-register 'copy-to-register) default-register start end))
-
-;; (defun zap-up-to-char (arg char)        ; adapted from `zap-to-char'
-;;   "*Kill up to (but not including) ARG'th occurrence of CHAR.
-;; Case is ignored if `case-fold-search' is non-nil in the current buffer.
-;; Goes backward if ARG is negative; error if CHAR not found."
-;;   (interactive "p\ncZap to char: ")
-;;   (kill-region (point) (progn
-;; 			 (search-forward (char-to-string char) nil nil arg)
-;; 			 (goto-char (if (> arg 0) (1- (point)) (1+ (point))))
-;; 			 (point))))
 
 (defvar zap-to-char-last-char nil
   "Last char given as input to `zap-to-char'.")
@@ -592,15 +565,6 @@ to declare a function to run in order to ring the emacs bell."
   (interactive "*")
   (untabify (point-min) (point-max)))
 
-;; Emacs 21.1 has `delete-trailing-whitespace'
-;; (defun remove-trailing-blanks (beg end)
-;;   "*Remove the trailing blanks from all lines in region."
-;;   (interactive "*r")
-;;   (save-excursion
-;;     (goto-char beg)
-;;     (while (re-search-forward "[ \t\r]+$" end t)
-;;       (replace-match "" nil nil))))
-
 (defun delete-horizontal-space-forward () ; adapted from `delete-horizontal-space'
   "*Delete all spaces and tabs after point."
   (interactive "*")
@@ -773,7 +737,7 @@ Negative arg -N means copy N sexps before the cursor."
   (interactive "p")
   (copy-region-as-kill (point) (save-excursion (forward-sexp arg) (point))))
 
-(defun comment-sexp (arg)                  ; adapted from `kill-sexp'
+(defun comment-sexp (arg)               ; adapted from `kill-sexp'
   "*Comment the sexp following the cursor.
 With argument, comment that many sexps after the cursor.
 Negative arg -N means comment N sexps before the cursor."
@@ -928,13 +892,6 @@ Return the new value of VAR."
                                  (not stack-trace-on-error)
                                (> (prefix-numeric-value arg) 0))))
 
-;; (defun zsh-forward-word (arg)
-;;   ;; TODO: if ARG 0 move to end of current word
-;;   "Move point forward to the beginning of the ARG-th word."
-;;   (interactive "p")
-;;   (forward-word (if (looking-at "\\W") arg (1+ arg)))
-;;   (forward-word -1))
-
 ;; Daniel Lundin [http://ftp.codefactory.se/pub/people/daniel/elisp/dot.emacs]
 (defun toggle-window-dedicated ()
 "*Toggle whether current window is dedicated or not."
@@ -1071,23 +1028,14 @@ Z          Zeppelin         Zulu
 (if (fboundp 'auto-image-file-mode)
     (auto-image-file-mode 1))
 
-;; (autoload 'bat-mode "bat-mode"
-;;   "Major-mode for editing DOS and Windows BAT files." t)
-;; (eval-after-load "bat-mode"
-;;   '(modify-syntax-entry ?% "$"  bat-mode-syntax-table))
 (autoload 'ntcmd-mode "ntcmd"
   "Major mode for editing CMD scripts." t)
 
 ;;;_ + imenu
 (setq imenu-always-use-completion-buffer-p 'never)
-;; (global-defkey "<apps>" 'imenu)
-
 
 (when (require-soft 'goto-last-change)
   (global-set-key "\C-x\C-\\" 'goto-last-change))
-
-(when running-nt
-  (global-defkey "<apps>" 'undo))
 
 ;;;_ + Hippie-expand
 (setq hippie-expand-try-functions-list
@@ -1114,32 +1062,11 @@ Z          Zeppelin         Zulu
 (eval-after-load "chop"
   '(setq chop-lines-near-middle nil))
 
-;; (global-defkey "C-S-p" 'chop-move-up)
-;; (global-defkey "C-S-n" 'chop-move-down)
-
-;; (global-defkey "M-[" 'chop-move-up)
-;; (global-defkey "M-]" 'chop-move-down)
-
 (global-defkey "S-<up>" 'chop-move-up)
 (global-defkey "S-<down>" 'chop-move-down)
 
 (global-defkey "C-," 'chop-move-up)
 (global-defkey "C-." 'chop-move-down)
-
-;;;_ + pair insertion
-;; (when (require-soft 'skeleton)
-;;   (mapcar
-;;    (lambda (char)
-;;      (global-set-key (read-kbd-macro (char-to-string char)) 'skeleton-pair-insert-maybe))
-;;    "\"([{<`'")
-
-;;   (defun toggle-skeleton-pair (&optional arg)
-;;     "*Toggle insertion of matching pairs (parentheses, brackets, etc.)"
-;;     (interactive "P")
-;;     (toggle-variable 'skeleton-pair arg))
-
-;;   ;; (toggle-skeleton-pair +1)
-;;   )
 
 (when (require-soft 'autopair)
   (defun autopair-dont-pair-before-words (action pair pos-before)
@@ -1298,8 +1225,6 @@ whose major-mode matches REGEXP."
   (let ((iswitchb-buffer-ignore '(iswitchb-only-shell-buffers)))
     (call-interactively 'iswitchb-buffer)))
 
-;; (global-defkey "C-x S" 'iswitchb-shell-buffers)
-
 ;; Kin Cho
 (defun iswitchb-exclude-nonmatching ()
   "*Exclude non matching buffer names."
@@ -1367,42 +1292,12 @@ emulate -LR zsh
 (add-to-list 'auto-insert-alist '("\\.pl\\'" . "header.pl"))
 
 
-;;;_ + escreen
-;; (setq escreen-install-number-mode-format t)
-;; (setq escreen-number-mode t)
-;; (setq escreen-prefix-char "\C-q")
-;; (when (require-soft 'escreen)
-;;   ;; (require-soft 'escreen-addons)
-;;   (escreen-install)
-;;   (defkey escreen-map "q" 'quoted-insert)
-;;   (defkey escreen-map "SPC" 'escreen-goto-next-screen))
-
-
-;;;_ + winring
-;; (when (require-soft 'winring)
-;;   (setq winring-show-names t)
-;;   (setq winring-prompt-on-create nil)
-;;   (setq winring-keymap-prefix (kbd "C-q"))
-;;   (defkey winring-map "<SPC>" 'winring-next-configuration)
-;;   (defkey winring-map "q" 'quoted-insert)
-;;   (defkey winring-map "c" 'winring-new-configuration)
-;;   (winring-initialize))
-
-
 ;;;_ + winner
 (when (require-soft 'winner)
   (winner-mode +1))
 
 
 ;;;_ + completion
-;; Overload completion commands through the ones from `complete':
-;; (require 'complete)
-;; (fset 'lisp-complete-symbol 'PC-lisp-complete-symbol)
-;; (fset 'minibuffer-complete 'PC-complete)
-;; (fset 'minibuffer-complete-word 'PC-complete-word)
-;; (fset 'minibuffer-complete-and-exit 'PC-complete-and-exit)
-;; (fset 'minibuffer-completion-help 'PC-completion-help)
-
 (defadvice PC-lisp-complete-symbol (before forward-sexp-before-completion (&optional arg) activate)
   "Do a `forward-sexp' if necessary before trying completion.
 With prefix argument ARG behave as usual."
@@ -1413,18 +1308,7 @@ With prefix argument ARG behave as usual."
 
 (partial-completion-mode 1)
 
-;; Resizing the minibuffer:
-;; (require 'rsz-mini)
-;; (resize-minibuffer-mode +1)
-;; (setq resize-minibuffer-window-exactly t)
-;; (setq resize-minibuffer-frame t)
-;; (setq resize-minibuffer-frame-exactly t)
-;; (add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
-;; (defun my-minibuffer-setup-hook ()
-;;   "*Setup the minibuffer."
-;;   (setq truncate-lines nil))
 (setq resize-mini-windows t)
-
 
 ;; Stefan Monnier
 ;; Press `C-s' at the prompt to search the completion buffer
@@ -1446,8 +1330,6 @@ With prefix argument ARG behave as usual."
 (defkey minibuffer-local-map "M-N" 'next-complete-history-element)
 (defkey minibuffer-local-map "M-P" 'previous-complete-history-element)
 
-
-
 (setq completion-ignored-extensions (delete ".pdf" completion-ignored-extensions))
 
 
@@ -1464,9 +1346,7 @@ With prefix argument ARG behave as usual."
 (when (require-soft 'filladapt)
   (setq filladapt-fill-column-tolerance 6)
   (setq filladapt-mode-line-string nil)
-;;  (add-hook 'text-mode-hook 'turn-on-auto-fill)
-  (add-hook 'text-mode-hook 'turn-on-filladapt-mode)
-  )
+  (add-hook 'text-mode-hook 'turn-on-filladapt-mode))
 
 ;;;_ + Uniquify
 (require 'uniquify)
@@ -1474,7 +1354,6 @@ With prefix argument ARG behave as usual."
 (setq uniquify-buffer-name-style 'forward)
 (setq uniquify-ignore-buffers-re
       "\\(news\\|mail\\|reply\\|followup\\) message\\*")
-;; (add-to-list 'uniquify-list-buffers-directory-modes 'shell-mode)
 
 ;;;_ + Time-stamp 
 (add-hook 'write-file-hooks 'time-stamp)
@@ -1484,7 +1363,6 @@ With prefix argument ARG behave as usual."
   ;; use full name instead of login name in time-stamps
   (setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S %U"))
 
-
 ;;;_ + font-lock mode
 (when (display-color-p)
   (require-soft 'font-latex)
@@ -1493,22 +1371,18 @@ With prefix argument ARG behave as usual."
   (global-font-lock-mode 1)
   (setq font-lock-verbose nil)
   (set-face-foreground 'font-lock-comment-face "red")
-  ;; (set-face-foreground 'font-lock-string-face "firebrick")
   (set-face-foreground 'font-lock-string-face "indianred")
   (set-face-foreground 'font-lock-type-face "darkgreen")
-  ;; (set-face-foreground 'font-lock-variable-name-face "cyan4")
   (set-face-foreground 'font-lock-variable-name-face "DodgerBlue")
   (set-face-foreground 'font-lock-constant-face "blue2")
-;;  (set-face-foreground 'font-lock-variable-name-face "orangered")
-;;  (set-face-foreground 'font-lock-variable-name-face "cyan3")
   (set-face-foreground 'font-lock-variable-name-face "#008b8b")
   (add-hook 'font-lock-mode-hook
             (lambda ()
-              (font-lock-add-keywords nil '(("\\*\\(ECL\\|FIXME\\)\\*:?" 0 'show-paren-mismatch-face t)))))
-  ;; (font-lock-add-keywords 'fortran-mode '(("\\<ECL:?" 0 'show-paren-mismatch-face t)))
-  )
+              (font-lock-add-keywords nil '(("\\*\\(ECL\\|FIXME\\)\\*:?" 0 'show-paren-mismatch-face t))))))
 
 ;;;_* Keybindings
+(when running-nt
+  (global-defkey "<apps>" 'undo))
 
 ;; extra "C-x" for Dvorak keyboard layouts, in the same hand as "s",
 ;; "f", "w", "v".
@@ -1538,11 +1412,6 @@ With prefix argument ARG behave as usual."
 (global-defkey "C-c 3" (recursive-edit-preserving-window-config (split-window-horizontally)))
 (global-defkey "C-c 4 b" (recursive-edit-preserving-window-config (iswitchb-buffer-other-window)))
 (global-defkey "C-c 4 C-o" (recursive-edit-preserving-window-config (iswitchb-display-buffer)))
-
-;; (global-defkey "C-c 1" 'recursive-edit-with-single-window)
-;; (global-defkey "C-c 0"
-;;                (lambda () (interactive)
-;;                  (recursive-edit-with-single-window 'delete-window)))
 
 (global-defkey "C-c $" 'toggle-truncate-lines)
 (global-defkey "C-c \\" 'the-the)
@@ -1625,15 +1494,11 @@ With prefix argument ARG behave as usual."
 
 (global-defkey "C-c t" 'insert-date)
 
-;; (global-defkey "C-c m" 'man)
-;; (global-defkey "C-c r" 'revert-buffer)
 (global-defkey "C-c s" 'jump-to-scratch-buffer)
 (global-defkey "C-c z" 'jump-to-text-scratch-buffer)
 
 (global-defkey "C-c u" 'rename-uniquely)
-;; (global-defkey "C-c v" 'show-buffer-file-name)
 (global-defkey "C-c w" 'copy-filename-as-kill)
-;; (global-defkey "C-c w" 'locate)
 
 (bind-with-new-map help-map "a"
   ("a" . 'apropos)
@@ -1659,12 +1524,6 @@ With prefix argument ARG behave as usual."
 (global-defkey "C-<home>"       'move-to-window-top)
 (global-defkey "C-<end>"        'move-to-window-bottom)
 
-;; (global-defkey "C-<prior>"      'backward-page)
-;; (global-defkey "C-<next>"       'forward-page)
-
-;; (global-defkey "C-<home>"       'beginning-of-buffer)
-;; (global-defkey "C-<end>"        'end-of-buffer)
-
 (global-defkey "C-<prior>"      'move-to-window-top)
 (global-defkey "C-<next>"       'move-to-window-bottom)
 
@@ -1679,36 +1538,26 @@ With prefix argument ARG behave as usual."
 (global-defkey "S-<f1>"         'woman)
 
 (global-defkey "<f2>"           'save-buffer)
-;; (global-defkey "S-<f2>"         'save-some-buffers)
-;; (global-defkey "S-<f2>"         'revert-buffer)
 (global-defkey "S-<f2>"         'revert-buffer-preserve-modes)
 
 (global-defkey "<f3>"           'dired-jump)
 (global-defkey "S-<f3>"         'shell-hier)
 
-;; (global-defkey "<f4>"           'next-buffer)
 (global-defkey "<f4>"           'iswitchb-buffer)
 ;; (global-defkey "<f4>"           'anything-switch-buffer)
 (global-defkey "S-<f4>"         'bury-buffer)
 
-;; (global-defkey "<f5>"           'other-window)
 (global-defkey "<f5>"           'resize-window)
 (global-defkey "S-<f5>"         'swap-window-positions)
-
-;; (global-defkey "<f6>"           'call-last-kbd-macro)
-;; (global-defkey "S-<f6>"         'edit-kbd-macro)
 
 (global-defkey "<f7>"           'insert-default-register)
 (global-defkey "S-<f7>"         'copy-to-default-register)
 
 (global-defkey "<f8>"           'grep)
-;; (global-defkey "S-<f8>"         'occur)
 (global-defkey "S-<f8>"         'grep-find)
 
 (global-defkey "<f9>"           'next-error)
 (global-defkey "S-<f9>"         'compile)
-
-;; (global-defkey "<f10>"          'repeat)
 
 (global-defkey "<f10>"           'call-last-kbd-macro)
 (global-defkey "S-<f10>"         'apply-macro-to-region-lines)
@@ -1721,31 +1570,17 @@ With prefix argument ARG behave as usual."
 ;; (global-unset-key [f12])
 ;; (define-key function-key-map [f12] 'event-apply-hyper-modifier)
 
-
-'(global-defkey "<f12>" (lambda ()
-                         (interactive)
-                         (save-window-excursion
-                           (save-excursion
-                             (message "Recursive edit in progress")
-                             (recursive-edit)))))
-
 (global-defkey "<f12>" 'imenu)
 
-(global-defkey "<key-20>" 'toggle-window-dedicated) ; that's `scroll-lock'
+(global-defkey "<scroll>" 'toggle-window-dedicated) ; that's `scroll-lock'
 
 (global-defkey "<find>"         'isearch-forward)
 (global-defkey "<execute>"      'execute-extended-command)
-
-;; (global-defkey "C-r"            'isearch-backward-regexp)
-;; (global-defkey "C-M-r"          'isearch-backward)
-;; (global-defkey "C-s"            'isearch-forward-regexp)
-;; (global-defkey "C-M-s"          'isearch-forward)
 
 (global-defkey "<print>"        'ps-spool-buffer-with-faces)
 (global-defkey "S-<print>"      'set-default-printer)
 
 ;;;_* Frame parameters
-;; (add-to-list 'initial-frame-alist '(cursor-type . box))
 (add-to-list 'default-frame-alist '(cursor-type . box))
 
 ;;;_* Time (and date) display setup.
@@ -1755,7 +1590,7 @@ With prefix argument ARG behave as usual."
 (setq display-time-24hr-format t)
 (setq display-time-use-mail-icon t)
 (when running-nt
-  (set-time-zone-rule "CET-1CEDT-2,M3.5.0/2,M10.5.0/3"))
+  (set-time-zone-rule "GMT-1"))
 
 ;;;_* Mode-line and Frame-title format:
 
@@ -1771,8 +1606,6 @@ With prefix argument ARG behave as usual."
   (while (rassq 'perl-mode f)
     (setcdr (rassq 'perl-mode f) 'cperl-mode)))
 (setq auto-mode-alist (append '(("\\.\\([bB][aA][tT]\\|[cC][mM][dD]\\)\\'" . ntcmd-mode)
-                                ;; ("CONFIG\\." . bat-mode)
-                                ;; ("AUTOEXEC\\." . bat-mode)
                                 ("[^/]\\.dired\\'" . dired-virtual-mode)
                                 ("\\.fi\\'" . fortran-mode)
                                 ("\\.bash_\\(functions\\|aliases\\)\\'" . sh-mode)
@@ -1959,24 +1792,6 @@ in the minibuffer history."
     (when (null completed)
       (expand-abbrev))))
 
-;; (defun dsg-complete-alias ()
-;;   (interactive)
-;;   (let* ((b-o-w (save-excursion
-;;                   (forward-word -1)
-;;                   (point)))
-;;          (word (buffer-substring b-o-w (point)))
-;; ;;         (maybes (all-completions word mail-aliases)))
-;;          (maybes (all-completions word mail-abbrevs)))
-;;     (cond ((null maybes)
-;;            (error "no aliases match %s" word))
-;;           ((= (length maybes) 1)
-;;            (delete-region b-o-w (point))
-;;            (insert (car maybes)))
-;;           (t
-;;            (with-output-to-temp-buffer "*Completions*"
-;;              (display-completion-list maybes))))
-;;     (expand-abbrev)))
-
 
 ;;;_ + SES
 (eval-after-load "ses" '(require-soft 'ses-formulas))
@@ -2089,7 +1904,7 @@ With prefix arg generate a fresh buffer."
 (setq cperl-clobber-lisp-bindings nil)
 (setq cperl-lazy-help-time 1)
 (setq cperl-info-page "Perl")
-;;(setq cperl-electric-parens t)
+
 (defun perl-insert-dumper (var)
   "Insert a Perl print statement to print out variable VAR.
 If VAR begins with one of `@%$' use `Data::Dumper'."
@@ -2100,7 +1915,6 @@ If VAR begins with one of `@%$' use `Data::Dumper'."
              "print \"+++ %s: $%s\\n\";") var var)))
 (add-hook 'cperl-mode-hook
 	  (lambda ()
-            ;;(cperl-toggle-autohelp)
             (cperl-lazy-install)
             (when (fboundp 'skeleton-pair-insert-maybe)
               (fset 'cperl-electric-paren 'skeleton-pair-insert-maybe)
@@ -2257,7 +2071,6 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
            ("Dired" (mode . dired-mode))
            ("Remote" (predicate file-remote-p (or (buffer-file-name (current-buffer))
                                                   (directory-file-name default-directory))))
-           ;; ("Shells" (mode . shell-mode))
            ("Shells" (predicate processp (get-buffer-process (current-buffer))))
            ("Project" (filename . "/bms08/"))
            ("Org" (or (mode . org-mode) (filename . "u:/cenis/")))
@@ -2313,7 +2126,7 @@ none is marked."
 
 
 ;;;_ + Org-mode
-(require-soft 'orgrc)
+
 
 
 ;;;_ + eshell
@@ -2408,28 +2221,6 @@ With prefix argument CREATE always start a new shell."
 
 (eval-after-load "grep"
   '(add-to-list 'grep-find-ignored-directories "_darcs"))
-
-;; (setq grep-find-command
-;;       '("find . \\( -path '*/_darcs' -o -path '*/CVS' -o -path '*/RCS' -o -path '*/{arch}' \\) -prune -o -type f -and \"!\" \\( -name '*~' -o -name '*#' \\) -exec grep -s -n  {} NUL \\;" . 160))
-
-;; (setq grep-find-template "find . <X> -type f -and \"!\" \\( -name '*~' -o -name '*#' \\) <F> -exec grep <C> -n -e <R> {} NUL \\;")
-
-;;;_ + igrep
-(autoload 'igrep "igrep"
-  "*Run `grep' PROGRAM to match EXPRESSION in FILES..." t)
-(autoload 'igrep-find "igrep"
-  "*Run `grep' via `find'" t)
-(autoload 'igrep-visited-files "igrep"
-  "*Run `grep' on all visited files." t)
-(autoload 'dired-do-igrep "igrep"
-  "*Run `grep' on the marked (or next prefix ARG) files." t)
-(autoload 'dired-do-igrep-find "igrep"
-  "*Run `grep' via `find` on the marked (or next prefix ARG) directories." t)
-(autoload 'Buffer-menu-igrep "igrep"
-  "*Run `grep' on the files visited in buffers marked with `>'." t)
-
-(setq igrep-verbose-prompts t)
-(setq igrep-expression-option nil)
 
 
 ;;;_ + calendar
@@ -2648,22 +2439,6 @@ A new buffer is created containing the disc file's contents and
 (when (require-soft 'printing)
   (pr-update-menus t))
 
-;; (when running-nt
-;;   (progn                          ; Windows NT settings
-;;     (setq lpr-command "")         ; write directly to the printer port
-;;     (setq printer-name
-;;           (cond
-;;            (at-bmw "//gmuc0222.muc/pmuc4068")
-;;            (t "LPT1")))
-;;     (when at-bmw
-;;       (setenv "GS_LIB" "e:/tools/GSTools/gs7.00/gs7.00/lib;e:/tools/GSTools/gs7.00/fonts")
-;;       (setq ps-lpr-command "e:/tools/GSTools/gs7.00/gs7.00/bin/gswin32c.exe")
-;;       (setq ps-lpr-switches '("-q" "-dNOPAUSE" "-dBATCH" "-sDEVICE=mswinpr2"))
-;;       (setq ps-printer-name t))))
-
-;; (setq ps-lpr-command lpr-command)
-;; (setq ps-printer-name printer-name)
-
 (defun set-default-printer (printer)
   "*Change the default printer."
   (interactive (list (read-from-minibuffer "Printer: " printer-name)))
@@ -2876,11 +2651,6 @@ A new buffer is created containing the disc file's contents and
 (when (and running-nt (eq window-system 'w32))
   (add-hook 'window-setup-hook 'w32-maximize-frame 'append))
 
-;;; Restore mini-buffer history
-;; see call to `savehist-mode' above
-
-
-
 ;;; Misc history
 ;; Add *all* visited files to `file-name-history', no matter if they
 ;; are visited through Dired or gnuclient or whatever.
@@ -2901,7 +2671,6 @@ A new buffer is created containing the disc file's contents and
 
 ;;;_* Local Configuration
 (when at-bmw
-  ;;(set-register ?A '(file . "//smuc1805/EE-ORG/Austausch/EE-22/ecl/"))
   (defun bmw-jump-to-exchange-dir (&optional arg)
     "*Visit (using Dired) the exchange directory, creating it if necessary."
     (interactive "P")
