@@ -1,5 +1,5 @@
 ;; init-dired: Dired initialization
-;; Time-stamp: <2011-06-09 13:39:41 Emilio C. Lopes>
+;; Time-stamp: <2012-02-09 14:41:39 Emilio C. Lopes>
 
 (setq dired-x-hands-off-my-keys t)
 (require 'dired-x)
@@ -42,6 +42,8 @@
 
 
 (set-face-foreground 'dired-ignored "gray60")
+(set-face-inverse-video-p 'dired-flagged t)
+(setq dired-perm-write-face font-lock-warning-face)
 
 (when (fboundp 'turn-on-gnus-dired-mode)
   (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode))
