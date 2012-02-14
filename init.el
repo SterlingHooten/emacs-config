@@ -2300,12 +2300,21 @@ With prefix argument CREATE always start a new shell."
   (interactive "P")
   (ediff-really-quit reverse-default-keep-variants))
 
-(defun vc-ediff ()
-  "*Compare revisions of the visited file using Ediff."
-  (interactive)
+(defun vc-ediff (file)
+  "*Compare revisions of the FILE using Ediff.
+If FILE was changed with respect to the latest version in the
+version control system, show the differences to its current
+state.  If FILE has not been edited by the user, compare the
+latest revision of FILE with its predecessor."
+  (interactive (list (buffer-file-name)))
   (require 'ediff)
   (ediff-load-version-control)
-  (ediff-vc-internal "" "" nil))
+  (if (memq (vc-state file) '(up-to-date needs-update))
+      (let* ((backend (vc-backend file))
+             (current (ediff-vc-working-revision file))
+             (previous (vc-call-backend backend 'previous-revision file current)))
+        (ediff-vc-internal previous "" nil))
+    (ediff-vc-internal "" "" nil)))
 
 (global-defkey "C-x v =" 'vc-ediff)
 
