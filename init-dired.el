@@ -1,5 +1,4 @@
 ;; init-dired: Dired initialization
-;; Time-stamp: <2012-02-09 14:41:39 Emilio C. Lopes>
 
 (setq dired-x-hands-off-my-keys t)
 (require 'dired-x)

@@ -1274,7 +1274,6 @@ set to non-nil."
                                   "Short description: "
                                   '(shell-script-mode)
                                   "#!/usr/bin/env zsh
-## Time-stamp: <>
 ## Emilio Lopes <eclig@gmx.net>
 
 ## " (file-name-nondirectory (buffer-file-name)) " --- " str "

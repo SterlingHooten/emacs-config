@@ -1,5 +1,4 @@
 ;; init-shell: Shell/Comint initialization
-;; Time-stamp: <2011-06-06 15:55:58 Emilio C. Lopes>
 
 ;; TODO: http://snarfed.org/why_i_run_shells_inside_emacs
 

@@ -1,5 +1,4 @@
 ;; init-eshell: Eshell initialization
-;; Time-stamp: <2010-11-11 15:09:37 Emilio C. Lopes>
 
 (require 'esh-module)
 ;;(add-to-list 'eshell-modules-list 'eshell-rebind)
