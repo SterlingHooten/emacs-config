@@ -58,7 +58,7 @@
 ;; (add-hook 'shell-mode-hook 'pcomplete-shell-setup)
 
 (when (require-soft 'pwdsync)
-  (add-hook 'comint-output-filter-functions 'pwdsync-filter 'append))
+  (add-hook 'shell-mode-hook (lambda () (pwdsync-mode 1))))
 
 (setq shell-dirtrack-verbose nil)
 
