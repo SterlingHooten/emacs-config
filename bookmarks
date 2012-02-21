@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("FuSi-Verzeichnis auf Antriebsprojekte/Otto_Mottoren"
+(("Apache error log on eas254.muc"
+ (filename . "/sudo:root@eas254.muc:/var/log/apache2/error.log")
+ (front-context-string . "[Sun Feb 12 06:5")
+ (rear-context-string)
+ (position . 1))
+("FuSi-Verzeichnis auf Antriebsprojekte/Otto_Mottoren"
  (filename . "//easerv.muc/projekte/Antriebsprojekte/Otto_Motoren/Funktionssicherheit/")
  (front-context-string . "Befaehigung/\n  d")
  (rear-context-string . " 0 Jul 19 09:08 ")
