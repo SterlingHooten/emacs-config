@@ -1460,6 +1460,7 @@ With prefix argument ARG behave as usual."
   ("P" . 'paredit-mode)
   ("l" . 'longlines-mode)
   ("m" . 'toggle-mouse-avoidance-mode)
+  ("o" . 'orgstruct++-mode)
   ("$" . (lambda ()
            (interactive)
            (setq show-trailing-whitespace (not show-trailing-whitespace))
@@ -1890,9 +1891,7 @@ With prefix arg generate a fresh buffer."
   (let ((buffer-name "*text scratch*"))
     (switch-to-buffer-create
      (if arg (generate-new-buffer-name buffer-name) buffer-name)
-     (if (fboundp 'org-mode)
-         'org-mode
-       'text-mode)
+     'text-mode
      nil)))
 
 
