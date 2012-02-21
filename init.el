@@ -1425,6 +1425,7 @@ With prefix argument ARG behave as usual."
 
 (bind-with-new-map (current-global-map) "C-c d"
   ("b" . 'ediff-buffers)
+  ("e" . 'eregistry)
   ("f" . 'ediff-files)
   ("d" . 'ediff-directories)
   ("P" . 'ediff-patch-file)
