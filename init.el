@@ -945,13 +945,11 @@ Z          Zeppelin         Zulu
       '(try-expand-dabbrev
         try-expand-dabbrev-visible
         try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
         try-expand-all-abbrevs
-        try-complete-lisp-symbol-partially
-        try-complete-lisp-symbol
         try-expand-list
         try-complete-file-name-partially
-        try-complete-file-name
-        try-expand-dabbrev-from-kill))
+        try-complete-file-name))
 
 (global-defkey "M-/" 'hippie-expand)
 (global-defkey "C-M-/" 'dabbrev-completion)
