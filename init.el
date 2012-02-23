@@ -34,14 +34,14 @@
 
 ;; extend the `latin-1-prefix' input method
 (eval-after-load "latin-pre"
-  `(progn
+  '(progn
      (quail-select-package "latin-1-prefix")
      (quail-define-rules
       ((append . t))
-      ("\"." ,(vector (string #xa0 #x2026))) ; ellipses, preceeded by nbsp.
-      ("\"$" #x20ac)                         ; euro sign
-      ("\"`" #x201e)                         ; gaensefuesschen links
-      ("\"'" #x201c)                         ; gaensefuesschen rechts
+      ("\"." #x2026)                    ; ellipses
+      ("\"$" #x20ac)                    ; euro sign
+      ("\"`" #x201e)                    ; gaensefuesschen links
+      ("\"'" #x201c)                    ; gaensefuesschen rechts
       )))
 
 ;;;_* Useful defs
