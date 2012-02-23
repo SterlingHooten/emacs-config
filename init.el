@@ -183,27 +183,7 @@ to the filename."
                                         (expand-file-name (current-kill 0 'do-not-move)))
               'replace))
   (global-defkey "C-c k" 'normalize-file-path-on-kill-ring)
-
-  (add-to-list 'default-frame-alist '(background-mode  . 'light))
-  (add-to-list 'default-frame-alist '(background-color . "white"))
-  (add-to-list 'default-frame-alist '(foreground-color . "black"))
-  (add-to-list 'default-frame-alist '(cursor-color . "MediumSeaGreen"))
-  (if (display-color-p)
-      (progn
-        (set-face-attribute 'default nil
-                            ;; Fontname comes from (insert (prin1-to-string (w32-select-font)))
-                            :font "-outline-Consolas-normal-r-normal-normal-19-142-96-96-c-*-iso8859-1")
-        (set-face-foreground 'mode-line "white")
-        (set-face-background 'mode-line "royalblue")
-        (set-face-foreground 'fringe "slategray")
-        (set-face-background 'fringe "white")
-        (set-cursor-color "MediumSeaGreen")
-        (set-mouse-color "red"))
-    (progn
-      (set-face-foreground 'mode-line "white")
-      (set-face-background 'mode-line "DimGray")
-      (set-face-foreground 'fringe "black")
-      (set-face-background 'fringe "gray")))
+  
   (setq w32-quote-process-args t)
   (setq process-coding-system-alist '(("bash" . undecided-unix) ("zsh" . undecided-unix)))
   (setq shell-file-name "bash")
@@ -218,10 +198,6 @@ to the filename."
 (setq inhibit-startup-echo-area-message "eclig")
 (setq inhibit-startup-echo-area-message "ecl")
 (setq initial-scratch-message nil)
-
-(setq visible-bell t)
-
-(setq use-dialog-box nil)
 
 (setq initial-major-mode 'lisp-interaction-mode)
 
@@ -309,11 +285,6 @@ to the filename."
 (setq kill-read-only-ok t)
 
 (setq windmove-wrap-around t)
-
-(when (eq window-system 'x)
-  (setq x-pointer-shape x-pointer-left-ptr)
-  (when (x-display-color-p)
-    (set-mouse-color "RoyalBlue")))
 
 (setq comment-style 'indent)
 
@@ -1330,17 +1301,9 @@ With prefix argument ARG behave as usual."
 
 ;;;_ + font-lock mode
 (when (display-color-p)
-  (require-soft 'font-latex)
-  (setq font-lock-support-mode 'jit-lock-mode)
   (setq font-lock-maximum-decoration t)
   (global-font-lock-mode 1)
   (setq font-lock-verbose nil)
-  (set-face-foreground 'font-lock-comment-face "red")
-  (set-face-foreground 'font-lock-string-face "indianred")
-  (set-face-foreground 'font-lock-type-face "darkgreen")
-  (set-face-foreground 'font-lock-variable-name-face "DodgerBlue")
-  (set-face-foreground 'font-lock-constant-face "blue2")
-  (set-face-foreground 'font-lock-variable-name-face "#008b8b")
   (add-hook 'font-lock-mode-hook
             (lambda ()
               (font-lock-add-keywords nil '(("\\*\\(ECL\\|FIXME\\)\\*:?" 0 'show-paren-mismatch-face t))))))
@@ -1547,9 +1510,6 @@ With prefix argument ARG behave as usual."
 (global-defkey "<print>"        'ps-spool-buffer-with-faces)
 (global-defkey "S-<print>"      'set-default-printer)
 
-;;;_* Frame parameters
-(add-to-list 'default-frame-alist '(cursor-type . box))
-
 ;;;_* Time (and date) display setup.
 (display-time-mode 1)
 (setq display-time-interval 5)
@@ -1558,14 +1518,6 @@ With prefix argument ARG behave as usual."
 (setq display-time-use-mail-icon t)
 (when running-nt
   (set-time-zone-rule "GMT-1"))
-
-;;;_* Mode-line and Frame-title format:
-
-(setq line-number-display-limit-width 512)
-
-(setq-default frame-title-format (list "" "Emacs Macht Alle Computer Sch\366n"))
-
-(setq-default icon-title-format frame-title-format)
 
 ;;;_* Common modes stuff
 ;; Add some suffix defs to auto-mode-alist:
@@ -2509,24 +2461,7 @@ A new buffer is created containing the disc file's contents and
   (write-region s e "~/.ee.sh"))
 
 
-(mapc-pair (lambda (x y)
-             (when (fboundp x)
-               (funcall x y)))
-           '((menu-bar-mode . -1)
-             (tool-bar-mode . -1)
-             (scroll-bar-mode . -1)
-             (transient-mark-mode . -1)
-             (blink-cursor-mode . -1)
-             (show-paren-mode . +1)
-             (line-number-mode . +1)
-             (column-number-mode . -1)
-             (savehist-mode . +1)))
-
 (global-defkey "<down-mouse-3>" 'mouse-major-mode-menu)
-
-;;(x11-maximize-frame-vertically)
-(when (and running-nt (eq window-system 'w32))
-  (add-hook 'window-setup-hook 'w32-maximize-frame 'append))
 
 ;;; Misc history
 ;; Add *all* visited files to `file-name-history', no matter if they
@@ -2594,6 +2529,38 @@ A new buffer is created containing the disc file's contents and
 
 ;;; periodically kill old buffers
 (require 'midnight)
+
+
+;;;_* User Interface
+(when running-interactively
+
+  (setq visible-bell t)
+  (setq use-dialog-box nil)
+
+  (mapc (lambda (x)
+          (when (fboundp (car x))
+            (apply 'funcall x)))
+        '((menu-bar-mode -1)
+          (tool-bar-mode -1)
+          (scroll-bar-mode -1)
+          (transient-mark-mode -1)
+          (blink-cursor-mode -1)
+          (show-paren-mode +1)
+          (line-number-mode +1)
+          (column-number-mode -1)
+          (savehist-mode +1)))
+
+  (setq line-number-display-limit-width 512)
+
+  (add-to-list 'default-frame-alist '(cursor-type . box))
+  (add-to-list 'default-frame-alist '(font . "Consolas 12"))
+
+  (when (and (display-color-p)
+             (require-soft 'solarized-definitions))
+    (create-solarized-theme light))
+
+  (setq-default frame-title-format (list "" "Emacs Macht Alle Computer Sch\366n"))
+  (setq-default icon-title-format frame-title-format))
 
 
 
