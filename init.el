@@ -17,13 +17,6 @@
 ;;;_* Language settings
 (setq edmacro-eight-bits t)
 
-;; (add-hook 'set-language-environment-hook
-;;           (lambda ()
-;;             (when (equal current-language-environment "German")
-;;               (setq default-input-method "german-prefix"))))
-
-;; (set-language-environment "German")
-
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8)
 
@@ -120,14 +113,6 @@ saving keyboard macros (cf. `insert-kbd-macro')."
   "*Try to require FEATURE, but don't signal an error if `require' fails."
   `(require ,feature ,file 'noerror))
 
-(defmacro mapc-pair (proc seq)
-  "Apply PROC to each element of SEQ, a sequence of pairs.
-PROC should accept two arguments: the car and the cdr of each
-pair. PROC is called for side effects only, don't accumulate the
-results "
-  `(mapc (lambda (x)
-           (funcall ,proc (car x) (cdr x))) ,seq))
-
 ;;;_* Load-path
 (add-to-path 'load-path user-emacs-directory)
 (add-to-path 'load-path (concat user-emacs-directory "lib"))
@@ -212,7 +197,6 @@ to the filename."
 
 (setq disabled-command-function nil)    ; no disabled commands.
 (put 'rmail 'disabled t)                ; avoid mbox destruction
-
 
 (setq message-log-max 1024)     ; max size of the "*Messages*" buffer.
 
@@ -396,24 +380,6 @@ The read-only status of the buffer is also preserved."
   (when (backup-file-name-p buffer-file-name)
     (toggle-read-only 1)))
 (add-hook 'find-file-hooks 'mark-backup-buffers-read-only)
-
-(defun x11-maximize-frame-vertically ()
-  "*Maximize the selected frame vertically.
-Works only for X11."
-  (interactive)
-  (when (eq window-system 'x)
-    (set-frame-height (selected-frame)
-                      (/ (- (x-display-pixel-height) 50) (frame-char-height)))
-    (set-frame-position (selected-frame)
-                        (cdr (assq 'left (frame-parameters))) 30)))
-
-(defun w32-maximize-frame ()
-  "*Maximize the selected frame.
-Works only on Windows."
-  (interactive)
-  (unless (fboundp 'w32-send-sys-command)
-    (error "This command is not available on this system"))
-  (w32-send-sys-command #xf030))
 
 ;;;_ + other-window-or-other-buffer
 
