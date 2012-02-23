@@ -515,40 +515,6 @@ Subject to `buffer-ignore-regexp'."
 	  (error (beep)))))
     (message "Done.")))
 
-;; The following two functions written by Noah Friedman
-;; http://www.splode.com/users/friedman/software/emacs-lisp/src/buffer-fns.el
-(defun toggle-mode-line-inverse-video (&optional current-only)
-  (interactive)
-  (cond ((fboundp 'set-face-attribute)
-         (let ((onp (face-attribute 'modeline :inverse-video))
-               (dt (cdr (assq 'display-type (frame-parameters)))))
-           (when (equal onp 'unspecified)
-             (setq onp nil))
-           (set-face-attribute 'modeline nil :inverse-video (not onp))
-           ;; This should be toggled on mono frames; in color frames, this
-           ;; must always be t to use the face attribute.
-           (setq mode-line-inverse-video (or (eq dt 'color) (not onp)))
-           (force-mode-line-update (not current-only))))
-        (t
-         (setq mode-line-inverse-video (not mode-line-inverse-video))
-         (force-mode-line-update (not current-only)))))
-
-(defun bell-flash-mode-line ()
-  "*Effect ringing bell by flashing mode line momentarily.
-In emacs 20.1 or later, you can use the variable `ring-bell-function'
-to declare a function to run in order to ring the emacs bell."
-  (let ((localp (local-variable-p 'mode-line-inverse-video)))
-    (or localp
-        (make-local-variable 'mode-line-inverse-video))
-    (toggle-mode-line-inverse-video t)
-    (sit-for 0 100)
-    ;; Set it back because it may be a permanently local variable.
-    (toggle-mode-line-inverse-video t)
-    (or localp
-        (kill-local-variable 'mode-line-inverse-video))))
-(setq ring-bell-function 'bell-flash-mode-line)
-
-
 (defun describe-face-at-point ()
   "*Display the properties of the face at point."
   (interactive)
