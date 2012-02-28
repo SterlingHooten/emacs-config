@@ -9,6 +9,13 @@
 (setq calendar-mark-holidays-flag t)
 (add-hook 'calendar-today-visible-hook 'calendar-mark-today)
 
+(setq calendar-view-holidays-initially-flag t)
+(add-hook 'calendar-move-hook
+          (lambda ()
+            "Update the holidays window (if visible) as we move in calendar."
+            (when (get-buffer-window holiday-buffer 'visible)
+              (calendar-list-holidays))))
+
 ;; display the ISO week numbers (see also the docstring of `calendar-intermonth-text')
 (copy-face font-lock-constant-face 'calendar-iso-week-face)
 (set-face-attribute 'calendar-iso-week-face nil
