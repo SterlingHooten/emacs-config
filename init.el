@@ -44,6 +44,11 @@
       ("\"'" #x201c)                    ; gaensefuesschen rechts
       )))
 
+(setq eol-mnemonic-undecided "(?)" ;; unknown EOL type
+      eol-mnemonic-unix  "(unix)"  ;; LF
+      eol-mnemonic-dos  "(dos)"    ;; CRLF
+      eol-mnemonic-mac  "(mac)")   ;; CR
+
 ;;;_* Useful defs
 
 (setq hostname (car (split-string system-name "\\." )))
