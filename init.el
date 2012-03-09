@@ -2484,8 +2484,8 @@ A new buffer is created containing the disc file's contents and
   (setq ispell-program-name "f:/Apps/AspellPortable/bin/aspell.exe")
   (require-soft 'cygpath)
   (let ((cygwin-prefix "e:/tools/gnu"))
-    (add-to-path 'exec-path (concat cygwin-prefix "/bin") 'append)
-    (add-to-path 'exec-path (concat cygwin-prefix "/usr/local/bin") 'append)
+    (add-to-path 'exec-path (concat cygwin-prefix "/bin"))
+    (add-to-path 'exec-path (concat cygwin-prefix "/usr/local/bin"))
     (add-to-path 'Info-default-directory-list (concat cygwin-prefix "/usr/info") 'append)
     (setenv "MAGIC" (cygpath-windows2unix (concat cygwin-prefix "/usr/share/magic")))
     (setq woman-manpath
