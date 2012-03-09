@@ -31,14 +31,12 @@ This command must be bound to a mouse event."
                              (= (point) (minibuffer-prompt-end)))
                         (save-excursion
                           (backward-char)
-                          (looking-at "\\s-\\|\\s\(")))
-              (insert " "))
+                          (looking-at "\\s-\\|\\s\("))))
             (insert sexp-at-mouse-pos)
             (unless (or (eolp)
                         (and (minibufferp)
                              (= (point) (minibuffer-prompt-end)))
-                        (looking-at "\\s-\\|\\s\)"))
-              (insert " ")))
+                        (looking-at "\\s-\\|\\s\)"))))
         (error "Mouse not at a sexp")))))
 
 (global-set-key [S-mouse-3] 'mouse-insert-sexp-at-point)
