@@ -2190,8 +2190,8 @@ With prefix argument CREATE always start a new shell."
   "*Compare revisions of the FILE using Ediff.
 If FILE was changed with respect to the latest version in the
 version control system, show the differences to its current
-state.  If FILE has not been edited by the user, compare the
-latest revision of FILE with its predecessor.
+state.  If FILE has not been edited by the user, ask if we should
+compare the current revision of FILE with its predecessor.
 
 With a prefix argument HISTORIC, prompt for two revision
 designators specifying the revisions to compare."
@@ -2202,10 +2202,12 @@ designators specifying the revisions to compare."
    (historic
     (ediff-revision file))
    ((memq (vc-state file) '(up-to-date needs-update))
-    (let* ((backend (vc-backend file))
-           (current (ediff-vc-working-revision file))
-           (previous (vc-call-backend backend 'previous-revision file current)))
-      (ediff-vc-internal previous "" nil)))
+    (unless (and (called-interactively-p)
+                 (not (y-or-n-p "This file is up-to-date.  Compare this revision with its predecessor? ")))
+      (let* ((backend (vc-backend file))
+             (current (ediff-vc-working-revision file))
+             (previous (vc-call-backend backend 'previous-revision file current)))
+        (ediff-vc-internal previous "" nil))))
    (t (ediff-vc-internal "" "" nil))))
 
 (global-defkey "C-x v =" 'vc-ediff-dwim)
