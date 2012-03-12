@@ -234,6 +234,14 @@ Interactively, when called with a prefix arg, ask for the mark character to use.
 
 (defkey dired-mode-map "* w" 'dired-mark-region-files)
 
+(defun dired-flag-marked-files  ()
+  "*Flag marked files for deletion.
+In other words: change all instances of `dired-marker-char' to `dired-del-marker'."
+  (interactive)
+  (dired-change-marks dired-marker-char dired-del-marker))
+
+(defkey dired-mode-map "* d" 'dired-flag-marked-files)
+
 ;; http://www.masteringemacs.org/articles/2011/03/25/working-multiple-files-dired/
 (setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
 
