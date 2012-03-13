@@ -41,6 +41,9 @@
 
 
 (set-face-foreground 'dired-ignored "gray60")
+(copy-face 'dired-mark 'dired-marked)
+(set-face-bold-p 'dired-marked t)
+(set-face-inverse-video-p 'dired-marked t)
 (set-face-inverse-video-p 'dired-flagged t)
 (setq dired-perm-write-face font-lock-warning-face)
 
