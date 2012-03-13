@@ -1587,8 +1587,6 @@ in the minibuffer history."
 
 ;;;_ + magit
 (add-to-path 'load-path (concat user-emacs-directory "lib/magit"))
-(when at-bmw
-  (setq magit-git-executable "f:/apps/PortableGit-1.7.4/bin/git.exe"))
 (autoload 'magit-status "magit" nil t)
 
 
@@ -2483,7 +2481,6 @@ A new buffer is created containing the disc file's contents and
                 (reverse exec-path))
           path))
   (setq sql-oracle-program "c:/Oracle/Client/bin/sqlplus.exe")
-  (setq ispell-program-name "f:/Apps/AspellPortable/bin/aspell.exe")
   (require-soft 'cygpath)
   (let ((cygwin-prefix "e:/tools/gnu"))
     (add-to-path 'exec-path (concat cygwin-prefix "/bin"))
