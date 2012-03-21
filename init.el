@@ -1396,6 +1396,7 @@ With prefix argument ARG behave as usual."
 (global-defkey "C-c s" 'jump-to-scratch-buffer)
 (global-defkey "C-c z" 'jump-to-text-scratch-buffer)
 
+(global-defkey "C-c r" 'rename-buffer)
 (global-defkey "C-c u" 'rename-uniquely)
 (global-defkey "C-c w" 'copy-filename-as-kill)
 
