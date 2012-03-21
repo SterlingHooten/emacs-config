@@ -12,6 +12,7 @@
 
 (setq comint-input-ring-size 4000)
 (setq comint-input-autoexpand nil)
+(setq shell-input-autoexpand nil)
 (setq comint-input-ignoredups t)
 (setq comint-buffer-maximum-size (* 8 1024))
 
