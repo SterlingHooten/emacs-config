@@ -1095,6 +1095,7 @@ Only intended for interactive use."
 (setq iswitchb-case t)
 (when (require-soft 'recentf)
   (recentf-mode 1)
+  (setq recentf-save-file (locate-user-emacs-file ".recentf" ".recentf"))
   (setq iswitchb-use-virtual-buffers t))
 (setq iswitchb-regexp nil)
 (setq iswitchb-prompt-newbuffer nil)
