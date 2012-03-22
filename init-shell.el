@@ -20,6 +20,19 @@
 
 (add-hook 'shell-mode-hook
           (lambda ()
+            (let ((shell (file-name-sans-extension
+                          (file-name-nondirectory
+                           (car (process-command (get-buffer-process (current-buffer))))))))
+              (cond
+               ((string= shell "bash")
+                (setq comint-input-ring-file-name
+                      (or (getenv "HISTFILE")
+                          (if (file-exists-p "~/.bash.d/.bash_history")
+                              "~/.bash.d/.bash_history"
+                            "~/.bash_history"))))))))
+
+(add-hook 'shell-mode-hook
+          (lambda ()
             ;; make "," a word constituent so that we can use it in
             ;; abbrevs (and also filenames)
             (modify-syntax-entry ?\, "w")
