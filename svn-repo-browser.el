@@ -26,7 +26,20 @@
 
 (defun srb-visit ()
   (interactive)
-  (svn-repo-browser (concat svn-repo-browser-target "/" (srb-get-filename))))
+  (let ((url (concat svn-repo-browser-target "/" (srb-get-filename))))
+    (if (srb-looking-at-directory)
+        (svn-repo-browser url)
+      (srb-find-file url))))
+
+(defun srb-find-file (url)
+  (let ((buffer (generate-new-buffer (file-name-nondirectory url))))
+    (with-current-buffer buffer
+      (call-process "svn" nil t t "--non-interactive" "cat" url)
+      (goto-char (point-min))
+      (set-buffer-modified-p nil)
+      (normal-mode)
+      (rename-buffer (format "*%s*" (buffer-name)) 'unique))
+    (switch-to-buffer buffer)))
 
 (defun srb-next-file (arg)
   (interactive "p")
@@ -42,13 +55,27 @@
   (srb-move-to-filename)
   (buffer-substring-no-properties (point) (point-at-eol)))
 
+(defun srb-looking-at-directory ()
+  (string-match-p "/$" (srb-get-filename)))
+
 (defun srb-move-to-filename ()
-  (let ((HH:MM "[ 0-2][0-9][:.][0-5][0-9] ")
+  (let ((date-regexp "\\s-[ 0-3][0-9]\\s-+\\([0-2][0-9][:.][0-5][0-9]\\|[0-9]\\{4\\}\\) ")
         (eol (line-end-position)))
     (cond
-     ((looking-back HH:MM)
+     ((looking-back date-regexp)
       t)
-     ((re-search-forward HH:MM eol t)
+     ((re-search-forward date-regexp eol t)
       (goto-char (match-end 0)))
      (t
       (error "No file on this line")))))
+
+;; (defun srb-run-svn (args)
+;;   (let ((buffer (get-buffer-create " *svn-repo-browser*")))
+;;     (with-current-buffer buffer
+;;       (erase-buffer)
+;;       (if (apply call-process "svn" nil t t "--non-interactive" args)
+;;           ...
+;;         (progn
+;;           (display-buffer buffer)
+;;           (error "Subversion command failed")))))
+;; )
