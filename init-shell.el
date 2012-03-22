@@ -76,6 +76,21 @@
 
 (setq shell-dirtrack-verbose nil)
 
+(defmacro with-buffer-hosting-pid (pid body)
+  "*Execute BODY in the buffer associated with the process with id PID.
+Return NIL if there is no buffer hosting a process with PID.
+Otherwise return the value of the last form in BODY."
+  (let ((buffer (make-symbol "buffer")))
+    `(let ((,buffer (catch 'found
+                      (dolist (,buffer (buffer-list))
+                        (let ((process (get-buffer-process ,buffer)))
+                          (and process
+                               (= ,pid (process-id process))
+                               (throw 'found ,buffer)))))))
+       (and ,buffer
+            (with-current-buffer ,buffer
+              ,body)))))
+
 ;; (defun shell-snarf-aliases ()
 ;;   "Return a list of all defined shell aliases."
 ;;   ;; (comint-redirect-results-list "alias" "^alias \\([^=]+\\)=.+\n" 1)
