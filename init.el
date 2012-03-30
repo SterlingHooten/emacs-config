@@ -1248,12 +1248,6 @@ With prefix argument ARG behave as usual."
     (mouse-avoidance-mode)))
 
 
-;;;_ + Filladapt
-(when (require-soft 'filladapt)
-  (setq filladapt-fill-column-tolerance 6)
-  (setq filladapt-mode-line-string nil)
-  (add-hook 'text-mode-hook 'turn-on-filladapt-mode))
-
 ;;;_ + Uniquify
 (require 'uniquify)
 (setq uniquify-after-kill-buffer-p t)
