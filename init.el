@@ -2011,8 +2011,20 @@ none is marked."
 
 
 ;;;_ + Org-mode
+(setq org-todo-keywords
+      (quote ((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d!/!)")
+              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "DEFERRED(z)"))))
 
+(setq org-todo-keyword-faces
+      '(("TODO" :foreground "red" :weight bold)
+        ("STARTED" :foreground "blue" :weight bold)
+        ("DONE" :foreground "forest green" :weight bold)
+        ("WAITING" :foreground "orange" :weight bold)
+        ("HOLD" :foreground "magenta" :weight bold)
+        ("CANCELLED" :foreground "forest green" :weight bold)
+        ("DEFERRED" :foreground "blue" :weight bold)))
 
+(setq org-use-fast-todo-selection t)
 
 ;;;_ + eshell
 ;; TODO: Make it more generic (`next-buffer-satisfying') and use "ring.el"
