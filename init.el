@@ -1487,8 +1487,7 @@ With prefix argument ARG behave as usual."
 (setq display-time-day-and-date nil)
 (setq display-time-24hr-format t)
 (setq display-time-use-mail-icon t)
-(when running-nt
-  (set-time-zone-rule "GMT-1"))
+(set-time-zone-rule nil)
 
 ;;;_* Common modes stuff
 ;; Add some suffix defs to auto-mode-alist:
