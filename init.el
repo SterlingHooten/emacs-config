@@ -1212,7 +1212,12 @@ With prefix argument ARG behave as usual."
     (when (looking-at "\\sw\\|\\s_")
       (forward-sexp))))
 
-(partial-completion-mode 1)
+(if (boundp 'completion-pcm-complete-word-inserts-delimiters)
+    (progn
+      (setq completion-styles '(partial-completion initials))
+      (setq completion-pcm-complete-word-inserts-delimiters t))
+  (when (require-soft 'complete)
+    (partial-completion-mode 1)))
 
 (setq resize-mini-windows t)
 
