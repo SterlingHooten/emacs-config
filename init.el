@@ -2145,6 +2145,7 @@ With prefix argument CREATE always start a new shell."
 ;;;_ + Diff/Ediff
 
 (setq diff-switches "--unified")
+(setq diff-default-read-only t)
 
 (setq ediff-keep-variants nil)
 
