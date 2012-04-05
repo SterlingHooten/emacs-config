@@ -1093,7 +1093,7 @@ Only intended for interactive use."
   (iswitchb-default-keybindings))
 (setq read-buffer-function 'iswitchb-read-buffer)
 (setq iswitchb-case t)
-(when (require-soft 'recentf)
+(when (and running-interactively (require-soft 'recentf))
   (recentf-mode 1)
   (setq recentf-save-file (locate-user-emacs-file ".recentf" ".recentf"))
   (setq iswitchb-use-virtual-buffers t))
@@ -1876,9 +1876,10 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 ;; With these hooks and using emacs.bash (or emacs.csh), both from
 ;; "etc" dir, it is possible to specify arguments when resuming emacs
 ;; after a suspension.
-(add-hook 'suspend-hook 'resume-suspend-hook)
-(add-hook 'suspend-resume-hook 'resume-process-args)
-(server-start)
+(when running-interactively
+  (add-hook 'suspend-hook 'resume-suspend-hook)
+  (add-hook 'suspend-resume-hook 'resume-process-args)
+  (server-start))
 
 
 ;;;_ + Abbrevs
