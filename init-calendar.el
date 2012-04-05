@@ -58,6 +58,9 @@
 (setq solar-n-hemi-seasons
       '("Frühlingsanfang" "Sommeranfang" "Herbstanfang" "Winteranfang"))
 
+(setq calendar-daylight-savings-starts '(calendar-nth-named-day -1 0 3 year))
+(setq calendar-daylight-savings-ends '(calendar-nth-named-day -1 0 10 year))
+
 (setq holiday-general-holidays
       '((holiday-fixed 1 1 "Neujahr")
         (holiday-fixed 5 1 "1. Mai")
@@ -84,6 +87,21 @@
         (holiday-fixed 11 1 "Allerheiligen")
         ;; (holiday-float 11 3 1 "Buss- und Bettag" 16)
         (holiday-float 11 0 1 "Totensonntag" 20)))
+
+(setq holiday-solar-holidays
+      '((solar-equinoxes-solstices)
+        (holiday-sexp calendar-daylight-savings-starts
+                      (format "Begin der Sommerzeit um %s"
+                              (solar-time-string
+                               (/ calendar-daylight-savings-starts-time
+                                  (float 60))
+                               calendar-standard-time-zone-name)))
+        (holiday-sexp calendar-daylight-savings-ends
+                      (format "Ende der Sommerzeit um %s"
+                              (solar-time-string
+                               (/ calendar-daylight-savings-ends-time
+                                  (float 60))
+                               calendar-daylight-time-zone-name)))))
 
 (setq calendar-holidays
       (append holiday-general-holidays holiday-local-holidays holiday-other-holidays
