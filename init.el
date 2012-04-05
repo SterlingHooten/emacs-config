@@ -201,7 +201,7 @@ to the filename."
 (setq view-read-only nil)
 
 (setq disabled-command-function nil)    ; no disabled commands.
-(put 'rmail 'disabled t)                ; avoid mbox destruction
+(substitute-key-definition 'overwrite-mode nil (current-global-map)) ; unbind `overwrite-mode'
 
 (setq message-log-max 1024)     ; max size of the "*Messages*" buffer.
 
