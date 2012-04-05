@@ -2130,7 +2130,18 @@ With prefix argument CREATE always start a new shell."
   (defkey occur-mode-map "n" 'occur-next)
   (defkey occur-mode-map "<down>" 'occur-next)
   (defkey occur-mode-map "p" 'occur-prev)
-  (defkey occur-mode-map "<up>" 'occur-prev))
+  (defkey occur-mode-map "<up>" 'occur-prev)
+  ;;Occur - Kin Cho <kin@dynarc.com>
+  (define-key occur-mode-map "F"
+    (lambda (regexp) (interactive "sFlush lines matching: ")
+      "Delete lines containing matches for REGEXP."
+      (let ((buffer-read-only nil))
+        (flush-lines regexp))))
+  (define-key occur-mode-map "K"
+    (lambda (regexp) (interactive "sKeep only lines matching: ")
+      "Delete all lines except those containing matches for REGEXP."
+      (let ((buffer-read-only nil))
+        (keep-lines regexp)))))
 (add-hook 'occur-mode-hook 'my-occur-mode-hook)
 
 (defun occur-shrink-window ()
