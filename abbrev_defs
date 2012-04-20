@@ -1,4 +1,4 @@
-;;-*-coding: emacs-mule;-*-
+;;-*-coding: utf-8;-*-
 (define-abbrev-table 'Buffer-menu-mode-abbrev-table '())
 
 (define-abbrev-table 'Custom-mode-abbrev-table '())
@@ -8,6 +8,10 @@
 (define-abbrev-table 'awk-mode-abbrev-table
   '(
    ))
+
+(define-abbrev-table 'bibtex-mode-abbrev-table '())
+
+(define-abbrev-table 'bookmark-bmenu-mode-abbrev-table '())
 
 (define-abbrev-table 'browse-kill-ring-edit-mode-abbrev-table '())
 
@@ -73,6 +77,10 @@
 
 (define-abbrev-table 'diff-mode-abbrev-table '())
 
+(define-abbrev-table 'display-time-world-mode-abbrev-table '())
+
+(define-abbrev-table 'doctex-mode-abbrev-table '())
+
 (define-abbrev-table 'dsssl-mode-abbrev-table '())
 
 (define-abbrev-table 'edebug-eval-mode-abbrev-table '())
@@ -92,6 +100,8 @@
 (define-abbrev-table 'gnus-article-edit-mode-abbrev-table '())
 
 (define-abbrev-table 'grep-mode-abbrev-table '())
+
+(define-abbrev-table 'help-mode-abbrev-table '())
 
 (define-abbrev-table 'html-mode-abbrev-table '())
 
@@ -123,6 +133,10 @@
 
 (define-abbrev-table 'log-view-mode-abbrev-table '())
 
+(define-abbrev-table 'magit-log-edit-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-show-branches-mode-abbrev-table '())
+
 (define-abbrev-table 'mail-abbrevs '())
 
 (define-abbrev-table 'makefile-automake-mode-abbrev-table '())
@@ -139,15 +153,15 @@
 
 (define-abbrev-table 'message-mode-abbrev-table
   '(
-    ("gr" "Gruß
+    ("gr" "GruÃŸ
 
- Emílio
+ EmÃ­lio
 " nil 23)
     ("gre" "are" nil 0)
     ("hlk" "Hallo liebe Kollegen!" nil 4)
-    ("mfg" "Mit freundlichen Grüßen
+    ("mfg" "Mit freundlichen GrÃ¼ÃŸen
 
- Emílio Lopes
+ EmÃ­lio Lopes
 " nil 2)
    ))
 
@@ -161,9 +175,13 @@
 
 (define-abbrev-table 'ntcmd-mode-abbrev-table '())
 
+(define-abbrev-table 'nxml-mode-abbrev-table '())
+
 (define-abbrev-table 'objc-mode-abbrev-table
   '(
    ))
+
+(define-abbrev-table 'occur-edit-mode-abbrev-table '())
 
 (define-abbrev-table 'occur-mode-abbrev-table '())
 
@@ -178,6 +196,10 @@
    ))
 
 (define-abbrev-table 'plain-tex-mode-abbrev-table '())
+
+(define-abbrev-table 'process-menu-mode-abbrev-table '())
+
+(define-abbrev-table 'prog-mode-abbrev-table '())
 
 (define-abbrev-table 'ps-mode-abbrev-table '())
 
@@ -223,10 +245,10 @@
 
 (define-abbrev-table 'shell-mode-abbrev-table
   '(
-    (",g" "| grep" nil 13)
+    (",g" "| grep" nil 17)
     (",gg" "2>&1 | grep" nil 0)
     (",gi" "| grep -i" nil 0)
-    (",h" "--help" nil 5)
+    (",h" "--help" nil 12)
     (",nn" "> /dev/null 2>&1" nil 1)
     (",nul" "/dev/null" nil 0)
     (",s" "| sort " nil 0)
@@ -250,26 +272,33 @@
 
 (define-abbrev-table 'tcl-mode-abbrev-table '())
 
+(define-abbrev-table 'tex-mode-abbrev-table '())
+
 (define-abbrev-table 'tex-shell-abbrev-table '())
 
 (define-abbrev-table 'texinfo-mode-abbrev-table '())
 
 (define-abbrev-table 'text-mode-abbrev-table
   '(
-    ("ggf" "gegebenenfalls" nil 7)
-    ("gr" "Gruß
+    ("bzgl" "bezÃ¼glich" nil 0)
+    ("fÃœr" "fÃ¼r" nil 0)
+    ("ggf" "gegebenenfalls" nil 10)
+    ("gr" "GruÃŸ
 
- Emílio
-" nil 67)
+ EmÃ­lio
+" nil 84)
     ("gre" "are" nil 0)
     ("hlk" "Hallo liebe Kollegen!" nil 5)
-    ("mfg" "Mit freundlichen Grüßen
+    ("mfg" "Mit freundlichen GrÃ¼ÃŸen
 
- Emílio Lopes
+ EmÃ­lio Lopes
 " nil 2)
+    ("mgl" "mÃ¶glich" nil 0)
    ))
 
 (define-abbrev-table 'vc-annotate-mode-abbrev-table '())
+
+(define-abbrev-table 'vc-dir-mode-abbrev-table '())
 
 (define-abbrev-table 'vc-dired-mode-abbrev-table '())
 
