@@ -107,7 +107,41 @@ Otherwise return the value of the last form in BODY."
 ;;     (comint-dynamic-simple-complete cmd shell-aliases)))
 
 ;;(add-hook 'shell-dynamic-complete-functions 'shell-complete-alias)
+
+;;; http://www.masteringemacs.org/articles/2012/01/16/pcomplete-context-sensitive-completion-emacs/
+(add-to-list 'process-coding-system-alist '("svn" . undecided-dos))
 
+(defconst pcmpl-svn-commands
+  '("add" "blame" "praise" "annotate" "ann"
+    "cat" "changelist" "cl" "checkout" "co"
+    "cleanup" "commit" "ci" "copy" "cp"
+    "delete" "del" "remove" "rm" "diff" "di"
+    "export" "help" "h" "import" "info"
+    "list" "ls" "lock" "log" "merge" "mergeinfo"
+    "mkdir" "move" "mv" "rename" "ren"
+    "propdel" "pdel" "pd" "propedit" "pedit" "pe"
+    "propget" "pget" "pg" "proplist" "plist" "pl"
+    "propset" "pset" "ps"
+    "resolve" "resolved" "revert"
+    "status" "stat" "st" "switch" "sw"
+    "unlock" "update" "up" "upgrade"))
+
+(defun pcomplete/svn ()
+  "Completion for `svn'"
+  ;; Completion for the command argument.
+  (pcomplete-here* pcmpl-svn-commands)
+  (cond
+   ;; complete files/dirs forever if the command is `add' or `rm'.
+   ((pcomplete-match (regexp-opt '("add" "delete" "del" "remove" "rm")) 1)
+    (while (pcomplete-here (pcomplete-entries))))
+   ((pcomplete-match "ls" 1)
+    (let ((current (nth pcomplete-index pcomplete-args)))
+      (pcomplete-here* (pcmpl-svn-get-files (file-name-directory current))
+                       (file-name-nondirectory current))))))
+
+(defun pcmpl-svn-get-files (dir)
+  "Return a list of `svn' files in DIR"
+  (split-string (pcomplete-process-result "svn" "--non-interactive" "ls" dir)))
 
 ;;; Comint
 (setq-default comint-scroll-to-bottom-on-input 'this)
