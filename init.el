@@ -876,42 +876,52 @@ upper case, downcase it."
   
   (browse-url (format "http://de.wikipedia.org/wiki/Special:Search?search=%s" word)))
 
-(defvar spelling-alphabet
-  "Buchstabe  Deutschland      ITU/ICAO/NATO
-A          Anton            Alfa
-Ä          Ärger            –
-B          Berta            Bravo
-C          Cäsar            Charlie
-Ch         Charlotte        –
-D          Dora             Delta
-E          Emil             Echo
-F          Friedrich        Foxtrot
-G          Gustav           Golf
-H          Heinrich         Hotel
-I          Ida              India
-J          Julius           Juliett
-K          Kaufmann         Kilo
-L          Ludwig           Lima
-M          Martha           Mike
-N          Nordpol          November
-O          Otto             Oscar
-Ö          Ökonom           –
-P          Paula            Papa
-Q          Quelle           Quebec
-R          Richard          Romeo
-S          Siegfried        Sierra
-Sch        Schule           –
-ß          Eszett           –
-T          Theodor          Tango
-U          Ulrich           Uniform
-Ü          Übermut          –
-V          Viktor           Victor
-W          Wilhelm          Whiskey
-X          Xanthippe        X-Ray
-Y          Ypsilon          Yankee
-Z          Zeppelin         Zulu
-")
+(setq spelling-alphabet
+      ;; Buchstabe    Deutschland        ITU/ICAO/NATO
+      '(("A"          "Anton"            "Alfa")
+        ("Ä"          "Ärger"            "?")
+        ("B"          "Berta"            "Bravo")
+        ("C"          "Cäsar"            "Charlie")
+        ("Ch"         "Charlotte"        "?")
+        ("D"          "Dora"             "Delta")
+        ("E"          "Emil"             "Echo")
+        ("F"          "Friedrich"        "Foxtrot")
+        ("G"          "Gustav"           "Golf")
+        ("H"          "Heinrich"         "Hotel")
+        ("I"          "Ida"              "India")
+        ("J"          "Julius"           "Juliett")
+        ("K"          "Kaufmann"         "Kilo")
+        ("L"          "Ludwig"           "Lima")
+        ("M"          "Martha"           "Mike")
+        ("N"          "Nordpol"          "November")
+        ("O"          "Otto"             "Oscar")
+        ("Ö"          "Ökonom"           "?")
+        ("P"          "Paula"            "Papa")
+        ("Q"          "Quelle"           "Quebec")
+        ("R"          "Richard"          "Romeo")
+        ("S"          "Siegfried"        "Sierra")
+        ("Sch"        "Schule"           "?")
+        ("ß"          "Eszett"           "?")
+        ("T"          "Theodor"          "Tango")
+        ("U"          "Ulrich"           "Uniform")
+        ("Ü"          "Übermut"          "?")
+        ("V"          "Viktor"           "Victor")
+        ("W"          "Wilhelm"          "Whiskey")
+        ("X"          "Xanthippe"        "X-Ray")
+        ("Y"          "Ypsilon"          "Yankee")
+        ("Z"          "Zeppelin"         "Zulu")))
 
+;; Stefan Reichör (http://www.xsteve.at/prg/emacs/xsteve-functions.el)
+(defun buchstabiere (str &optional international)
+  (interactive "sBuchstabiere: \nP")
+  (message "%s"
+           (mapcar (lambda (ch)
+                     (or (nth (if international 2 1) (assoc (char-to-string ch) spelling-alphabet)) "?"))
+                   (upcase str))))
+
+(defun spell (str)
+  (interactive "sBuchstabiere: ")
+  (buchstabiere str 1))
 ;;;_* Packages
 
 ;; sooner or later it will be loaded, so do it now.
