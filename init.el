@@ -2021,6 +2021,8 @@ none is marked."
 
 
 ;;;_ + Org-mode
+(setq org-startup-folded nil)           ; no folding on startup
+
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d!/!)")
               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "DEFERRED(z)"))))
