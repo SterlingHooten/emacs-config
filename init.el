@@ -1799,6 +1799,8 @@ With prefix arg generate a fresh buffer."
 (setq cperl-lazy-help-time 1)
 (setq cperl-info-page "Perl")
 
+(setq perl-indent-level 2)
+
 (defun perl-insert-dumper (var)
   "Insert a Perl print statement to print out variable VAR.
 If VAR begins with one of `@%$' use `Data::Dumper'."
