@@ -18,6 +18,8 @@
 
 (setq comint-process-echoes nil)
 
+(add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
+
 (add-hook 'shell-mode-hook
           (lambda ()
             (let ((shell (file-name-sans-extension
