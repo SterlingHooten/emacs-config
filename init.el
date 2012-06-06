@@ -1837,7 +1837,6 @@ If VAR begins with one of `@%$' use `Data::Dumper'."
 (setq compilation-read-command nil)
 (setq compilation-ask-about-save t)
 (setq compilation-scroll-output t)
-(add-hook 'compilation-mode-hook (lambda () (toggle-truncate-lines -1)))
 
 (defun set-compile-command (command)
   "*Locally set `compile-command' to COMMAND.
