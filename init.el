@@ -2132,6 +2132,18 @@ With prefix argument CREATE always start a new shell."
 (eval-after-load "grep"
   '(add-to-list 'grep-find-ignored-directories "_darcs"))
 
+(defvar ack-history nil
+  "History for the `ack' command.")
+
+(defun ack (command-args)
+  (interactive
+   (let ((ack-command "ack --nogroup --with-filename --all "))
+     (list (read-shell-command "Run ack (like this): "
+                               ack-command
+                               'ack-history))))
+  (let ((compilation-disable-input t))
+    (compilation-start (concat command-args " < " null-device)
+                       'grep-mode)))
 
 ;;;_ + calendar
 (add-hook 'calendar-load-hook
