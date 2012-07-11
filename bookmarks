@@ -2,7 +2,19 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Apache error log on eas254.muc"
+(("Make Info v3.82"
+ (front-context-string . "Overview::      ")
+ (rear-context-string . "m.\"\n\n* Menu:\n\n* ")
+ (position . 2579)
+ (filename . "e:/qx29999/projs/make/info/make.info")
+ (info-node . "Top")
+ (handler . Info-bookmark-jump))
+("/sudo:root@eas254.muc:/usr/local/www"
+ (filename . "/sudo:root@eas254.muc:/usr/local/www/")
+ (front-context-string . "cgi-bin/\n  drwxr")
+ (rear-context-string . "0K Jun 20 16:55 ")
+ (position . 95))
+("Apache error log on eas254.muc"
  (filename . "/sudo:root@eas254.muc:/var/log/apache2/error.log")
  (front-context-string . "[Sun Feb 12 06:5")
  (rear-context-string)
