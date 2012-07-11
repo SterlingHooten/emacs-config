@@ -253,6 +253,9 @@ In other words: change all instances of `dired-marker-char' to `dired-del-marker
 (setq ls-lisp-dirs-first t)
 (setq ls-lisp-verbosity nil)
 (setq ls-lisp-ignore-case nil)
+(setq ls-lisp-use-localized-time-format t
+      ls-lisp-format-time-list '("%Y-%m-%d %H:%M"
+                                 "%Y-%m-%d %H:%M"))
 
 (setq dired-isearch-filenames 'dwim)
 

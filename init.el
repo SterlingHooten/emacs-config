@@ -2015,7 +2015,7 @@ none is marked."
   )
 
 ;;;_ + Dired
-(setq ls-lisp-use-insert-directory-program t)
+(setq ls-lisp-use-insert-directory-program nil)
 (eval-after-load "dired" '(require-soft 'init-dired))
 (autoload 'dired-jump "dired"
   "Jump to Dired buffer corresponding to current buffer." t)
