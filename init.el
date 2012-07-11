@@ -14,6 +14,48 @@
 ;; o Index, with page breaks between the "sections".
 ;; o Other things. Search for "TODO".
 
+
+;;;_* User Interface
+(setq running-interactively (not noninteractive))
+(setq running-nt (equal system-type 'windows-nt))
+
+(setq at-bmw (equal (getenv "BMW") "BMW"))
+
+(defmacro require-soft (feature &optional file)
+  "*Try to require FEATURE, but don't signal an error if `require' fails."
+  `(require ,feature ,file 'noerror))
+
+(when running-interactively
+
+  (setq visible-bell t)
+  (setq use-dialog-box nil)
+
+  (mapc (lambda (x)
+          (when (fboundp (car x))
+            (apply 'funcall x)))
+        '((menu-bar-mode -1)
+          (tool-bar-mode -1)
+          (scroll-bar-mode -1)
+          (transient-mark-mode -1)
+          (blink-cursor-mode -1)
+          (show-paren-mode +1)
+          (line-number-mode +1)
+          (column-number-mode -1)
+          (savehist-mode +1)))
+
+  (setq line-number-display-limit-width 512)
+
+  (add-to-list 'default-frame-alist '(cursor-type . box))
+  (add-to-list 'default-frame-alist '(font . "Consolas 12"))
+
+  (when (and (display-color-p)
+             (require-soft 'solarized-definitions))
+    (create-solarized-theme light))
+
+  (setq-default frame-title-format (list "" "Emacs Macht Alle Computer Sch\366n"))
+  (setq-default icon-title-format frame-title-format))
+
+
 ;;;_* Language settings
 (setq edmacro-eight-bits t)
 
@@ -72,11 +114,6 @@
 
 (setenv "PAGER" "cat")
 
-(setq running-interactively (not noninteractive))
-(setq running-nt (equal system-type 'windows-nt))
-
-(setq at-bmw (equal (getenv "BMW") "BMW"))
-
 (unless (boundp 'user-emacs-directory)
   (setq user-emacs-directory "~/.emacs.d/"))
 
@@ -113,10 +150,6 @@ saving keyboard macros (cf. `insert-kbd-macro')."
                  bindings)
        (define-key ,map ,(read-kbd-macro binding) ,%map))))
 (put 'bind-with-new-map 'lisp-indent-function 2)
-
-(defmacro require-soft (feature &optional file)
-  "*Try to require FEATURE, but don't signal an error if `require' fails."
-  `(require ,feature ,file 'noerror))
 
 ;;;_* Load-path
 (add-to-path 'load-path user-emacs-directory)
@@ -2547,38 +2580,6 @@ A new buffer is created containing the disc file's contents and
 
 ;;; periodically kill old buffers
 (require 'midnight)
-
-
-;;;_* User Interface
-(when running-interactively
-
-  (setq visible-bell t)
-  (setq use-dialog-box nil)
-
-  (mapc (lambda (x)
-          (when (fboundp (car x))
-            (apply 'funcall x)))
-        '((menu-bar-mode -1)
-          (tool-bar-mode -1)
-          (scroll-bar-mode -1)
-          (transient-mark-mode -1)
-          (blink-cursor-mode -1)
-          (show-paren-mode +1)
-          (line-number-mode +1)
-          (column-number-mode -1)
-          (savehist-mode +1)))
-
-  (setq line-number-display-limit-width 512)
-
-  (add-to-list 'default-frame-alist '(cursor-type . box))
-  (add-to-list 'default-frame-alist '(font . "Consolas 12"))
-
-  (when (and (display-color-p)
-             (require-soft 'solarized-definitions))
-    (create-solarized-theme light))
-
-  (setq-default frame-title-format (list "" "Emacs Macht Alle Computer Sch\366n"))
-  (setq-default icon-title-format frame-title-format))
 
 
 
