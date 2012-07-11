@@ -245,12 +245,12 @@
 
 (define-abbrev-table 'shell-mode-abbrev-table
   '(
-    (",g" "| grep" nil 17)
+    (",g" "| grep" nil 21)
     (",gg" "2>&1 | grep" nil 0)
     (",gi" "| grep -i" nil 0)
-    (",h" "--help" nil 12)
+    (",h" "--help" nil 32)
     (",nn" "> /dev/null 2>&1" nil 1)
-    (",nul" "/dev/null" nil 0)
+    (",nul" "/dev/null" nil 1)
     (",s" "| sort " nil 0)
     (",sn" "| sort --numeric-sort" nil 0)
     (",t" "| tee" nil 0)
@@ -286,14 +286,18 @@
     ("gr" "Gruß
 
  Emílio
-" nil 84)
+" nil 107)
     ("gre" "are" nil 0)
+    ("grs" "Grüße
+
+ Emílio
+" nil 1)
     ("hlk" "Hallo liebe Kollegen!" nil 5)
     ("mfg" "Mit freundlichen Grüßen
 
  Emílio Lopes
 " nil 2)
-    ("mgl" "möglich" nil 0)
+    ("mgl" "möglich" nil 5)
    ))
 
 (define-abbrev-table 'vc-annotate-mode-abbrev-table '())
