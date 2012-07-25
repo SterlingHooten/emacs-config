@@ -90,8 +90,8 @@
  (front-context-string . "/\n  drwxr-xr-x  ")
  (rear-context-string . "Jan 28 15:48 ecl")
  (position . 1845))
-("EA-51 Austausch"
- (filename . "//europe.bmw.corp/winfs/EA-org/EA-5_Org/EA-51/EA-510/40_Allgemein/99_Austausch/")
+("EA-740 Austausch"
+ (filename . "//europe.bmw.corp/winfs/EA-org/EA-7_Org/EA-74/EA-740/40_Allgemein/99_Austausch/")
  (front-context-string . "/\n  drwxr-xr-x  ")
  (rear-context-string . "May 26 12:29 ecl")
  (position . 3223)
