@@ -15,6 +15,16 @@
 ;; o Other things. Search for "TODO".
 
 
+(unless (boundp 'user-emacs-directory)
+  (setq user-emacs-directory "~/.emacs.d/"))
+
+(defun add-to-path (path dir &optional append)
+  "*Add directory DIR to path PATH.
+If optional argument APPEND is non-nil, DIR is added at the end."
+  (setq dir (expand-file-name dir))
+  (and (file-directory-p dir) (file-accessible-directory-p dir)
+       (add-to-list path dir append)))
+
 ;;;_* User Interface
 (setq running-interactively (not noninteractive))
 (setq running-nt (equal system-type 'windows-nt))
@@ -24,6 +34,12 @@
 (defmacro require-soft (feature &optional file)
   "*Try to require FEATURE, but don't signal an error if `require' fails."
   `(require ,feature ,file 'noerror))
+
+;;;_* Load-path
+(add-to-path 'load-path user-emacs-directory)
+(add-to-path 'load-path (concat user-emacs-directory "lib"))
+(add-to-path 'load-path "~/.lib/emacs/elisp")
+(add-to-path 'load-path "~/.lib/emacs/rc")
 
 (when running-interactively
 
@@ -114,16 +130,6 @@
 
 (setenv "PAGER" "cat")
 
-(unless (boundp 'user-emacs-directory)
-  (setq user-emacs-directory "~/.emacs.d/"))
-
-(defun add-to-path (path dir &optional append)
-  "*Add directory DIR to path PATH.
-If optional argument APPEND is non-nil, DIR is added at the end."
-  (setq dir (expand-file-name dir))
-  (and (file-directory-p dir) (file-accessible-directory-p dir)
-       (add-to-list path dir append)))
-
 (defmacro global-defkey (key def)
   "*Bind KEY globally to DEF.
 KEY should be a string constant in the format used for
@@ -150,12 +156,6 @@ saving keyboard macros (cf. `insert-kbd-macro')."
                  bindings)
        (define-key ,map ,(read-kbd-macro binding) ,%map))))
 (put 'bind-with-new-map 'lisp-indent-function 2)
-
-;;;_* Load-path
-(add-to-path 'load-path user-emacs-directory)
-(add-to-path 'load-path (concat user-emacs-directory "lib"))
-(add-to-path 'load-path "~/.lib/emacs/elisp")
-(add-to-path 'load-path "~/.lib/emacs/rc")
 
 ;;;_* System-dependent configuration
 
