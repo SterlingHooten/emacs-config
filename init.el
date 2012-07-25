@@ -1115,6 +1115,7 @@ Only intended for interactive use."
     (interactive)
     (anything 'anything-c-source-imenu nil nil nil (thing-at-point 'symbol) "*anything imenu*"))
 
+  (global-defkey "<f11>" 'anything-show-kill-ring)
   ;; http://emacs-fu.blogspot.com/2011/09/finding-just-about-anything.html
   (defun anything-switch-buffer ()
     (interactive)
@@ -1559,22 +1560,23 @@ With prefix argument ARG behave as usual."
 
 ;; Thanks to Karl Fogel:
 ;; http://svn.red-bean.com/repos/kfogel/trunk/.emacs
-(defun kf-browse-kill-ring ()
-  "Browse the kill ring."
-  (interactive)
-  (switch-to-buffer (get-buffer-create "*Browse Kill Ring*"))
-  (widen)
-  (delete-region (point-min) (point-max))
-  (mapcar
-   (lambda (str)
-     ;; We could put the full string as a text property on the summary
-     ;; text displayed, but with yank-match available, there's no need.
-     (insert (substring str 0 (min (length str) 72))
-             "\n-*- -*- -*- -*- -*-\n"))
-   kill-ring)
-  (goto-char (point-min)))
+;; (defun kf-browse-kill-ring ()
+;;   "Browse the kill ring."
+;;   (interactive)
+;;   (switch-to-buffer (get-buffer-create "*Browse Kill Ring*"))
+;;   (widen)
+;;   (delete-region (point-min) (point-max))
+;;   (mapcar
+;;    (lambda (str)
+;;      ;; We could put the full string as a text property on the summary
+;;      ;; text displayed, but with yank-match available, there's no need.
+;;      (insert (substring str 0 (min (length str) 72))
+;;              "\n-*- -*- -*- -*- -*-\n"))
+;;    kill-ring)
+;;   (goto-char (point-min)))
 
-(global-defkey "<f11>" 'kf-browse-kill-ring)
+;; (global-defkey "<f11>" 'kf-browse-kill-ring)
+
 ;; From http://lists.gnu.org/archive/html/emacs-devel/2008-03/msg00128.html
 ;; See also http://svn.red-bean.com/repos/kfogel/trunk/code/yank-match/
 (defun insert-yank-from-kill-ring (string)
