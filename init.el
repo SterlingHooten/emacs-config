@@ -1746,7 +1746,8 @@ in the minibuffer history."
       ;; (delete-blank-lines)
 
       (let ((sig-start (and (search-forward-regexp "^-- *$" nil t)
-                            (point-at-bol)))
+                            (progn (just-one-space)
+                                   (point-at-bol))))
             (citation-start (and (search-forward-regexp "^_______________+$" nil t)
                                  (progn (delete-region (point-at-bol) (min (1+ (point-at-eol)) (point-max)))
                                         (point-at-bol)))))
