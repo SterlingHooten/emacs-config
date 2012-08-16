@@ -130,6 +130,10 @@ If optional argument APPEND is non-nil, DIR is added at the end."
 
 (setenv "PAGER" "cat")
 
+(let ((tz (current-time-zone)))
+  (when tz
+    (setenv "TZ" (format "GMT%+d" (* -1(/ (car tz) 3600))))))
+
 (defmacro global-defkey (key def)
   "*Bind KEY globally to DEF.
 KEY should be a string constant in the format used for
