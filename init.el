@@ -2574,12 +2574,10 @@ A new buffer is created containing the disc file's contents and
                 (reverse exec-path))
           path))
   (setq sql-oracle-program "c:/Oracle/Client/bin/sqlplus.exe")
-  (require-soft 'cygpath)
   (let ((cygwin-prefix "e:/tools/gnu"))
     (add-to-path 'exec-path (concat cygwin-prefix "/bin"))
     (add-to-path 'exec-path (concat cygwin-prefix "/usr/local/bin"))
     (add-to-path 'Info-default-directory-list (concat cygwin-prefix "/usr/info") 'append)
-    (setenv "MAGIC" (cygpath-windows2unix (concat cygwin-prefix "/usr/share/magic")))
     (setq woman-manpath
           (mapcar (lambda (dir) (concat cygwin-prefix dir)) '("/usr/local/man" "/usr/man"))))
   (setenv "PATH" (mapconcat (if running-nt
