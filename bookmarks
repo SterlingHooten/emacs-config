@@ -2,7 +2,22 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Make Info v3.82"
+(("Group-Exchange"
+ (filename . "//easerv.muc/EA-DIR/Exchange/Group-Exchange/")
+ (front-context-string . "Neuer Ordner (2)")
+ (rear-context-string . "012-08-07 14:20 ")
+ (position . 134))
+("rules_i.mak"
+ (filename . "e:/asc/tools_30-trunk/rules_i.mak")
+ (front-context-string . "################")
+ (rear-context-string)
+ (position . 1))
+("tools_i.mak"
+ (filename . "e:/asc/tools_30-trunk/tools_i.mak")
+ (front-context-string . "################")
+ (rear-context-string . "*************\n\n\n")
+ (position . 399))
+("Make Info v3.82"
  (front-context-string . "Overview::      ")
  (rear-context-string . "m.\"\n\n* Menu:\n\n* ")
  (position . 2579)
@@ -25,7 +40,7 @@
  (rear-context-string . " 0 Jul 19 09:08 ")
  (position . 237))
 ("BMW Austausch/Transfer"
- (filename . "//nvgm329.muc/Manufacturing/900_Transfer/")
+ (filename . "//europe.bmw.corp/winfs/TN-proj/Manufacturing/900_Transfer")
  (front-context-string . "!!!_BITTE_LESEN_")
  (rear-context-string . "1k Jun 24  2008 ")
  (position . 999))
@@ -71,7 +86,7 @@
  (rear-context-string . " 0 Jul  8 12:57 ")
  (position . 124))
 ("Installationsverzeichnis INSTALL_DME"
- (filename . "//easerv.muc/EA-DIR/EA_SOFTW/INSTALL_DME/")
+ (filename . "//europe.bmw.corp/WINFS/EA-MIA/Softw/INSTALL_DME/")
  (front-context-string . "@Zugriffskontrol")
  (rear-context-string . " 0 Jun 16 15:35 ")
  (position . 143))
