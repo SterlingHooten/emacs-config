@@ -63,10 +63,6 @@
 
 (defun shell-setup-keys ()
   "*Key bindings for shell-mode."
-  (defkey shell-mode-map "C-<up>" 'comint-previous-prompt)
-  (defkey shell-mode-map "C-<down>" 'comint-next-prompt)
-  ;; (defkey shell-mode-map "<SPC>" 'comint-magic-space)
-
   (defkey shell-mode-map "C-x C-r" 'view-file))
 
 (add-hook 'shell-mode-hook 'shell-setup-keys)
@@ -181,7 +177,9 @@ Otherwise return the value of the last form in BODY."
   (defkey comint-mode-map "M-P" 'comint-previous-matching-input-from-input)
   (defkey comint-mode-map "M-N" 'comint-next-matching-input-from-input)
 
-  ;; (defkey comint-mode-map "M-." 'comint-insert-last-word)
+  (defkey comint-mode-map "C-M-p" 'comint-previous-prompt)
+  (defkey comint-mode-map "C-M-n" 'comint-next-prompt)
+
   (defkey comint-mode-map "M-." 'comint-insert-previous-argument)
   (add-hook 'comint-output-filter-functions 'comint-watch-for-password-prompt)
   (add-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom)
