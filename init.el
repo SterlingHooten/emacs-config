@@ -289,6 +289,9 @@ to the filename."
 (setq-default case-fold-search t)
 (setq case-replace t)
 
+;; allow ellipses to end sentences
+(setq sentence-end-base "[….?!][]\"'”)}]*")
+
 (setq search-whitespace-regexp "[ \t\r\n]+")
 
 (setq revert-without-query '("."))
