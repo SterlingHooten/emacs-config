@@ -1994,8 +1994,8 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 (when (require-soft 'ibuffer)
   (global-defkey "C-x C-b" 'ibuffer)
   (setq ibuffer-formats
-        '((mark modified read-only " " (name 16 16) " " (mode 16 16) " "  filename)
-          (mark modified read-only " " (name 16 16) " "  filename)
+        '((mark modified read-only " " (name 48 48) " " (mode 16 16) " "  filename)
+          (mark modified read-only " " (name 64 64) " "  filename)
           (mark modified read-only " " (name 16 16) " " (size 6 -1 :right) " " (mode 16 16) "  " (process 8 -1) " " filename)))
   (setq ibuffer-elide-long-columns t)
   (setq ibuffer-never-show-regexps '("^ "))
