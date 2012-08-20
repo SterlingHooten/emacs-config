@@ -2184,9 +2184,7 @@ With prefix argument CREATE always start a new shell."
      (list (read-shell-command "Run ack (like this): "
                                ack-command
                                'ack-history))))
-  (let ((compilation-disable-input t))
-    (compilation-start (concat command-args " < " null-device)
-                       'grep-mode)))
+  (compilation-start (concat command-args " < " null-device) 'grep-mode))
 
 ;;;_ + calendar
 (add-hook 'calendar-load-hook
