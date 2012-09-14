@@ -97,10 +97,18 @@ matching the actual working directory."
               (let ((inhibit-field-text-motion t)
                     (buffer-read-only nil))
                 (goto-char pmark)
-                (when (re-search-backward regexp comint-last-output-start 'noerror)
-                  (setq cwd (match-string-no-properties match-number))
-                  (delete-region (match-beginning 0) (match-end 0))
-                  (shell-process-cd cwd))))))))))
+                ;; remove all occurrences of the pwdsync escape
+                ;; sequence since last shell output (in case the user
+                ;; entered a new command (or just pressed ENTER) while
+                ;; another one was still running and multiple prompts
+                ;; are printed at once), but process only the last one.
+                (let ((found nil))
+                  (while (re-search-backward regexp comint-last-output-start 'noerror)
+                    (unless found
+                      (setq cwd (match-string-no-properties match-number))
+                      (shell-process-cd cwd)
+                      (setq found t))
+                    (delete-region (match-beginning 0) (match-end 0))))))))))))
 
 (define-minor-mode pwdsync-mode
   "Toggle tracking of the shell's working directory using escape sequences.
