@@ -500,6 +500,56 @@ Subject to `buffer-ignore-regexp'."
 	  (error (beep)))))
     (message "Done.")))
 
+;; (display-buffers-matching (lambda (b) (with-current-buffer b (string-match "shell-mode" (symbol-name major-mode)))))
+;; (display-buffers-matching (lambda (b) (with-current-buffer b (string-match "org-mode" (symbol-name major-mode)))))
+
+(defun display-buffers-matching (predicate)
+  "Displays all buffers matching PREDICATE.
+    The function PREDICATE will be called with each buffer as its only argument."
+  (let ((buffers
+         (let (buffers)
+           (dolist (buffer (buffer-list) buffers)
+             (when (funcall predicate buffer)
+               (setq buffers (append buffers `(,buffer)))))))
+        (rows 1)
+        (cols 1))
+    (if (= 0 (length buffers))
+        (message "No matching buffers.")
+
+      (setq rows (floor (sqrt (length buffers))))
+      (setq cols (ceiling (/ (length buffers) (float rows))))
+
+      ;; split windows...
+      (delete-other-windows)
+
+      ;;create rows
+      (dotimes (i (- rows 1))
+        (split-window-vertically))
+      ;; create cols
+      (dotimes (j rows)
+        (other-window -1)
+        (dotimes (i (- cols 1))
+          (split-window-horizontally)))
+
+      ;; display buffers...
+      (dolist (buffer buffers)
+        (set-window-buffer nil buffer)
+        (other-window 1))
+
+      ;; remove empty windows (if cols*rows > length-of-buffers)
+      (if (> (* cols rows) (length buffers))
+          (dotimes (i (- (* cols rows) (length buffers)))
+            (delete-window)))
+      (balance-windows))))
+
+(global-defkey "C-x S"
+  (lambda ()
+    (interactive)
+    (display-buffers-matching
+     (lambda (b)
+       (with-current-buffer b
+         (string-match "shell-mode" (symbol-name major-mode)))))))
+
 (defun describe-face-at-point ()
   "*Display the properties of the face at point."
   (interactive)
@@ -2025,7 +2075,7 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
     (interactive)
     (ibuffer nil "*Ibuffer Shells*" '((mode . shell-mode)) nil t))
 
-  (global-defkey "C-x S" 'ibuffer-list-shells)
+  ;; (global-defkey "C-x S" 'ibuffer-list-shells)
 
   (setq ibuffer-show-empty-filter-groups nil)
 
