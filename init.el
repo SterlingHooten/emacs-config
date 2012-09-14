@@ -1485,10 +1485,8 @@ With prefix argument ARG behave as usual."
 
 (global-defkey "C-c j ."        (lambda () (interactive) (find-file "~/.ee.sh")))
 
-(global-defkey "C-c j z"        (lambda () (interactive) (find-file "~/.zshrc")))
-(global-defkey "C-c j a"        (lambda () (interactive) (find-file "~/.zaliases")))
-(global-defkey "C-c j l"        (lambda () (interactive) (find-file "~/.zprofile")))
-(global-defkey "C-c j v"        (lambda () (interactive) (find-file "~/.zshenv")))
+(global-defkey "C-c j b"        (lambda () (interactive) (find-file "~/.bash.d/bashrc")))
+(global-defkey "C-c j a"        (lambda () (interactive) (find-file "~/.bash.d/aliases")))
 
 (global-defkey "C-c g" 'goto-line)
 (global-defkey "M-g" 'goto-line)
