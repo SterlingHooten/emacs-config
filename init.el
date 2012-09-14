@@ -255,6 +255,9 @@ to the filename."
 (setq enable-recursive-minibuffers t)
 (setq history-length 512)
 
+(setq minibuffer-prompt-properties
+      (plist-put minibuffer-prompt-properties 'point-entered 'minibuffer-avoid-prompt))
+
 (setq set-mark-command-repeat-pop t)
 
 (setq-default indent-tabs-mode nil)
