@@ -125,7 +125,7 @@ Otherwise return the value of the last form in BODY."
     "unlock" "update" "up" "upgrade"))
 
 (defun pcomplete/svn ()
-  "Completion for `svn'"
+  "Completion for `svn'."
   ;; Completion for the command argument.
   (pcomplete-here* pcmpl-svn-commands)
   (cond
@@ -134,11 +134,11 @@ Otherwise return the value of the last form in BODY."
     (while (pcomplete-here (pcomplete-entries))))
    ((pcomplete-match "ls" 1)
     (let ((current (nth pcomplete-index pcomplete-args)))
-      (pcomplete-here* (pcmpl-svn-get-files (file-name-directory current))
+      (pcomplete-here* (pcmpl-svn-get-files (or (file-name-directory current) "."))
                        (file-name-nondirectory current))))))
 
 (defun pcmpl-svn-get-files (dir)
-  "Return a list of `svn' files in DIR"
+  "Return a list of `svn' files in DIR."
   (split-string (pcomplete-process-result "svn" "--non-interactive" "ls" dir)))
 
 ;;; Comint
