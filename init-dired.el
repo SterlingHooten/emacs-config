@@ -276,8 +276,6 @@ In other words: change all instances of `dired-marker-char' to `dired-del-marker
 (defkey dired-mode-map "q" 'dired-do-deletions-and-exit)
 (defkey dired-mode-map "s" 'dired-sort) ; from `sorter'
 (defkey dired-mode-map "a" 'dired-toggle-hidden) ; from `sorter'
-(defkey dired-mode-map "RET" 'dired-view-file)
-;; (defkey dired-mode-map "RET" 'dired-find-file-read-only)
 (defkey dired-mode-map "v" 'dired-find-file-read-only)
 (defkey dired-mode-map "M-RET" 'dired-find-alternate-file)
 
