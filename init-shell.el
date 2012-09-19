@@ -92,22 +92,25 @@ Otherwise return the value of the last form in BODY."
             (with-current-buffer ,buffer
               ,body)))))
 
-;; (defun shell-snarf-aliases ()
-;;   "Return a list of all defined shell aliases."
-;;   ;; (comint-redirect-results-list "alias" "^alias \\([^=]+\\)=.+\n" 1)
-;;   (comint-redirect-results-list "alias -rL" "^alias \\([^=]+\\)=.+\n" 1))
+;; (defun pcmpl-bash-complete-command ()
+;;   "Completion function for Bash command names.
+;; Uses Bash's builtin `compgen' to get a list of possible commands."
+;;   (let ((current (nth pcomplete-index pcomplete-args)))
+;;     (pcomplete-here* (pcomplete-uniqify-list (comint-redirect-results-list (format "compgen -c %s" (or current "")) "^\\(.+\\)$" 1)))))
 
-;; (defvar shell-aliases '())
+;; (setq pcomplete-command-completion-function #'pcmpl-bash-complete-command)
 
-;; (add-hook 'shell-mode-hook
-;;           (lambda ()
-;;             (setq shell-aliases (shell-snarf-aliases))))
 
-;; (defun shell-complete-alias ()
-;;   (let ((cmd (or (comint-match-partial-filename) "")))
-;;     (comint-dynamic-simple-complete cmd shell-aliases)))
+;; (defun pcmpl-bash-environment-variable-completion ()
+;;   "Completion data for an environment variable at point, if any."
+;;   (let ((var (nth pcomplete-index pcomplete-args)))
+;;     (when (and (not (zerop (length var))) (eq (aref var 0) ?$))
+;;       (pcomplete-here* (pcomplete-uniqify-list (comint-redirect-results-list (format "compgen -P \\$ -v %s" (substring var 1)) "^\\(.+\\)$" 1))))))
 
-;;(add-hook 'shell-dynamic-complete-functions 'shell-complete-alias)
+;; (setq pcomplete-default-completion-function pcmpl-bash-environment-variable-completion)
+
+;; (setq comint-dynamic-complete-functions '(shell-environment-variable-completion pcomplete-completions-at-point shell-filename-completion))
+
 
 ;;; http://www.masteringemacs.org/articles/2012/01/16/pcomplete-context-sensitive-completion-emacs/
 (add-to-list 'process-coding-system-alist '("svn" . undecided-dos))
