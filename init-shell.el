@@ -8,7 +8,7 @@
 ;; Newer versions of comint don't use prompt regexp anymore, but the
 ;; comint redirection commands (e.g. `comint-redirect-send-command')
 ;; still need this correctly set.
-(setq shell-prompt-pattern "^[^\n]*[$#] \\'")
+(setq shell-prompt-pattern "^[^\n]*[$#] ")
 
 (setq shell-completion-fignore '("~" "#" "%"))
 (setq comint-completion-autolist t)
