@@ -92,14 +92,21 @@ Otherwise return the value of the last form in BODY."
             (with-current-buffer ,buffer
               ,body)))))
 
-;; (defun pcmpl-bash-complete-command ()
-;;   "Completion function for Bash command names.
-;; Uses Bash's builtin `compgen' to get a list of possible commands."
-;;   (let ((current (nth pcomplete-index pcomplete-args)))
-;;     (pcomplete-here* (pcomplete-uniqify-list (comint-redirect-results-list (format "compgen -c %s" (or current "")) "^\\(.+\\)$" 1)))))
+(defun pcmpl-bash-complete-command ()
+  "Completion function for Bash command names.
+Uses Bash's builtin `compgen' to get a list of possible commands."
+  (let ((current (or (nth pcomplete-index pcomplete-args) "")))
+    (when (> (length current) 0)    ; do not complete an empty command
+      (pcomplete-here* (pcomplete-uniqify-list (comint-redirect-results-list
+                                                (format (if (memq system-type '(ms-dos windows-nt cygwin)) 
+                                                            "compgen -X '*.@(dll|ime)' -c '%s'"
+                                                          "compgen -c '%s'")
+                                                        current) "^\\(.+\\)$" 1))))))
 
-;; (setq pcomplete-command-completion-function #'pcmpl-bash-complete-command)
-
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (setq pcomplete-command-completion-function #'pcmpl-bash-complete-command)
+            (local-defkey "<S-tab>" 'pcomplete)))
 
 ;; (defun pcmpl-bash-environment-variable-completion ()
 ;;   "Completion data for an environment variable at point, if any."
