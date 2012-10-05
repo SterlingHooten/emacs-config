@@ -1022,8 +1022,15 @@ upper case, downcase it."
   (while (search-forward-regexp regexp (point-at-eol) t)
     (forward-line)))
 
-;;;_* Packages
+;;;_* Advices
+(defadvice shell-command (before rename-async-buffer activate)
+  "Use an unique buffer name for asynchronous commands."
+  (when (and (not (ad-get-arg 1))
+             (string-match-p "[ \t]*&[ \t]*\\'" (ad-get-arg 0))
+             (get-buffer-process "*Async Shell Command*"))
+    (ad-set-arg 1 (generate-new-buffer-name "*Async Shell Command*"))))
 
+;;;_* Packages
 ;; sooner or later it will be loaded, so do it now.
 (require 'tramp)
 
