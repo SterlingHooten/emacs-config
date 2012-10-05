@@ -1015,6 +1015,13 @@ upper case, downcase it."
 (defun spell (str)
   (interactive "sBuchstabiere: ")
   (buchstabiere str 1))
+
+(defun next-line-not-matching (regexp)
+  "*Go to next line *not* matching REGEXP."
+  (interactive "sNext line not matching: ")
+  (while (search-forward-regexp regexp (point-at-eol) t)
+    (forward-line)))
+
 ;;;_* Packages
 
 ;; sooner or later it will be loaded, so do it now.
