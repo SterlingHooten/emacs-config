@@ -1481,7 +1481,7 @@ With prefix argument ARG behave as usual."
                                       (find-file  gnus-init-file)
                                     (find-library  "gnus_rc"))))
 (global-defkey "C-c j s"        (lambda () (interactive) (find-library "init-shell")))
-(global-defkey "C-c j t"        (lambda () (interactive) (find-file "u:/ORG/TODO")))
+(global-defkey "C-c j t"        (lambda () (interactive) (find-file "e:/qx29999/ORG/TODO")))
 
 (global-defkey "C-c j ."        (lambda () (interactive) (find-file "~/.ee.sh")))
 
