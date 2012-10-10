@@ -30,11 +30,14 @@
 Uses Bash's builtin `compgen' to get a list of possible commands."
   (let ((cmd (or (pcomplete-arg 'first) "")))
     (when (> (length cmd) 0)        ; do not complete an empty command
-      (pcomplete-here* (pcomplete-uniqify-list (comint-redirect-results-list
-                                                (format (if (memq system-type '(ms-dos windows-nt cygwin)) 
-                                                            "compgen -X '*.@(dll|ime)' -c '%s'"
-                                                          "compgen -c '%s'")
-                                                        cmd) "^\\(.+\\)$" 1))))))
+      (pcomplete-here* (pcomplete-uniqify-list (pcmpl-bash-command-completions cmd))))))
+
+(defun pcmpl-bash-complete-filename ()
+  "Completion function for file names.
+Uses Bash's builtin `compgen' to get a list of completions."
+  (let ((name (or (nth pcomplete-index pcomplete-args) "")))
+    (pcomplete-here (mapcar 'file-name-nondirectory (pcmpl-bash-file-completions name))
+                    (file-name-nondirectory name))))
 
 (defun pcmpl-bash-command-name ()
   (let ((cmd (file-name-nondirectory (pcomplete-arg 'first))))
@@ -43,13 +46,31 @@ Uses Bash's builtin `compgen' to get a list of possible commands."
       cmd)))
 
 (defun pcmpl-bash-default-completion-function ()
-  (while (pcomplete-here (pcomplete-entries))))
+  (while (pcmpl-bash-complete-filename)))
+
+;; See commentary in eshell/em-cmpl.el for ideas!
 
 ;; (defun pcmpl-bash-environment-variable-completion ()
 ;;   "Completion data for an environment variable at point, if any."
 ;;   (let ((var (nth pcomplete-index pcomplete-args)))
 ;;     (when (and (not (zerop (length var))) (eq (aref var 0) ?$))
 ;;       (pcomplete-here* (pcomplete-uniqify-list (comint-redirect-results-list (format "compgen -P \\$ -v %s" (substring var 1)) "^\\(.+\\)$" 1))))))
+
+(defun pcmpl-bash-command-completions (cmd)
+  (pcmpl-bash-run-collecting-output
+   (format (if (memq system-type '(ms-dos windows-nt cygwin)) 
+               "compgen -X '*.@(dll|ime)' -c '%s'"
+             "compgen -c '%s'")
+           cmd)))
+
+(defun pcmpl-bash-file-completions (name)
+  ;; TODO
+  ;; echo ~-/d* => compgen -f -X '!~-/d*' '~-/'
+  ;; echo ~-/*.cmd => compgen -f -X '!~-/*.cmd' '~-/'
+  (pcmpl-bash-run-collecting-output (format "compgen -f '%s'" name)))
+
+(defun pcmpl-bash-run-collecting-output (cmd)
+  (comint-redirect-results-list cmd "^\\(.+\\)$" 1))
 
 (defun pcmpl-bash-setup ()
   (set (make-local-variable 'pcomplete-command-completion-function) #'pcmpl-bash-complete-command)
