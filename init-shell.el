@@ -92,31 +92,11 @@ Otherwise return the value of the last form in BODY."
             (with-current-buffer ,buffer
               ,body)))))
 
-(defun pcmpl-bash-complete-command ()
-  "Completion function for Bash command names.
-Uses Bash's builtin `compgen' to get a list of possible commands."
-  (let ((current (or (nth pcomplete-index pcomplete-args) "")))
-    (when (> (length current) 0)    ; do not complete an empty command
-      (pcomplete-here* (pcomplete-uniqify-list (comint-redirect-results-list
-                                                (format (if (memq system-type '(ms-dos windows-nt cygwin)) 
-                                                            "compgen -X '*.@(dll|ime)' -c '%s'"
-                                                          "compgen -c '%s'")
-                                                        current) "^\\(.+\\)$" 1))))))
-
-(add-hook 'shell-mode-hook
-          (lambda ()
-            (setq pcomplete-command-completion-function #'pcmpl-bash-complete-command)
-            (local-defkey "<S-tab>" 'pcomplete)))
-
-;; (defun pcmpl-bash-environment-variable-completion ()
-;;   "Completion data for an environment variable at point, if any."
-;;   (let ((var (nth pcomplete-index pcomplete-args)))
-;;     (when (and (not (zerop (length var))) (eq (aref var 0) ?$))
-;;       (pcomplete-here* (pcomplete-uniqify-list (comint-redirect-results-list (format "compgen -P \\$ -v %s" (substring var 1)) "^\\(.+\\)$" 1))))))
-
-;; (setq pcomplete-default-completion-function pcmpl-bash-environment-variable-completion)
-
-;; (setq comint-dynamic-complete-functions '(shell-environment-variable-completion pcomplete-completions-at-point shell-filename-completion))
+(when (require-soft 'pcomplete-bash)
+  (add-hook 'shell-mode-hook 'pcmpl-bash-setup)
+  (add-hook 'shell-mode-hook
+            (lambda ()
+              (local-defkey "<tab>" 'pcomplete))))
 
 
 ;;; http://www.masteringemacs.org/articles/2012/01/16/pcomplete-context-sensitive-completion-emacs/
