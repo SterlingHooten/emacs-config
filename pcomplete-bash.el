@@ -72,6 +72,29 @@ Uses Bash's builtin `compgen' to get a list of completions."
 (defun pcmpl-bash-run-collecting-output (cmd)
   (comint-redirect-results-list cmd "^\\(.+\\)$" 1))
 
+(defun pcmpl-bash-expand-and-send-input ()
+  (interactive)
+  (let* ((pmark (process-mark (get-buffer-process (current-buffer))))
+         (input (if (>= (point) (marker-position pmark))
+                    (progn (if comint-eol-on-send (end-of-line))
+                           (buffer-substring pmark (point)))
+                  (let ((copy (funcall comint-get-old-input)))
+                    (goto-char pmark)
+                    (insert copy)
+                    copy))))
+    (when (or t (eq comint-input-autoexpand 'history))
+      (let ((expanded (car (pcmpl-bash-history-expansion input))))
+        (unless (string= input expanded)
+          (delete-region pmark (point))
+          (insert expanded))))
+    (comint-send-input)))
+
+;; "history -p '!18337 '==>' !35'"
+;; (insert (replace-regexp-in-string "[^-0-9a-zA-Z_./\n]" "\\\\\\&" "history -p '!18337 '==>' !35'"))
+
+(defun pcmpl-bash-history-expansion (input)
+  (pcmpl-bash-run-collecting-output (format "history -p '%s'" input)))
+
 (defun pcmpl-bash-setup ()
   (set (make-local-variable 'pcomplete-command-completion-function) #'pcmpl-bash-complete-command)
   (set (make-local-variable 'pcomplete-command-name-function) #'pcmpl-bash-command-name)
