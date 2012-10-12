@@ -30,7 +30,7 @@
                            (car (process-command (get-buffer-process (current-buffer))))))))
               (cond
                ((string= shell "bash")
-                (add-hook 'comint-output-filter-functions 'shell-filter-ctrl-a-ctrl-b)
+                (add-hook 'comint-preoutput-filter-functions 'shell-filter-ctrl-a-ctrl-b)
                 (setq comint-input-ring-file-name
                       (or (getenv "HISTFILE")
                           (if (file-exists-p "~/.bash.d/.bash_history")
