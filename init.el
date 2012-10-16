@@ -1365,7 +1365,11 @@ With prefix argument ARG behave as usual."
 ;;;_ + Get the little rodent out of way
 (when (and (display-mouse-p)
            (require-soft 'avoid))
-  ;; (mouse-avoidance-mode 'banish)
+  (defun mouse-avoidance-banish-destination ()
+    "*The position to which Mouse Avoidance mode `banish' moves the mouse.
+Redefined to banish the mouse to the corner of the frame."
+    (cons (1+ (frame-width)) (1- (frame-height))))
+  (mouse-avoidance-mode 'banish)
   (defun toggle-mouse-avoidance-mode ()
     (interactive)
     (mouse-avoidance-mode)))
