@@ -98,6 +98,9 @@ Otherwise return the value of the last form in BODY."
             (lambda ()
               (local-defkey "<tab>" 'pcomplete))))
 
+(when (require-soft 'anything-shell-history)
+  (defkey comint-mode-map "C-c C-l" 'comint-anything-input-ring))
+
 
 ;;; http://www.masteringemacs.org/articles/2012/01/16/pcomplete-context-sensitive-completion-emacs/
 (add-to-list 'process-coding-system-alist '("svn" . undecided-dos))
