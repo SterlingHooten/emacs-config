@@ -266,6 +266,8 @@ to the filename."
 
 (setq-default fill-column 70)
 
+(setq adaptive-fill-first-line-regexp "\\`[ \t>]*\\'")
+
 ;; don't split windows horizontally
 (setq split-width-threshold nil)
 
