@@ -485,17 +485,17 @@ Subject to `buffer-ignore-regexp'."
     (catch 'done
       (while t
 	(message
-	 "h=heighten, s=shrink, w=widen, n=narrow (by %d);  0-9=unit, q=quit"
+	 "C-n=heighten, C-p=shrink, C-f=widen, C-b=narrow (by %d);  0-9=unit, <RET>=quit"
 	 arg)
 	(setq c (read-char))
 	(condition-case ()
 	    (cond
-	     ((= c ?h) (enlarge-window arg))
-	     ((= c ?s) (shrink-window arg))
-	     ((= c ?w) (enlarge-window-horizontally arg))
-	     ((= c ?n) (shrink-window-horizontally arg))
+	     ((= c ?\^N) (enlarge-window arg))
+	     ((= c ?\^P) (shrink-window arg))
+	     ((= c ?\^F) (enlarge-window-horizontally arg))
+	     ((= c ?\^B) (shrink-window-horizontally arg))
 	     ((= c ?\^G) (keyboard-quit))
-	     ((= c ?q) (throw 'done t))
+	     ((= c ?\^M) (throw 'done t))
              ((= c ?0) (setq arg 10))
 	     ((and (> c ?0) (<= c ?9)) (setq arg (- c ?0)))
 	     (t (beep)))
