@@ -81,15 +81,15 @@
   "*Execute BODY in the buffer associated with the process with id PID.
 Return NIL if there is no buffer hosting a process with PID.
 Otherwise return the value of the last form in BODY."
-  (let ((buffer (make-symbol "buffer")))
-    `(let ((,buffer (catch 'found
-                      (dolist (,buffer (buffer-list))
-                        (let ((process (get-buffer-process ,buffer)))
-                          (and process
-                               (= ,pid (process-id process))
-                               (throw 'found ,buffer)))))))
-       (and ,buffer
-            (with-current-buffer ,buffer
+  (let ((proc (make-symbol "proc")))
+    `(let ((,proc (catch 'found
+                    (dolist (,proc (process-list))
+                      (let ((pid (process-id ,proc)))
+                        (when (and pid
+                                   (= ,pid pid))
+                          (throw 'found ,proc)))))))
+       (and ,proc
+            (with-current-buffer (process-buffer ,proc)
               ,body)))))
 
 (when (require-soft 'pcomplete-bash)
