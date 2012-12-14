@@ -3,7 +3,6 @@
 (require 'esh-module)
 ;;(add-to-list 'eshell-modules-list 'eshell-rebind)
 ;;(add-to-list 'eshell-modules-list 'eshell-smart)
-(add-to-list 'eshell-modules-list 'eshell-zle)
 
 (setq eshell-history-size 1024)
 (setq eshell-hist-ignoredups t)
@@ -118,12 +117,14 @@
   (defkey eshell-mode-map "C-x C-d" 'eshell-dired-pwd)
   (defkey eshell-command-map "C-a" 'beginning-of-line)
   ;; The following commands come from "em-zle"
-  (defkey eshell-mode-map "M-." 'eshell-zle-insert-last-word)
-  (defkey eshell-mode-map "C-M-_" 'eshell-zle-copy-prev-shell-word)
-  (defkey eshell-mode-map "M-q" 'eshell-zle-push-line)
-  (defkey eshell-mode-map "M-g" 'eshell-zle-get-line)
-  (defkey eshell-mode-map "M-a" 'eshell-zle-accept-and-hold)
-  (defkey eshell-command-map "M-?" 'eshell-zle-which-command))
+  (when (require-soft 'eshell-zle)
+    (defkey eshell-mode-map "M-." 'eshell-zle-insert-last-word)
+    (defkey eshell-mode-map "C-M-_" 'eshell-zle-copy-prev-shell-word)
+    (defkey eshell-mode-map "M-q" 'eshell-zle-push-line)
+    (defkey eshell-mode-map "M-g" 'eshell-zle-get-line)
+    (defkey eshell-mode-map "M-a" 'eshell-zle-accept-and-hold)
+    (defkey eshell-command-map "M-?" 'eshell-zle-which-command)))
+
 (add-hook 'eshell-mode-hook 'eshell-setup-keys)
 
 (defun iswitchb-only-eshell-buffers (buffer)
@@ -135,6 +136,6 @@
   (interactive)
   (let ((iswitchb-buffer-ignore '(iswitchb-only-eshell-buffers)))
     (call-interactively 'iswitchb-buffer)))
-(global-defkey "C-x S" 'iswitchb-eshell-buffers)
+;; (global-defkey "C-x S" 'iswitchb-eshell-buffers)
 
 (provide 'init-eshell)
