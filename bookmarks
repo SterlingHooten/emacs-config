@@ -2,11 +2,23 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Group-Exchange"
- (filename . "//easerv.muc/EA-DIR/Exchange/Group-Exchange/")
- (front-context-string . "Neuer Ordner (2)")
- (rear-context-string . "012-08-07 14:20 ")
- (position . 134))
+(("AWK Info"
+ (front-context-string . "\nGeneral Introdu")
+ (rear-context-string . "ir),  Up: (dir)\n")
+ (position . 1311)
+ (filename . "e:/tools/gnu/usr/info/gawk.info")
+ (info-node . "Top")
+ (handler . Info-bookmark-jump))
+("Tätigkeiten"
+ (filename . "e:/qx29999/cenis/Tätigkeiten")
+ (front-context-string . "-*- Org -*-\n#+ST")
+ (rear-context-string)
+ (position . 1))
+("AustauschDxE"
+ (filename . "//europe.bmw.corp/winfs/EA-proj/Antrieb/_Exchange/AustauschDxE/")
+ (front-context-string . "Ino/\n  dr-xr-xr-")
+ (rear-context-string . "012-10-02 13:52 ")
+ (position . 163))
 ("rules_i.mak"
  (filename . "e:/asc/tools_30-trunk/rules_i.mak")
  (front-context-string . "################")
@@ -29,11 +41,6 @@
  (front-context-string . "cgi-bin/\n  drwxr")
  (rear-context-string . "0K Jun 20 16:55 ")
  (position . 95))
-("Apache error log on eas254.muc"
- (filename . "/sudo:root@eas254.muc:/var/log/apache2/error.log")
- (front-context-string . "[Sun Feb 12 06:5")
- (rear-context-string)
- (position . 1))
 ("FuSi-Verzeichnis auf Antriebsprojekte/Otto_Mottoren"
  (filename . "//easerv.muc/projekte/Antriebsprojekte/Otto_Motoren/Funktionssicherheit/")
  (front-context-string . "Befaehigung/\n  d")
@@ -75,11 +82,6 @@
  (front-context-string . "Entwicklung/\n  d")
  (rear-context-string . " 0 Jul 15 10:37 ")
  (position . 205))
-("EA-Exchange/Austausch"
- (filename . "//easerv.muc/EA-DIR/Exchange/EA-Exchange/")
- (front-context-string . "pp/\n  drwxr-xr-x")
- (rear-context-string . "ct 22 15:56 Scho")
- (position . 6723))
 ("e:/tools auf dem Build-Server smuc2190.muc"
  (filename . "//smuc2190.muc/toolchain/")
  (front-context-string . "System Volume In")
@@ -112,7 +114,7 @@
  (position . 3223)
  (annotation . ""))
 ("shared_vision_EA41/wiki-backup"
- (filename . "p:/shared_vision_EA41/")
+ (filename . "//europe.bmw.corp/WINFS/EA-proj/Antrieb/EE/shared_vision/")
  (front-context-string . "wiki-backup/\n  d")
  (rear-context-string . " 0 Jun 11 13:01 ")
  (position . 123))
