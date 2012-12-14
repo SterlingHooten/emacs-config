@@ -162,6 +162,30 @@ Otherwise return the value of the last form in BODY."
         (kill-ring-save comint-last-input-end pmark)
         (goto-char (process-mark proc))))))
 
+;; (defun comint-delete-output ()
+;;   "Delete all output from interpreter since previous input.
+;; Does not delete the prompt."
+;;   (interactive)
+;;   (let* ((beg (previous-single-char-property-change (point) 'field))
+;;          (end (save-excursion
+;;                 (goto-char (next-single-char-property-change beg 'field))
+;;                 ;; can't use `point-at-bol' here due to field boundaries
+;;                 (forward-line 0)
+;;                 (point))))
+;;     (unless (= beg end)
+;;       (delete-region beg end)
+;;       (save-excursion
+;;         (goto-char beg)
+;;         (insert "*** output flushed ***\n")))))
+;;
+;;
+;; (progn
+;;   (if (get-text-property (point) 'field) 
+;;       (comint-previous-prompt 1)
+;;     (goto-char (point-at-bol)))
+;;   ())
+
+
 ;; (defun comint-insert-last-word ()
 ;;   "*Insert the last word from the previous history event at the cursor position."
 ;;   (interactive)
