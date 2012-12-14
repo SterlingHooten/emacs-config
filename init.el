@@ -502,6 +502,57 @@ Subject to `buffer-ignore-regexp'."
 	  (error (beep)))))
     (message "Done.")))
 
+(when (require-soft 'win-switch)
+  (win-switch-set-keys '("p" "h") 'up)
+  (win-switch-set-keys '("n") 'down)
+  (win-switch-set-keys '("b") 'left)
+  (win-switch-set-keys '("f") 'right)
+  (win-switch-set-keys '(" " "\M-i") 'next-window)
+  (win-switch-set-keys '([backspace]) 'previous-window)
+  (win-switch-set-keys '("\C-n") 'enlarge-vertically)
+  (win-switch-set-keys '("\C-p" "\C-h") 'shrink-vertically)
+  (win-switch-set-keys '("\C-b") 'shrink-horizontally)
+  (win-switch-set-keys '("\C-f") 'enlarge-horizontally)
+  (win-switch-set-keys '("5") 'other-frame)
+  (win-switch-set-keys '([return]) 'exit)
+  (win-switch-set-keys '("3") 'split-horizontally)
+  (win-switch-set-keys '("2") 'split-vertically)
+  (win-switch-set-keys '("0") 'delete-window)
+  (win-switch-set-keys '("\M-\C-g") 'emergency-exit)
+
+  (setq win-switch-other-window-first nil)
+
+  (global-defkey "M-i" 'win-switch-dispatch))
+
+(defun change-window (&optional arg)
+  "*Resize window interactively."
+  (interactive "P")
+  (if (one-window-p) (error "Sole window in frame"))
+  (setq arg (if arg (prefix-numeric-value arg) 4))
+  (let (c)
+    (catch 'done
+      (while t
+	(message
+	 "C-n=down, C-p=up, C-f=right, C-b=left, <RET>=quit"
+	 arg)
+	(setq c (read-char))
+	(condition-case ()
+	    (cond
+             ((= c ?0) (delete-window))
+             ((= c ?2) (split-window-vertically))
+             ((= c ?3) (split-window))
+             ((= c ? ) (other-window 1))
+	     ((= c ?\^N) (windmove-down))
+	     ((= c ?\^P) (windmove-up))
+	     ((= c ?\^F) (windmove-right))
+	     ((= c ?\^B) (windmove-left))
+	     ((= c ?\^G) (keyboard-quit))
+	     ((= c ?\^M) (throw 'done t))
+	     (t (beep)))
+	  (error (beep)))))
+    (message "Done.")))
+
+(global-defkey "C-x o" 'change-window)
 ;; (display-buffers-matching (lambda (b) (with-current-buffer b (string-match "shell-mode" (symbol-name major-mode)))))
 ;; (display-buffers-matching (lambda (b) (with-current-buffer b (string-match "org-mode" (symbol-name major-mode)))))
 
@@ -1511,7 +1562,7 @@ Redefined to banish the mouse to the corner of the frame."
 (global-defkey "C-c g" 'goto-line)
 (global-defkey "M-g" 'goto-line)
 
-(global-defkey "M-i" 'other-window)
+;; (global-defkey "M-i" 'other-window)
 
 (global-defkey "C-c t" 'insert-date)
 
