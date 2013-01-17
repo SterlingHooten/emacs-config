@@ -260,6 +260,7 @@ In other words: change all instances of `dired-marker-char' to `dired-del-marker
 
 (defkey dired-mode-map "n" 'dired-next-file)
 (defkey dired-mode-map "p" 'dired-previous-file)
+(defkey dired-mode-map "h" 'dired-previous-file)
 (defkey dired-mode-map "C-n" 'dired-next-file)
 (defkey dired-mode-map "C-p" 'dired-previous-file)
 (defkey dired-mode-map "<down>" 'dired-next-file)
