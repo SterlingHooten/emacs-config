@@ -2306,7 +2306,11 @@ With prefix argument CREATE always start a new shell."
      (list (read-shell-command "Run ack (like this): "
                                ack-command
                                'ack-history))))
-  (compilation-start (concat command-args " < " null-device) 'grep-mode))
+  (let ((/dev/null (if (and (equal system-type 'windows-nt)
+                            (string-match-p shell-dumb-shell-regexp (or explicit-shell-file-name shell-file-name)))
+                       null-device
+                     "/dev/null")))
+    (compilation-start (concat command-args " < " /dev/null) 'grep-mode)))
 
 ;;;_ + calendar
 (add-hook 'calendar-load-hook
