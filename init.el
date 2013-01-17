@@ -1024,6 +1024,16 @@ upper case, downcase it."
   
   (browse-url (format "http://de.wikipedia.org/wiki/Special:Search?search=%s" word)))
 
+(defun duden (word)
+  (require 'thingatpt)
+  (interactive (list 
+                (let ((word (thing-at-point 'word)))
+                  (if word
+                      (read-string (format "Word [default \"%s\"]: " word) nil nil word)
+                    (read-string "Word: ")))))
+  
+  (browse-url (format "http://www.duden.de/suchen/dudenonline/%s" word)))
+
 (setq spelling-alphabet
       ;; Buchstabe    Deutschland        ITU/ICAO/NATO
       '(("A"          "Anton"            "Alfa")
