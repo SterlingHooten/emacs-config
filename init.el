@@ -503,6 +503,8 @@ Subject to `buffer-ignore-regexp'."
     (message "Done.")))
 
 (when (require-soft 'win-switch)
+  (setq win-switch-window-threshold 3)
+  (setq win-switch-idle-time 0.9)
   (win-switch-set-keys '("p" "h") 'up)
   (win-switch-set-keys '("n") 'down)
   (win-switch-set-keys '("b") 'left)
