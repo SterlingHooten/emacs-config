@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("AWK Info"
+(("company.xml"
+ (filename . "//europe.bmw.corp/WINFS/EA-MIA/Softw/INSTALL_DME/Dxe-tools/msi/prosa/company.xml")
+ (front-context-string . "<?xml version=\"1")
+ (rear-context-string)
+ (position . 1))
+("AWK Info"
  (front-context-string . "\nGeneral Introdu")
  (rear-context-string . "ir),  Up: (dir)\n")
  (position . 1311)
