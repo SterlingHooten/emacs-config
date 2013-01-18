@@ -257,9 +257,9 @@ In other words: change all instances of `dired-marker-char' to `dired-del-marker
   (let ((find-file-run-dired t))
     (find-file-read-only (dired-get-file-for-visit))))
 
-(require 'dired-rename-commands)
-(defkey dired-mode-map "% r" 'dired-ren-command)
-(defkey dired-mode-map "% c" 'dired-cop-command)
+(when (require-soft 'dired-rename-commands)
+  (defkey dired-mode-map "% r" 'dired-ren-command)
+  (defkey dired-mode-map "% c" 'dired-cop-command))
 
 (defun iswitchb-only-dired-buffers (buffer)
   "*Ignore all buffers not in dired-mode."
