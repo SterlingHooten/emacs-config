@@ -3,7 +3,7 @@
 (setq dired-x-hands-off-my-keys t)
 (require 'dired-x)
 
-(when (require 'dired-details nil t)
+(when (require-soft 'dired-details)
   (setq dired-details-initially-hide nil)
   (dired-details-install))
 
@@ -242,7 +242,7 @@ In other words: change all instances of `dired-marker-char' to `dired-del-marker
 (defkey dired-mode-map "K" 'dired-do-kill-current-subdir)
 (defkey dired-mode-map "q" 'dired-do-deletions-and-exit)
 
-(when (require 'sorter nil t)
+(when (require-soft 'sorter)
   (defkey dired-mode-map "s" 'dired-sort)
   (defkey dired-mode-map "a" 'dired-toggle-hidden))
 
