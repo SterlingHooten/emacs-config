@@ -172,32 +172,6 @@ With prefix argument, flag only orphaned backup files."
                      (not (file-exists-p (file-name-sans-versions fn)))))))
      "backup file")))
 
-;; From dired.el:
-;; (defun dired-goto-next-file ()
-;;   (let ((max (1- (dired-subdir-max))))
-;;     (while (and (not (dired-move-to-filename)) (< (point) max))
-;;       (forward-line 1))))
-
-(defun dired-next-file-intern (arg &optional move-line-func)
-  (while (> arg 0)
-    (or move-line-func (setq move-line-func 'next-line))
-    (funcall move-line-func 1)
-    (while (not (dired-move-to-filename))
-      (funcall move-line-func 1))
-    (setq arg (1- arg))))
-
-(defun dired-next-file (&optional arg)
-  "*Move down to next filename.
-Optional prefix ARG says how move to next ARGth file; default is one."
-  (interactive "p")
-  (dired-next-file-intern arg))
-
-(defun dired-previous-file (&optional arg)
-  "*Move down to next filename.
-Optional prefix ARG says how move to next ARGth file; default is one."
-  (interactive "p")
-  (dired-next-file-intern arg 'previous-line))
-
 ;; (defun dired-sort-directories-first ()
 ;;   ;; From http://www.emacswiki.org/cgi-bin/wiki.pl?DiredSortDirectoriesFirst
 ;;   ;; A nice hack, which unfortunately has its problems with included subdirs
@@ -258,13 +232,7 @@ In other words: change all instances of `dired-marker-char' to `dired-del-marker
 
 (setq dired-isearch-filenames 'dwim)
 
-(defkey dired-mode-map "n" 'dired-next-file)
-(defkey dired-mode-map "p" 'dired-previous-file)
-(defkey dired-mode-map "h" 'dired-previous-file)
-(defkey dired-mode-map "C-n" 'dired-next-file)
-(defkey dired-mode-map "C-p" 'dired-previous-file)
-(defkey dired-mode-map "<down>" 'dired-next-file)
-(defkey dired-mode-map "<up>" 'dired-previous-file)
+(defkey dired-mode-map "h" 'dired-previous-line)
 
 (defkey dired-mode-map "N" 'dired-next-subdir)
 (defkey dired-mode-map "P" 'dired-prev-subdir)
