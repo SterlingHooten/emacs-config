@@ -1,48 +1,28 @@
 ;;; GNU Emacs initialization file -*- mode: Emacs-Lisp -*-
 ;;; Emilio C. Lopes
 
-;;; Note: lines beginning with `;;;_' are headers for Allout outline
-;;; minor mode
-
-;;;_* TODO:
+;;; TODO:
 ;; o Use `add-to-list' and similars for adding things to alists.
 ;; o Review mode-alist changes.
 ;; o Use `eval-after-load' for customization of packages.
 ;; o Review use of "extra" packages. Some are not necessary anymore
 ;;   while some others could be added.
-;; o Cleanup.
-;; o Index, with page breaks between the "sections".
-;; o Other things. Search for "TODO".
 
 
 (unless (boundp 'user-emacs-directory)
   (setq user-emacs-directory "~/.emacs.d/"))
 
-(defun add-to-path (path dir &optional append)
-  "*Add directory DIR to path PATH.
-If optional argument APPEND is non-nil, DIR is added at the end."
-  (setq dir (expand-file-name dir))
-  (and (file-directory-p dir) (file-accessible-directory-p dir)
-       (add-to-list path dir append)))
+(require 'init-basics (concat user-emacs-directory "init-basics"))
 
-;;;_* User Interface
+;;; User Interface
 (setq running-interactively (not noninteractive))
 (setq running-nt (equal system-type 'windows-nt))
 
-(setq at-bmw (equal (getenv "BMW") "BMW"))
-
-(defmacro require-soft (feature &optional file)
-  "*Try to require FEATURE, but don't signal an error if `require' fails."
-  `(require ,feature ,file 'noerror))
-
-;;;_* Load-path
+;;; Load-path
 (add-to-path 'load-path user-emacs-directory)
 (add-to-path 'load-path (concat user-emacs-directory "lib"))
-(add-to-path 'load-path "~/.lib/emacs/elisp")
-(add-to-path 'load-path "~/.lib/emacs/rc")
 
 (when running-interactively
-
   (setq visible-bell t)
   (setq use-dialog-box nil)
 
@@ -72,7 +52,7 @@ If optional argument APPEND is non-nil, DIR is added at the end."
   (setq-default icon-title-format frame-title-format))
 
 
-;;;_* Language settings
+;;; Language settings
 (setq edmacro-eight-bits t)
 
 (set-language-environment "UTF-8")
@@ -102,12 +82,12 @@ If optional argument APPEND is non-nil, DIR is added at the end."
       ("\"'" #x201c)                    ; gaensefuesschen rechts
       )))
 
-(setq eol-mnemonic-undecided "(?)" ;; unknown EOL type
-      eol-mnemonic-unix  "(unix)"  ;; LF
-      eol-mnemonic-dos  "(dos)"    ;; CRLF
-      eol-mnemonic-mac  "(mac)")   ;; CR
+(setq eol-mnemonic-undecided "(?)"    ;; unknown EOL type
+      eol-mnemonic-unix      "(unix)" ;; LF
+      eol-mnemonic-dos       "(dos)"  ;; CRLF
+      eol-mnemonic-mac       "(mac)") ;; CR
 
-;;;_* Useful defs
+;;; Useful defs
 
 (setq hostname (car (split-string system-name "\\." )))
 
@@ -134,24 +114,6 @@ If optional argument APPEND is non-nil, DIR is added at the end."
   (when tz
     (setenv "TZ" (format "GMT%+d" (* -1(/ (car tz) 3600))))))
 
-(defmacro global-defkey (key def)
-  "*Bind KEY globally to DEF.
-KEY should be a string constant in the format used for
-saving keyboard macros (cf. `insert-kbd-macro')."
-  `(global-set-key (kbd ,key) ,def))
-
-(defmacro local-defkey (key def)
-  "*Bind KEY locally to DEF.
-KEY should be a string constant in the format used for
-saving keyboard macros (cf. `insert-kbd-macro')."
-  `(local-set-key (kbd ,key) ,def))
-
-(defmacro defkey (keymap key def)
-  "*Define KEY to DEF in KEYMAP.
-KEY should be a string constant in the format used for
-saving keyboard macros (cf. `insert-kbd-macro')."
-  `(define-key ,keymap (kbd ,key) ,def))
-
 (defmacro bind-with-new-map (map binding &rest bindings)
   (let ((%map (make-symbol "mapu")))
     `(let ((,%map (make-sparse-keymap)))
@@ -161,72 +123,13 @@ saving keyboard macros (cf. `insert-kbd-macro')."
        (define-key ,map ,(read-kbd-macro binding) ,%map))))
 (put 'bind-with-new-map 'lisp-indent-function 2)
 
-;;;_* System-dependent configuration
-
-(when running-nt
-
-  (setq user-login-name (downcase user-login-name))
-
-  (modify-coding-system-alist 'process "svn" '(latin-1 . latin-1))
-
-  (setq focus-follows-mouse nil)
-  (auto-raise-mode -1)
-
-  (setq w32-enable-synthesized-fonts nil)
-
-  ;;(setq w32-enable-caps-lock nil)
-  (setq w32-alt-is-meta t)
-  (setq w32-pass-alt-to-system nil)
-
-  (setq w32-pass-lwindow-to-system nil)
-  (setq w32-lwindow-modifier 'hyper)
-  (setq w32-pass-rwindow-to-system nil)
-  (setq w32-rwindow-modifier 'hyper)
-
-  (defun w32-toggle-meta-tab ()
-    "*Toggle passing of the key combination M-TAB to the system."
-    (interactive)
-    (unless (fboundp 'w32-registered-hot-keys)
-      (error "This command is not available on your system"))
-    (let ((hotkeys (w32-registered-hot-keys))
-          hotkey found)
-      (while (and (setq hotkey (pop hotkeys)) (not found))
-        (when (equal '(meta tab) (w32-reconstruct-hot-key hotkey))
-          (w32-unregister-hot-key hotkey)
-          (setq found t)))
-      (if (not found)
-          (w32-register-hot-key [(alt tab)]))))
-
-  (setq w32-enable-num-lock nil)
-  (global-defkey "<kp-numlock>" 'w32-toggle-meta-tab)
-
-  (defun normalize-file-path-on-kill-ring ()
-    "*Substitute the filename on the kill-ring with its canonical form.
-The canonical form is the result of applying `expand-file-name'
-to the filename."
-    (interactive)
-    (kill-new (replace-regexp-in-string "/"
-                                        "\\\\"
-                                        (expand-file-name (current-kill 0 'do-not-move)))
-              'replace))
-  (global-defkey "C-c k" 'normalize-file-path-on-kill-ring)
-  
-  (setq w32-quote-process-args t)
-  (setq process-coding-system-alist '(("bash" . undecided-unix) ("zsh" . undecided-unix)))
-  (setq shell-file-name "bash")
-  (setq explicit-bash-args '("-i"))
-  (setenv "SHELL" shell-file-name)
-  (setq explicit-shell-file-name shell-file-name))
-
-;;;_* General configuration
+;;; General configuration
 
 (setq inhibit-startup-message t)
 (setq inhibit-startup-echo-area-message "qx29999")
 (setq inhibit-startup-echo-area-message "eclig")
 (setq inhibit-startup-echo-area-message "ecl")
 (setq initial-scratch-message nil)
-
-(setq initial-major-mode 'lisp-interaction-mode)
 
 ;; set up the mode based on the buffer name.  Thanks to `__jim__'.
 ;; http://www.reddit.com/r/emacs/comments/d2t4q/scratch_buffers_for_emacs/c0x7a68
@@ -328,7 +231,7 @@ to the filename."
 (add-to-path 'Info-default-directory-list "/usr/info")
 (add-to-path 'Info-default-directory-list "/usr/share/info")
 
-;;;_* Functions
+;;; Functions
 
 (defvar default-register 0)
 
@@ -431,7 +334,7 @@ The read-only status of the buffer is also preserved."
     (toggle-read-only 1)))
 (add-hook 'find-file-hooks 'mark-backup-buffers-read-only)
 
-;;;_ + other-window-or-other-buffer
+;;; other-window-or-other-buffer
 
 (defvar buffer-ignore-regexp '("^ ")
   "*Regexp matching buffer names to be ignored by \\[next-buffer].")
@@ -1087,7 +990,7 @@ upper case, downcase it."
   (while (search-forward-regexp regexp (point-at-eol) t)
     (forward-line)))
 
-;;;_* Advices
+;;; Advices
 (defadvice shell-command (before rename-async-buffer activate)
   "Use an unique buffer name for asynchronous commands."
   (when (and (not (ad-get-arg 1))
@@ -1095,17 +998,9 @@ upper case, downcase it."
              (get-buffer-process "*Async Shell Command*"))
     (ad-set-arg 1 (generate-new-buffer-name "*Async Shell Command*"))))
 
-;;;_* Packages
+;;; Packages
 ;; sooner or later it will be loaded, so do it now.
 (require 'tramp)
-
-(when running-nt
-  (setq tramp-default-method "sshx"))
-
-(when at-bmw
-  ;; /sudo:eas254.muc:/etc/fstab
-  (add-to-list 'tramp-default-proxies-alist
-               '("eas254\\.muc\\'" "\\`root\\'" "/sshx:eas254@%h:")))
 
 ;; jka-compr provides transparent access to compressed files.
 (require 'jka-compr)
@@ -1121,13 +1016,13 @@ upper case, downcase it."
 (autoload 'ntcmd-mode "ntcmd"
   "Major mode for editing CMD scripts." t)
 
-;;;_ + imenu
+;;; imenu
 (setq imenu-always-use-completion-buffer-p 'never)
 
 (when (require-soft 'goto-last-change)
   (global-set-key "\C-x\C-\\" 'goto-last-change))
 
-;;;_ + Hippie-expand
+;;; Hippie-expand
 (setq hippie-expand-try-functions-list
       '(try-expand-dabbrev
         try-expand-dabbrev-visible
@@ -1144,7 +1039,7 @@ upper case, downcase it."
 (setq-default truncate-lines nil)
 (setq truncate-partial-width-windows nil)
 
-;;;_  + chop: binary search for a line within a window
+;;; chop: binary search for a line within a window
 (autoload 'chop-move-up "chop")
 (autoload 'chop-move-down "chop")
 (eval-after-load "chop"
@@ -1169,12 +1064,10 @@ upper case, downcase it."
   (autopair-global-mode 1)
   (setq autopair-autowrap t))
 
-;;;_ + Find file at point
+;;; Find file at point
 (require 'ffap)
 (setq ffap-require-prefix t)
 (setq ffap-highlight nil)
-(when running-nt
-  (setq ffap-url-regexp nil))
 
 (defun ffap-read-only ()
   "Like \\[find-file] but marks buffer as read-only.
@@ -1208,13 +1101,13 @@ Only intended for interactive use."
 (global-defkey "C-x 4 R"   'ffap-read-only-other-window-noselect)
 
 
-;;;_ + Gnuplot
+;;; Gnuplot
 (autoload 'gnuplot "gnuplot"
   "Run Gnuplot interactively in a Emacs buffer." t nil)
 (autoload 'gnuplot-interaction-mode "gnuplot-interaction"
   "Major mode for editing Gnuplot input files." t nil)
 
-;;;_ + Shell-script
+;;; Shell-script
 (autoload 'sh-mode "sh-script" 
   "Major mode for editing shell scripts" t nil)
 (eval-after-load "sh-script"
@@ -1229,7 +1122,7 @@ Only intended for interactive use."
 (autoload 'the-the "the-the"
   "Search forward for for a duplicated word." t nil)
 
-;;;_ + apropos
+;;; apropos
 (defun apropos-function ()
   "*Show functions that match REGEXP."
   (interactive)
@@ -1237,7 +1130,7 @@ Only intended for interactive use."
   (let ((apropos-do-all t))
     (call-interactively 'apropos-command)))
 
-;;;_ + anything
+;;; anything
 (when (require-soft 'anything)
   (setq anything-command-map-prefix-key "M-<RET>")
   (require 'anything-config)
@@ -1270,7 +1163,7 @@ Only intended for interactive use."
 
   (defkey ctl-x-map "b" 'anything-switch-buffer))
 
-;;;_ + iswitchb
+;;; iswitchb
 (if (fboundp 'iswitchb-mode)
     (iswitchb-mode)
   (iswitchb-default-keybindings))
@@ -1357,7 +1250,7 @@ set to non-nil."
 (require-soft 'minibuf-isearch)
 
 
-;;;_ + autoinsert
+;;; autoinsert
 (setq auto-insert-directory (concat user-emacs-directory "auto-insert/"))
 (auto-insert-mode 1)
 (add-to-list 'auto-insert-alist '(("/\\.?lib/zsh/" . "ZSH function")
@@ -1381,12 +1274,12 @@ emulate -LR zsh
 (add-to-list 'auto-insert-alist '("\\.pl\\'" . "header.pl"))
 
 
-;;;_ + winner
+;;; winner
 (when (require-soft 'winner)
   (winner-mode +1))
 
 
-;;;_ + completion
+;;; completion
 (defadvice PC-lisp-complete-symbol (before forward-sexp-before-completion (&optional arg) activate)
   "Do a `forward-sexp' if necessary before trying completion.
 With prefix argument ARG behave as usual."
@@ -1427,7 +1320,7 @@ With prefix argument ARG behave as usual."
 (setq completion-ignored-extensions (delete ".pdf" completion-ignored-extensions))
 
 
-;;;_ + Get the little rodent out of way
+;;; Get the little rodent out of way
 (when (and (display-mouse-p)
            (require-soft 'avoid))
   (defun mouse-avoidance-banish-destination ()
@@ -1440,14 +1333,14 @@ Redefined to banish the mouse to the corner of the frame."
     (mouse-avoidance-mode)))
 
 
-;;;_ + Uniquify
+;;; Uniquify
 (require 'uniquify)
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-buffer-name-style 'forward)
 (setq uniquify-ignore-buffers-re
       "\\(news\\|mail\\|reply\\|followup\\) message\\*")
 
-;;;_ + Time-stamp 
+;;; Time-stamp 
 (add-hook 'write-file-hooks 'time-stamp)
 (setq time-stamp-active t)
 (setq time-stamp-warn-inactive t)
@@ -1455,7 +1348,7 @@ Redefined to banish the mouse to the corner of the frame."
   ;; use full name instead of login name in time-stamps
   (setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S %U"))
 
-;;;_ + font-lock mode
+;;; font-lock mode
 (when (display-color-p)
   (setq font-lock-maximum-decoration t)
   (global-font-lock-mode 1)
@@ -1464,7 +1357,7 @@ Redefined to banish the mouse to the corner of the frame."
             (lambda ()
               (font-lock-add-keywords nil '(("\\*\\(ECL\\|FIXME\\)\\*:?" 0 'show-paren-mismatch-face t))))))
 
-;;;_* Keybindings
+;;; Keybindings
 (when running-nt
   (global-defkey "<apps>" 'undo))
 
@@ -1665,7 +1558,7 @@ Redefined to banish the mouse to the corner of the frame."
 (global-defkey "<print>"        'ps-spool-buffer-with-faces)
 (global-defkey "S-<print>"      'set-default-printer)
 
-;;;_* Time (and date) display setup.
+;;; Time (and date) display setup.
 (display-time-mode 1)
 (setq display-time-interval 5)
 (setq display-time-day-and-date nil)
@@ -1673,7 +1566,7 @@ Redefined to banish the mouse to the corner of the frame."
 (setq display-time-use-mail-icon t)
 (set-time-zone-rule nil)
 
-;;;_* Common modes stuff
+;;; Common modes stuff
 ;; Add some suffix defs to auto-mode-alist:
 (dolist (f (list auto-mode-alist interpreter-mode-alist))
   (while (rassq 'perl-mode f)
@@ -1691,11 +1584,7 @@ Redefined to banish the mouse to the corner of the frame."
                                 ("\\.dtx\\'" . latex-mode))
                               auto-mode-alist))
 
-
-(when at-bmw
-  (setq auto-mode-alist (append '(("\\.dat?\\'" . c-mode)) auto-mode-alist)))
-
-;;;_* kill-ring
+;;; kill-ring
 (setq kill-ring-max 1024)
 (setq save-interprogram-paste-before-kill t)
 
@@ -1735,9 +1624,9 @@ in the minibuffer history."
   (setq kill-ring (delete (ad-get-arg 0) kill-ring))
   ad-do-it)
 
-;;;_* Major modes
+;;; Major modes
 
-;;;_ + Ispell
+;;; Ispell
 
 (setq-default ispell-local-dictionary "deutsch8")
 
@@ -1771,12 +1660,12 @@ in the minibuffer history."
 (global-defkey "C-c i w" 'show-current-ispell-dictionary)
 
 
-;;;_ + magit
+;;; magit
 (add-to-path 'load-path (concat user-emacs-directory "lib/magit"))
 (autoload 'magit-status "magit" nil t)
 
 
-;;;_ + nxml
+;;; nxml
 ;; (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
 ;; (defun nxml-kill-element (&optional arg)
 ;;   "*Kill the following element.
@@ -1808,7 +1697,7 @@ in the minibuffer history."
 
 
 
-;;;_ + TeX
+;;; TeX
 (setq tex-dvi-view-command
       (if (eq window-system 'x) "xdvi" "dvi2tty -q * | cat -s"))
 (setq tex-dvi-print-command "dvips")
@@ -1818,7 +1707,7 @@ in the minibuffer history."
 (setq tex-close-quote "\"")
 
 
-;;;_ + AUCTeX
+;;; AUCTeX
 (when (require-soft 'tex-site)
   (setq LaTeX-math-abbrev-prefix "#")
   (setq TeX-open-quote "\"")              ; disable "smart quoting".
@@ -1835,13 +1724,13 @@ in the minibuffer history."
               (local-defkey "<f9>" 'TeX-next-error))))
 
 
-;;;_ + reftex
+;;; reftex
 (setq reftex-insert-label-flags '("s" "sfte"))
 (setq reftex-label-alist
       '(("equation" ?e "eq:" "~\\eqref{%s}" t (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))))
 
 
-;;;_ + BBDB
+;;; BBDB
 (when (require-soft 'bbdb)
   (bbdb-initialize 'gnus 'message)
   (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
@@ -1865,88 +1754,11 @@ in the minibuffer history."
       (expand-abbrev))))
 
 
-;;;_ + SES
+;;; SES
 (eval-after-load "ses" '(require-soft 'ses-formulas))
 
-
 
-;;;_ + text
-;; (add-hook 'text-mode-hook 'turn-on-auto-fill)
-;; (add-hook 'text-mode-hook (lambda ()
-;;                             (flyspell-mode +1)))
-;; (add-hook 'text-mode-hook (lambda ()
-;;                             (longlines-mode +1)))
-
-(add-hook 'text-mode-hook 'fix-broken-outlook-replies)
-
-(defun fix-broken-outlook-replies ()
-  (let ((bname (buffer-file-name)))
-    (when (and (stringp bname)
-               (string-match-p "/bmwmail\\." bname))
-      (goto-char (point-max))
-      (delete-blank-lines)
-      (goto-char (point-min))
-      ;; (delete-blank-lines)
-
-      (let ((sig-start (and (search-forward-regexp "^-- *$" nil t)
-                            (progn (just-one-space)
-                                   (point-at-bol))))
-            (citation-start (and (search-forward-regexp "^_______________+$" nil t)
-                                 (progn (delete-region (point-at-bol) (min (1+ (point-at-eol)) (point-max)))
-                                        (point-at-bol)))))
-
-        (when citation-start
-          (replace-regexp "^" "> " nil citation-start (1- (point-max))))
-
-        ;; (goto-char (point-max))
-
-        (save-excursion
-          (when sig-start
-            (let ((sig (delete-and-extract-region sig-start (or citation-start (point-max)))))
-              (goto-char (point-max))
-              (insert "\n" sig))))))))
-
-;;;_ + Fortran
-(defun fortran-uncomment-empty-lines (beg end)
-  "*Remove comment characters from empty lines in region."
-  (interactive "*r")
-  (save-excursion
-    (goto-char beg)
-    (while (re-search-forward "^[*Cc!]+[ \t]*$" end t)
-      (replace-match ""))))
-
-(defun fortran-insert-print (vars)
-  (interactive (list (read-from-minibuffer "Print: ")))
-  (let ((vars (split-string vars "[ \t,]+"))
-        varstring)
-    (while vars
-      (setq varstring (concat varstring (and varstring ", ") (car vars)))
-      (setq vars (cdr vars)))
-    (insert (format "print *, '%s: ', %s" varstring varstring))))
-
-(defun my-fortran-mode-hook ()
-  "*Setup fortran-mode."
-  (setq fortran-startup-message nil
-        fill-column 72
-        fortran-continuation-string "&"
-        fortran-comment-region "*"
-        comment-line-start "*"
-        comment-start "! "
-        fortran-comment-indent-style nil
-        fortran-blink-matching-if t
-        fortran-tab-mode-default nil
-        fortran-line-number-indent 5)
-  (defkey fortran-mode-map "M-q" 'fortran-fill)
-  (defkey fortran-mode-map "C-c p" 'fortran-insert-print)
-  (abbrev-mode 1)
-  (set (make-local-variable 'grep-command) "grep -ni ")
-  (set (make-local-variable 'igrep-options) "-i")
-  (set-compile-command "g77 -c %s"))
-(add-hook 'fortran-mode-hook 'my-fortran-mode-hook)
-
-
-
-;;;_ + Scheme/Lisp modes
+;;; Scheme/Lisp modes
 
 (require 'init-lisp)
 
@@ -1967,7 +1779,7 @@ With prefix arg generate a fresh buffer."
      nil)))
 
 
-;;;_ + Perl mode
+;;; Perl mode
 ;; use cperl-mode as default
 ;; (defalias 'perl-mode 'cperl-mode)
 (setq cperl-hairy nil)
@@ -1995,7 +1807,7 @@ If VAR begins with one of `@%$' use `Data::Dumper'."
 	    (set-compile-command "perl -cw %s")))
 
 
-;;;_ + PHP
+;;; PHP
 (require-soft 'php-mode)
 
 (defun php (symbol)
@@ -2009,7 +1821,7 @@ If VAR begins with one of `@%$' use `Data::Dumper'."
   (browse-url (format "http://www.php.net/%s" (string-make-unibyte symbol))))
 
 
-;;;_ + Compile
+;;; Compile
 (setq compile-command "make ")
 (setq compilation-read-command nil)
 (setq compilation-ask-about-save t)
@@ -2028,23 +1840,22 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
          (format command (file-name-nondirectory buffer-file-name)))))
 
 
-;;;_ + Makefile mode
+;;; Makefile mode
 ;; (setq makefile-electric-keys t)
 (add-hook 'makefile-mode-hook
           (lambda ()
             (modify-syntax-entry ?. "_"  makefile-mode-syntax-table)))
 
 
-;;;_ + Sendmail configuration
+;;; Sendmail configuration
 ;;(setq mail-user-agent 'gnus-user-agent)
 (setq mail-user-agent 'message-user-agent)
 
 (setq mail-archive-file-name "~/Mail/Outgoing")
 
 (setq user-full-name "Emilio C. Lopes")
-(when at-bmw
-  (setq user-mail-address "Emilio.Lopes@partner.bmw.de")
-  (setq mail-default-reply-to "Emilio.Lopes@partner.bmw.de"))
+(setq user-mail-address "eclig@gmx.net")
+(setq mail-default-reply-to "eclig@gmx.net")
 
 (setq mail-from-style nil)
 
@@ -2056,11 +1867,11 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 (add-hook 'mail-setup-hook 'mail-abbrevs-setup)
 
 
-;;;_ + Message
+;;; Message
 (add-hook 'message-load-hook (lambda () (require-soft 'message_rc)))
 
 
-;;;_ + Resume/Server configuration.
+;;; Resume/Server configuration.
 ;; With these hooks and using emacs.bash (or emacs.csh), both from
 ;; "etc" dir, it is possible to specify arguments when resuming emacs
 ;; after a suspension.
@@ -2070,12 +1881,12 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
   (server-start))
 
 
-;;;_ + Abbrevs
+;;; Abbrevs
 (setq save-abbrevs 'silently)
 (quietly-read-abbrev-file)
 
 
-;;;_ + Bookmarks
+;;; Bookmarks
 (setq bookmark-default-file (locate-user-emacs-file "bookmarks" ".emacs.bookmarks"))
 (setq bookmark-save-flag 1)
 
@@ -2110,21 +1921,13 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 (substitute-key-definition 'bookmark-jump 'iswitchb-bookmark-jump global-map)
 
 
-;;;_ + folding
+;;; folding
 (autoload 'folding-mode          "folding" "Folding mode" t)
 (autoload 'turn-off-folding-mode "folding" "Folding mode" t)
 (autoload 'turn-on-folding-mode  "folding" "Folding mode" t)
 
 
-;;;_ + TMM
-(setq tmm-completion-prompt nil)
-(setq tmm-mid-prompt ": ")
-(setq tmm-shortcut-style 'downcase)
-(setq tmm-shortcut-words nil)
-
-
-
-;;;_ + ibuffer
+;;; ibuffer
 (when (require-soft 'ibuffer)
   (global-defkey "C-x C-b" 'ibuffer)
   (setq ibuffer-formats
@@ -2191,14 +1994,14 @@ none is marked."
           (setq ad-return-value (list buffer))))))
   )
 
-;;;_ + Dired
+;;; Dired
 (setq ls-lisp-use-insert-directory-program nil)
 (eval-after-load "dired" '(require-soft 'init-dired))
 (autoload 'dired-jump "dired"
   "Jump to Dired buffer corresponding to current buffer." t)
 
 
-;;;_ + Org-mode
+;;; Org-mode
 (setq org-startup-folded nil)           ; no folding on startup
 
 (setq org-todo-keywords
@@ -2216,28 +2019,11 @@ none is marked."
 
 (setq org-use-fast-todo-selection t)
 
-;;;_ + eshell
-;; TODO: Make it more generic (`next-buffer-satisfying') and use "ring.el"
-(defun eshell-next-buffer (arg)
-"Switch to the next EShell buffer.
-Start a new Eshell session if invoked with prefix argument ARG or if
-no EShell session is currently active."
-  (interactive "P")
-  (let (eshell-buffers)
-    (mapc (lambda (buffer)
-            (when (with-current-buffer buffer
-                    (string-match "\\`EShell\\'" mode-name))
-              (add-to-list 'eshell-buffers buffer 'append)))
-          (buffer-list))
-    (if (or arg (not eshell-buffers))
-        (eshell t)
-      (switch-to-buffer (car (delete (current-buffer) eshell-buffers))))))
-
+;;; eshell
 (add-hook 'eshell-load-hook (lambda () (require-soft 'init-eshell)))
 
-
 
-;;;_ + Shell and Comint
+;;; Shell and Comint
 (defun shell-dwim (&optional create)
   "Start or switch to an inferior shell process, in a smart way.
 If a buffer with a running shell process exists, simply switch to
@@ -2271,24 +2057,17 @@ With prefix argument CREATE always start a new shell."
     (setq buffs (delq nil buffs))
     (if (null buffs)
         (let ((default-directory dir))
-          (shell (generate-new-buffer-name "*shell*")))
+          (shell (generate-new-buffer-name
+                  (format "*shell: %s*"
+                          (if (string-match (format "^%s/?$" (regexp-quote (expand-file-name "~"))) (expand-file-name default-directory))
+                              "~"
+                            (file-name-nondirectory (directory-file-name default-directory)))))))
       (shell (car buffs)))))
-
-(when (memq system-type '(ms-dos windows-nt cygwin))
-  (defun shell-cmd ()
-    (interactive)
-    (let ((explicit-shell-file-name (or (executable-find "cmdproxy.exe")
-                                        (getenv "ComSpec")
-                                        (executable-find "cmd.exe")
-                                        "command.com"))
-          (default-process-coding-system '(dos . dos))
-          (comint-process-echoes t))
-      (shell "*shell: cmd*"))))
 
 (eval-after-load "shell" '(require-soft 'init-shell))
 
 
-;;;_ + view-file
+;;; view-file
 (eval-after-load "view"
   '(progn
      (substitute-key-definition 'View-quit 'View-exit-no-restore view-mode-map)
@@ -2303,7 +2082,7 @@ With prefix argument CREATE always start a new shell."
 
 
 
-;;;_ + grep
+;;; grep
 (setq grep-command "grep -s -n ")
 
 (eval-after-load "grep"
@@ -2324,13 +2103,13 @@ With prefix argument CREATE always start a new shell."
                      "/dev/null")))
     (compilation-start (concat command-args " < " /dev/null) 'grep-mode)))
 
-;;;_ + calendar
+;;; calendar
 (add-hook 'calendar-load-hook
           (lambda ()
             (require-soft 'init-calendar)))
 
 
-;;;_ + Occur
+;;; Occur
 (defun my-occur-mode-hook ()
   (defkey occur-mode-map "n" 'occur-next)
   (defkey occur-mode-map "<down>" 'occur-next)
@@ -2358,7 +2137,7 @@ With prefix argument CREATE always start a new shell."
 
 
 
-;;;_ + Diff/Ediff
+;;; Diff/Ediff
 
 (setq diff-switches "--unified")
 (setq diff-default-read-only t)
@@ -2462,7 +2241,7 @@ A new buffer is created containing the disc file's contents and
       (ediff-buffers (buffer-name) current))))
 
 
-;;;_ + Printing
+;;; Printing
 (when (require-soft 'printing)
   (pr-update-menus t))
 
@@ -2537,13 +2316,13 @@ A new buffer is created containing the disc file's contents and
 (global-defkey "C-c p S" 'set-default-printer)
 
 
-;;;_ + Calc
+;;; Calc
 (setq calc-full-mode t)
 (setq calc-display-trail nil)
 
 
 
-;;;_ + Man
+;;; Man
 (eval-after-load "man"
   '(progn
      (setq Man-notify-method 'friendly)
@@ -2551,34 +2330,24 @@ A new buffer is created containing the disc file's contents and
 
 
 
-;;;_ + Woman
+;;; Woman
 (setq woman-use-own-frame nil)
 
 
 
-;;;_ + Browse URL
+;;; Browse URL
 (setq browse-url-new-window-flag nil)
 (setq browse-url-mozilla-new-window-is-tab t)
 
 
-;;;_ + W3
-(when (or (require-soft 'w3-auto)
-          (require-soft 'url))
-  (cond
-   (at-bmw
-    (setq url-proxy-services '(("http" . "proxy.muc:8080")
-                               ("ftp" .  "proxy.muc:8080"))))))
-
-
-
-;;;_ + Custom
+;;; Custom
 (setq custom-file (locate-user-emacs-file "custom.el" ".custom"))
 (when (file-readable-p custom-file)
   (load-file custom-file))
 
 
 
-;;;_ + isearch
+;;; isearch
 (setq isearch-allow-scroll t)
 
 (defun isearch-recenter ()
@@ -2639,7 +2408,7 @@ A new buffer is created containing the disc file's contents and
 (defkey isearch-mode-map "M->" 'isearch-end-of-buffer)
 
 
-;;;_* Misc
+;;; Misc
 
 (defadvice describe-function (after where-is activate)
   "Call `\\[where-is] FUNCTION' iff it's interactive."
@@ -2679,55 +2448,16 @@ A new buffer is created containing the disc file's contents and
             (set-face-foreground 'show-paren-match-face "orange")
             (set-face-background 'show-paren-match-face "moccasin")))
 
-;;;_* Local Configuration
-(when at-bmw
-  (defun bmw-jump-to-exchange-dir (&optional arg)
-    "*Visit (using Dired) the exchange directory, creating it if necessary."
-    (interactive "P")
-    (let ((exchange "//easerv.muc/Organisation/EA-41/Austausch/ecl")
-          (find-file-existing-other-name t))
-      (when arg (setq exchange (file-name-directory (directory-file-name exchange))))
-      (unless (file-accessible-directory-p exchange)
-        (make-directory exchange t))
-      (dired exchange)))
-  (global-defkey "C-c j A" 'bmw-jump-to-exchange-dir)
-  (global-defkey "C-c j u" (lambda () (interactive) (dired "u:/")))
-  (set-register ?P '(file . "//smuc1830/Projekt/DDE/")))
-
-;; Fix the system PATH at BMW
-(when at-bmw
-  (setq exec-path
-        (let (path)
-          (mapc (lambda (dir)
-                  (let ((case-fold-search t))
-                    (cond
-                     ((string-match "[\\/]winnt" dir)
-                      (add-to-list 'path dir 'append)) ; append
-                     ((string-match "[\\/]\\(orant\\|oracle\\|dds\\)" dir)
-                      nil)              ; do nothing i.e. remove
-                     (t
-                      (add-to-list 'path dir)))))
-                (reverse exec-path))
-          path))
-  (setq sql-oracle-program "c:/Oracle/Client/bin/sqlplus.exe")
-  (let ((cygwin-prefix "e:/tools/gnu"))
-    (add-to-path 'exec-path (concat cygwin-prefix "/bin"))
-    (add-to-path 'exec-path (concat cygwin-prefix "/usr/local/bin"))
-    (add-to-path 'Info-default-directory-list (concat cygwin-prefix "/usr/info") 'append)
-    (setq woman-manpath
-          (mapcar (lambda (dir) (concat cygwin-prefix dir)) '("/usr/local/man" "/usr/man"))))
-  (setenv "PATH" (mapconcat (if running-nt
-                                (lambda (dir)
-                                  (subst-char-in-string ?/ ?\\ dir))
-                              'identity) exec-path path-separator)))
-
-
 ;;; periodically kill old buffers
 (require 'midnight)
 
 
+;;; Local Configuration
 
-(when at-bmw
-  (setq bmw-suppress-local-keybindings t)
-  (setq bmw-suppress-local-look-and-feel t))
+(when (equal system-type 'windows-nt)
+  (require-soft 'init-windows))
+
+(when (getenv "BMW")
+  (require-soft 'init-bmw))
+
 ;;; EOF
