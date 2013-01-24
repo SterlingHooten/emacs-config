@@ -25,6 +25,17 @@
 ;;   * Bash option `extglob' should be set ("shopt -s extglob")
 
 ;;; Code:
+
+(defcustom pcmpl-bash-file-ignore "~\\'"
+  (documentation-property 'pcomplete-file-ignore
+			  'variable-documentation)
+  :type (get 'pcomplete-file-ignore 'custom-type))
+
+(defcustom pcmpl-bash-dir-ignore nil ;"\\`\\(\\.\\.?\\|CVS\\)/\\'"
+  (documentation-property 'pcomplete-dir-ignore
+			  'variable-documentation)
+  :type (get 'pcomplete-dir-ignore 'custom-type))
+
 (defun pcmpl-bash-complete-command ()
   "Completion function for Bash command names.
 Uses Bash's builtin `compgen' to get a list of possible commands."
@@ -36,7 +47,15 @@ Uses Bash's builtin `compgen' to get a list of possible commands."
   "Completion function for file names.
 Uses Bash's builtin `compgen' to get a list of completions."
   (let ((name (or (nth pcomplete-index pcomplete-args) "")))
-    (pcomplete-here (mapcar 'file-name-nondirectory (pcmpl-bash-file-completions name))
+    (pcomplete-here (pcmpl-bash-filter-map
+                     (lambda (f)
+                       (let ((fn (file-name-nondirectory f)))
+                         (if (file-directory-p f)
+                             (and (not (pcmpl-bash-ignore-p fn pcomplete-dir-ignore))
+                                  (concat fn "/"))
+                           (and (not (pcmpl-bash-ignore-p fn pcomplete-file-ignore))
+                                fn))))
+                     (pcmpl-bash-file-completions name))
                     (file-name-nondirectory name))))
 
 (defun pcmpl-bash-command-name ()
@@ -70,7 +89,7 @@ Uses Bash's builtin `compgen' to get a list of completions."
   (pcmpl-bash-run-collecting-output (format "compgen -f '%s'" name)))
 
 (defun pcmpl-bash-run-collecting-output (cmd)
-  (comint-redirect-results-list cmd "^\\(.+\\)$" 1))
+  (comint-redirect-results-list (format " %s" cmd) "^\\(.+\\)$" 1))
 
 (defun pcmpl-bash-expand-and-send-input ()
   (interactive)
@@ -96,9 +115,23 @@ Uses Bash's builtin `compgen' to get a list of completions."
   (pcmpl-bash-run-collecting-output (format "history -p '%s'" input)))
 
 (defun pcmpl-bash-setup ()
+  (set (make-local-variable 'pcomplete-file-ignore) pcmpl-bash-file-ignore)
+  (set (make-local-variable 'pcomplete-dir-ignore) pcmpl-bash-dir-ignore)
   (set (make-local-variable 'pcomplete-command-completion-function) #'pcmpl-bash-complete-command)
   (set (make-local-variable 'pcomplete-command-name-function) #'pcmpl-bash-command-name)
   (set (make-local-variable 'pcomplete-default-completion-function) #'pcmpl-bash-default-completion-function))
+
+(defmacro pcmpl-bash-filter-map (f list)
+  (let ((result (make-symbol "result")))
+    `(let ((,result '()))
+       (dolist (x ,list ,result)
+         (let ((fx (funcall ,f x)))
+           (when fx
+             (setq ,result (cons fx ,result)))))
+       (nreverse ,result))))
+
+(defun pcmpl-bash-ignore-p (x regexp)
+  (and regexp (string-match-p regexp x)))
 
 (provide 'pcomplete-bash)
 ;;; pcomplete-bash.el ends here
