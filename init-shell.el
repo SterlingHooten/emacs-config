@@ -42,6 +42,9 @@
             ;; make "," a word constituent so that we can use it in
             ;; abbrevs (and also filenames)
             (modify-syntax-entry ?\, "w")
+            (modify-syntax-entry ?\. "_")
+            (modify-syntax-entry ?\: "_")
+            (modify-syntax-entry ?\' "\"")
             (abbrev-mode 1)))
 
 (defmacro define-shell-abbrev (abbrev expansion)
