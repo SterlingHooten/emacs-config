@@ -39,12 +39,17 @@
 
 (add-hook 'shell-mode-hook
           (lambda ()
-            ;; make "," a word constituent so that we can use it in
-            ;; abbrevs (and also filenames)
-            (modify-syntax-entry ?\, "w")
+            ;; sanitise the syntax table
+            (modify-syntax-entry ?\, ".")
+            (modify-syntax-entry ?\@ "_")
+            (modify-syntax-entry ?\` "$")
+            (modify-syntax-entry ?\# "<")
             (modify-syntax-entry ?\. "_")
             (modify-syntax-entry ?\: "_")
             (modify-syntax-entry ?\' "\"")
+            ;; Accept `,' as the first char of an abbrev
+            (abbrev-table-put shell-mode-abbrev-table
+                              :regexp "\\(?:[^[:word:],]\\|^\\)\\(,?[[:word:]]+\\)[^[:word:]]*")
             (abbrev-mode 1)))
 
 (defmacro define-shell-abbrev (abbrev expansion)
