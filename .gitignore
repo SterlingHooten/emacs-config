@@ -5,3 +5,5 @@ server/
 /history
 /tramp
 .recentf
+/eshell/lastdir
+/eshell/history
