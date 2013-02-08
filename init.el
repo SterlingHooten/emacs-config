@@ -1279,6 +1279,11 @@ emulate -LR zsh
   (winner-mode +1))
 
 
+(when (require-soft 'pack-windows)
+  (global-defkey "C-x -" 'pack-windows)
+  (global-defkey "C-x _" 'shrink-window-if-larger-than-buffer))
+
+
 ;;; completion
 (defadvice PC-lisp-complete-symbol (before forward-sexp-before-completion (&optional arg) activate)
   "Do a `forward-sexp' if necessary before trying completion.
