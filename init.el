@@ -2222,6 +2222,7 @@ designators specifying the revisions to compare."
    (t (ediff-vc-internal "" "" nil))))
 
 (global-defkey "C-x v =" 'vc-ediff-dwim)
+(global-defkey "C-x v -" 'vc-diff)
 
 ;;; Adapted from Dave Love's "fx-misc.el", http://www.loveshack.ukfsn.org/emacs
 (defun ediff-diff-buffer-with-saved ()
