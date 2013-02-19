@@ -1,13 +1,13 @@
 ;;; dired-details.el -- make file details hide-able in dired
 
-;; Copyright (C) 2003 Rob Giardina
+;; Copyright (C) 2003-2011 Rob Giardina
 
-;; Version: 1.1
+;; Version: 1.3.2
 ;; Keywords: dired, hide
-;; Author: Rob Giardina <rgiardin.ohmmanepadmespam@oracle.com>
+;; Author: Rob Giardina <rob.giardina.ohmmanepadmespam@oracle.com>
 ;; Maintainer: Rob Giardina
-;; Last updated: Aug 23, 2003
-;; Contributors: Harold Maier
+;; Last updated: Aug 17, 2012
+;; Contributors: Harold Maier, Klaus Berndl
 
 ;; This file is not part of GNU Emacs.
 
@@ -48,14 +48,13 @@
 ;;  [...] my-really-really-long-I-mean-really-long-filename.el
 ;;  [...] linked-file.el -> [...]
 ;;
-;; The functions `dired-details-show' and `dired-details-hide' will
-;; toggle details on and off.
+;; The function `dired-details-toggle' will toggle details on and off.
 ;;
 ;;
 ;; INSTALLATION:
 ;;
-;; To make `dired-details-hide' active in all new dired buffers, add
-;; the following to your .emacs:
+;; To apply `dired-details-hide' to all new dired buffers, add the
+;; following to your .emacs:
 ;;
 ;; (require 'dired-details)
 ;; (dired-details-install)
@@ -67,110 +66,209 @@
 ;;
 ;; CHANGES:
 ;;
-;; * Setup hide and show keybindings earlier than the first hide.
-;; * add dired-details-initially-hide customization as suggested by Harold Maier
+;; * 1.3.2: Added sr-mode to dired-details-hide function to make it word with
+;;          Sunrise Commander
+;; * 1.3.1: Allow "misc lines (total used, find-dired statuses, etc)" to be hidden;
+;;          suggested by Chris Poole
+;; * 1.3: dired-details-toggle and customization support added by Klaus Berndl
+;; * 1.2.4: Setup hide and show keybindings earlier than the first hide.
+;; * 1.2.3: add dired-details-initially-hide customization as suggested by Harold Maier
+;; * 1.2.2: extensive change to support subdirs in dired buffers
+;; * 1.2.1: respect current hidden state (not initial state) when inserting subdirs
+;;
+;; TODO:
+;; * add a hook for dired-add-file to hide new entries as necessary
+;;
 
 ;;; customizable vars
 
-(defvar dired-details-hidden-string "[...]"
-  "This string will be shown in place of the file details.")
+(defgroup dired-details nil
+  "Settings for the dired-details package."
+  :group 'dired
+  :prefix "dired-details-")
 
-(defvar dired-details-hide-link-targets t
-  "Controls whether dired-details-hide will also hide '-> lnTarget'
-regions of dired listings")
+(defcustom dired-details-hidden-string "[...]"
+  "*This string will be shown in place of file details and symbolic links."
+  :group 'dired-details
+  :type 'string)
 
-(defvar dired-details-initially-hide t
-  "Controls whether dired-details-hide will be called on entry to
-dired buffers.")
+(defcustom dired-details-hide-link-targets t
+  "*Hide symbolic link target paths."
+  :group 'dired-details
+  :type 'boolean)
+
+(defcustom dired-details-initially-hide t
+  "*Hide dired details on entry to dired buffers."
+  :group 'dired-details
+  :type 'boolean)
+
+(defcustom dired-details-hide-extra-lines t
+  "*Hides lines matching any regex in `dired-details-invisible-lines'.
+Changing this variable will not affect existing dired buffers."
+  :group 'dired-details
+  :type 'boolean)
+
+(defcustom dired-details-invisible-lines
+  '("total used in directory" "^\\s-*$" "find finished" "find \\." "  wildcard ")
+  "*Hide dired details on entry to dired buffers."
+  :group 'dired-details
+  :type 'list)
 
 ;;; implementation
+
+(defvar dired-details-debug nil)
 
 (defvar dired-details-internal-overlay-list nil)
 (make-variable-buffer-local 'dired-details-internal-overlay-list)
 
-(defun dired-details-install()
+(defvar dired-details-state nil
+  "Three possible values: nil (has not been set), 'hidden (details are
+hidden), 'shown (details are visible).")
+(make-variable-buffer-local 'dired-details-state)
+
+(defun dired-details-install ()
   (eval-after-load "dired"
     '(progn
        (add-hook 'dired-after-readin-hook 'dired-details-activate)
-      
-      (defadvice dired-revert (before remember-the-details activate)
-        (mapc 'delete-overlay dired-details-internal-overlay-list)
-        (setq dired-details-internal-overlay-list nil)))))
-  
-(defun dired-details-activate()
-  "Set up dired-details in a dired buffer. Called by
-dired-after-readin-hook."
-  (when dired-details-initially-hide
-    (dired-details-hide))
 
-  (local-set-key "(" 'dired-details-hide)
-  (local-set-key ")" 'dired-details-show))
+       (define-key dired-mode-map "(" 'dired-details-hide)
+       (define-key dired-mode-map ")" 'dired-details-show)
 
-(defun dired-details-hide()
+       (defadvice dired-revert (before remember-the-details activate)
+         (dired-details-delete-overlays)))))
+
+(defun dired-details-activate ()
+  "Set up dired-details in the current dired buffer. Called by
+dired-after-readin-hook on initial display and when a subdirectory is
+inserted (with `i')."
+  ;;if a state has been chosen in this buffer, respect it
+  (if dired-details-state
+    (when (eq 'hidden dired-details-state)
+      (dired-details-hide))
+    ;;otherwise, use the default state
+    (when dired-details-initially-hide
+      (dired-details-hide))))
+
+(defun dired-details-delete-overlays ()
+  (mapc '(lambda (list) (mapc 'delete-overlay
+                             (cdr list)))
+        dired-details-internal-overlay-list)
+  (setq dired-details-internal-overlay-list nil))
+
+(defun dired-details-toggle ( &optional arg default-too )
+  "Toggle visibility of dired details.
+With positive prefix argument ARG hide the details, with negative
+show them."
+  (interactive "P")
+  (let ((hide (if (null arg)
+                (not (eq 'hidden dired-details-state))
+                (> (prefix-numeric-value arg) 0))))
+    (if default-too
+      (setq dired-details-initially-hide hide))
+    (if hide (dired-details-hide)
+        (dired-details-show))))
+
+(defun dired-details-hide ()
   "Make an invisible, evaporable overlay for each file-line's details
 in this dired buffer."
   (interactive)
-  (unless (eq 'dired-mode major-mode)
+  (unless (memq major-mode '(dired-mode vc-dired-mode sr-mode))
     (error "dired-details-hide can only be called in dired mode"))
 
+  (when dired-details-debug
+    (let ((b (get-buffer-create "dired-details-debug")))
+      (append-to-buffer b (point) (point-max))))
+
+  ;;NOTE - we call this even if we're already hidden. There may be a
+  ;;new subdirectory inserted that we have to deal with. Pre-existing
+  ;;subdirectories will reuse their cached overlays.
   (save-excursion
-    (if dired-details-internal-overlay-list
-        ;;reuse the existing overlays
-        (dired-details-frob-overlays t)
+    (save-restriction
+      (widen)
+      ;;hide each displayed subdirectory
+      (mapc
+       '(lambda (dir-and-pos)
+          (let ((cached-overlays (assoc (car dir-and-pos)
+                                        dired-details-internal-overlay-list)))
+            (if cached-overlays
+              ;;reuse the existing overlays
+              (dired-details-frob-overlays t)
+              ;;no existing overlays for this subdir, make 'em
+              (let ((cache (list (car dir-and-pos)))
+                    (subdir-start (cdr dir-and-pos))
+                    (subdir-end (1- (dired-get-subdir-max dir-and-pos))))
+                (goto-char subdir-start)
+                (forward-line 1) ;;always skip the dir line
+                ;;v1.3 (dired-goto-next-file)
+                (while (< (point) subdir-end)
+                  (dired-details-make-current-line-overlay cache)
+                  (forward-line 1))
+                  ;;v1.3 (dired-next-line 1))
+                (setq dired-details-internal-overlay-list
+                      (cons cache dired-details-internal-overlay-list))))))
+       dired-subdir-alist)))
+  (setq dired-details-state 'hidden))
 
-      ;;no overlays yet, make 'em 
-      (beginning-of-buffer)
-      (dired-goto-next-file)
-      (while (not (eobp))
-        (dired-details-make-current-line-overlay)
-        (dired-next-line 1)))))
-
-(defun dired-details-show()
+(defun dired-details-show ()
   "Show whatever details a call to `dired-details-hide' may have
 hidden in this buffer."
   (interactive)
-  (dired-details-frob-overlays nil))
+  (dired-details-frob-overlays nil)
+  (setq dired-details-state 'shown))
 
-(defun dired-details-make-current-line-overlay()
-  (let ((details ;hide the flags, size, owner, date, etc.
-         (make-overlay
-          (+ 2 (progn (beginning-of-line) (point)))
-          (- (progn (dired-move-to-filename)(point)) 1)))
-         
-        (ln-target ;hide the destination of a symbolic link
-         (when dired-details-hide-link-targets
-           (if (progn (beginning-of-line)
-                      (search-forward-regexp
-                       "-> \\(.*\\)"
-                       (save-excursion (end-of-line)(point)) t))
-               (make-overlay (match-beginning 1) (match-end 1))))))
+(defun dired-details-make-current-line-overlay ( cache )
+  (let* ((bol (progn (beginning-of-line) (point)))
+         (totally-hide nil)
+         (details              ;hide flags, size, owner, date, etc.
+          (cond ((ignore-errors (dired-move-to-filename t))
+                 (make-overlay (+ 2 bol) (point)))
+                ((and dired-details-hide-extra-lines
+                      (let ((line (buffer-substring (point-at-bol) (point-at-eol))))
+                        (when (delq nil (mapcar (lambda (x) (string-match x line))
+                                                dired-details-invisible-lines))
+                          (let ((o (make-overlay bol (1+ (point-at-eol)))))
+                            ;;this is delayed so that the hide-link bit below doesn't bork
+                            (overlay-put o 'make-intangible t)
+                            (overlay-put o 'suppress-before t)
+                            o)))))))
+         (ln-target            ;hide symlink dest
+          (when dired-details-hide-link-targets
+            (if (progn (beginning-of-line)
+                       (search-forward-regexp
+                        "-> \\(.*\\)"
+                        (save-excursion (end-of-line) (point)) t))
+              (make-overlay (match-beginning 1) (match-end 1))))))
+    
+    (when details
+      (overlay-put details 'evaporate t)
+      (dired-details-hide-overlay details)
 
-    ;;delete 'em when the dired line goes away
-    (overlay-put details 'evaporate t)
-    (dired-details-hide-overlay details)
+      (when ln-target
+        (overlay-put ln-target 'evaporate t)
+        (dired-details-hide-overlay ln-target))
 
-    (when ln-target
-      (overlay-put ln-target 'evaporate t)
-      (dired-details-hide-overlay ln-target))
+      (setcdr cache (append (if ln-target
+                              (list ln-target details)
+                              (list details))
+                            (cdr cache))))))
 
-    ;;save 'em
-    (setq dired-details-internal-overlay-list
-          (cons details
-                (if ln-target
-                    (cons ln-target dired-details-internal-overlay-list)
-                  dired-details-internal-overlay-list)))))
-
-(defun dired-details-hide-overlay( o )
+(defun dired-details-hide-overlay (o)
   (overlay-put o 'invisible t)
-  (overlay-put o 'before-string dired-details-hidden-string))
+  (if (overlay-get o 'make-intangible) (overlay-put o 'intangible t))
+  (unless (overlay-get o 'suppress-before)
+    (overlay-put o 'before-string dired-details-hidden-string)))
 
-(defun dired-details-show-overlay( o )
+(defun dired-details-show-overlay (o)
   (overlay-put o 'invisible nil)
   (overlay-put o 'before-string nil))
 
-(defun dired-details-frob-overlays( hide )
+(defun dired-details-frob-overlays ( hide )
   (if dired-details-internal-overlay-list
-      (mapc (if hide 'dired-details-hide-overlay 'dired-details-show-overlay)
-            dired-details-internal-overlay-list)))
+    (mapc '(lambda (list)
+             (mapc (if hide 'dired-details-hide-overlay 'dired-details-show-overlay)
+                   (cdr list)))
+          dired-details-internal-overlay-list)))
 
 (provide 'dired-details)
+
+;;; dired-details.el ends here
