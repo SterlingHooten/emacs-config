@@ -39,6 +39,8 @@
 
 (add-hook 'shell-mode-hook
           (lambda ()
+            (setq comint-scroll-to-bottom-on-output 'others)
+
             ;; sanitise the syntax table
             (modify-syntax-entry ?\, ".")
             (modify-syntax-entry ?\@ "_")
@@ -147,7 +149,6 @@ Otherwise return the value of the last form in BODY."
 
 ;;; Comint
 (setq-default comint-scroll-to-bottom-on-input 'this)
-(setq-default comint-scroll-to-bottom-on-output nil)
 (setq-default comint-scroll-show-maximum-output t)
 
 ;; http://www.emacswiki.org/emacs/ShellMode
