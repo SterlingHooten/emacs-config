@@ -23,19 +23,15 @@
 ;; (setq dired-enable-local-variables 'ask)
 (setq dired-enable-local-variables t)
 (setq dired-guess-shell-gzip-quiet t)
-;; (setq dired-guess-shell-alist-user '(("\\.e?ps$" "gv" "lpr")
-;;                                      ("\\.pdf$" "gv" "acroread" "xpdf")
-;;                                      ("\\.\\(jpe?g\\|gif\\|png\\)$" "xli -quiet" "display")))
 (setq dired-guess-shell-alist-user `(
                                      ,(if (equal system-type 'windows-nt)
                                           '("\\.e?ps$" 
-                                           "e:/tools/GSTools/GSView/2.4/gsview32.exe"
-                                           "cat * > //eepmuc02/pm193000"
-                                           "cat * > //eepmuc01/pm193001"
-                                           "c:/Win32App/Postscript/Ghostscript/7.0/gs7.00/bin/gswin32.exe -q -dBATCH")
-                                        '("\\.e?ps$" "gv" "lpr"))
-                                     ("\\.pdf$" "gv" "acroread" "xpdf")
-                                     ("\\.\\(jpe?g\\|gif\\|png\\)$" "xli -quiet" "display")))
+                                            "e:/tools/GSTools/GSView/2.4/gsview32.exe"
+                                            )
+                                        '("\\.e?ps$" "zathura" "gv" "lpr -o raw"))
+                                     ("\\.pdf$" "zathura" "xpdf" "gv" "lpr -o raw")
+                                     ("\\.\\(jpe?g\\|gif\\|png\\)$" "xli -quiet" "display")
+                                     (,(rx ?\. (or "avi" "mkv" "mpg" "mpeg" "mp4" "flv" "wmv" "rm" "asf" "wav" "VOB" "ram" "divx" "mov" "ogv" "flc" "swf") eos) "mplayer -really-quiet --")))
 
 
 (set-face-foreground 'dired-ignored "gray60")
