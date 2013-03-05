@@ -2086,15 +2086,17 @@ With prefix argument CREATE always start a new shell."
 
 (defun ack (command-args)
   (interactive
-   (let ((ack-command "ack --nogroup --with-filename --all "))
+   (let ((sap (thing-at-point 'symbol))
+         (ack-command "ack --nogroup --with-filename --all "))
      (list (read-shell-command "Run ack (like this): "
-                               ack-command
+                               (if sap (concat ack-command sap) ack-command)
                                'ack-history))))
   (let ((/dev/null (if (and (equal system-type 'windows-nt)
                             (string-match-p shell-dumb-shell-regexp (or explicit-shell-file-name shell-file-name)))
                        null-device
                      "/dev/null")))
-    (compilation-start (concat command-args " < " /dev/null) 'grep-mode)))
+    (compilation-start (concat "< " /dev/null " " command-args) 'grep-mode)))
+(global-defkey "<f8>" 'ack)
 
 ;;; calendar
 (add-hook 'calendar-load-hook
