@@ -2011,9 +2011,6 @@ none is marked."
         ("DEFERRED" :foreground "blue" :weight bold)))
 
 (setq org-use-fast-todo-selection t)
-
-;;; eshell
-(add-hook 'eshell-load-hook (lambda () (require-soft 'init-eshell)))
 
 
 ;;; Shell and Comint
