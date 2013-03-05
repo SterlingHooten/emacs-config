@@ -72,15 +72,15 @@
 (defun dired-sort-set-modeline ()
   (setq mode-name
 	(let (case-fold-search)
-	  (cond ((string-match dired-sort-by-name-regexp dired-actual-switches)
+	  (cond ((string-match-p dired-sort-by-name-regexp dired-actual-switches)
 		 "Dired by name")
-		((string-match dired-sort-by-date-regexp dired-actual-switches)
+		((string-match-p dired-sort-by-date-regexp dired-actual-switches)
 		 "Dired by date")
-		((string-match dired-sort-by-suffix-regexp dired-actual-switches)
+		((string-match-p dired-sort-by-suffix-regexp dired-actual-switches)
 		 "Dired by suffix")
-		((string-match dired-sort-by-size-regexp dired-actual-switches)
+		((string-match-p dired-sort-by-size-regexp dired-actual-switches)
 		 "Dired by size")
-                ((string-match dired-sort-unsorted-regexp dired-actual-switches)
+                ((string-match-p dired-sort-unsorted-regexp dired-actual-switches)
                  "Dired unsorted")
 		(t
 		 (concat "Dired " dired-actual-switches)))))
@@ -97,7 +97,7 @@ With a prefix argument you can edit the current listing switches instead."
       (cond
        ((string= c "N") (sorter-set-switch ""))
        ((string= c "T") (sorter-set-switch (downcase c)))
-       ((string-match "[XSU]" c) (sorter-set-switch c))
+       ((string-match-p "[XSU]" c) (sorter-set-switch c))
        ((string= c "O") (funcall this-command t))
        (t (error "Invalid input")))))
   (dired-sort-other dired-actual-switches))
@@ -105,7 +105,7 @@ With a prefix argument you can edit the current listing switches instead."
 (defun dired-toggle-hidden ()
   "Toggle showing hidden files."
   (interactive)
-  (if (string-match dired-show-hidden-switch dired-actual-switches)
+  (if (string-match-p dired-show-hidden-switch dired-actual-switches)
       (sorter-replace-switch dired-show-hidden-switch "")
     (setq dired-actual-switches (concat dired-actual-switches dired-show-hidden-switch)))
   (dired-sort-other dired-actual-switches))
@@ -117,7 +117,7 @@ With a prefix argument you can edit the current listing switches instead."
   "Replace every occurence of OLD with NEW in `dired-actual-switches'.
 If none is found simply add NEW to `dired-actual-switches'."
   (let (case-fold-search)
-    (if (string-match old dired-actual-switches)
+    (if (string-match-p old dired-actual-switches)
         (setq dired-actual-switches (replace-regexp-in-string old new dired-actual-switches 'FIXEDCASE 'LITERAL))
       (setq dired-actual-switches (concat dired-actual-switches new)))))
 
