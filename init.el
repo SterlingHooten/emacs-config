@@ -115,7 +115,7 @@
     (setenv "TZ" (format "GMT%+d" (* -1(/ (car tz) 3600))))))
 
 (defmacro bind-with-new-map (map binding &rest bindings)
-  (let ((%map (make-symbol "mapu")))
+  (let ((%map (make-symbol "map")))
     `(let ((,%map (make-sparse-keymap)))
        ,@(mapcar (lambda (char+command)
                    `(define-key ,%map (read-kbd-macro ,(car char+command)) ,(cdr char+command)))
