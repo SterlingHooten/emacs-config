@@ -2079,7 +2079,18 @@ With prefix argument CREATE always start a new shell."
 (setq grep-command "grep -s -n ")
 
 (eval-after-load "grep"
-  '(add-to-list 'grep-find-ignored-directories "_darcs"))
+  '(progn
+     (add-to-list 'grep-find-ignored-directories "_darcs")
+     (define-key grep-mode-map "F"
+       (lambda (regexp) (interactive "sFlush lines matching: ")
+         "Delete lines containing matches for REGEXP."
+         (let ((buffer-read-only nil))
+           (flush-lines regexp))))
+     (define-key grep-mode-map "K"
+       (lambda (regexp) (interactive "sKeep only lines matching: ")
+         "Delete all lines except those containing matches for REGEXP."
+         (let ((buffer-read-only nil))
+           (keep-lines regexp))))))
 
 (defvar ack-history nil
   "History for the `ack' command.")
