@@ -151,6 +151,8 @@ Otherwise return the value of the last form in BODY."
 (defun pcmpl-svn-get-files (dir)
   "Return a list of `svn' files in DIR."
   (split-string (pcomplete-process-result "svn" "--non-interactive" "ls" dir)))
+
+(require-soft 'pcmpl-ack)
 
 ;;; Comint
 (setq-default comint-scroll-to-bottom-on-input 'this)
