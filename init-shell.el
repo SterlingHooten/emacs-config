@@ -23,19 +23,27 @@
 
 ;; (add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
 
+(defun shell-bash-setup ()
+  "*Bash specific setup for `shell-mode-hook'."
+  (add-hook 'comint-preoutput-filter-functions 'shell-filter-ctrl-a-ctrl-b)
+  (setq comint-input-ring-file-name
+        (or (getenv "HISTFILE")
+            (if (file-exists-p "~/.bash.d/.bash_history")
+                "~/.bash.d/.bash_history"
+              "~/.bash_history")))
+  (when (require-soft 'pcomplete-bash)
+    (add-hook 'shell-mode-hook 'pcmpl-bash-setup)
+    (add-hook 'shell-mode-hook
+              (lambda ()
+                (local-defkey "<tab>" 'pcomplete)))))
+
 (add-hook 'shell-mode-hook
           (lambda ()
             (let ((shell (file-name-sans-extension
                           (file-name-nondirectory
                            (car (process-command (get-buffer-process (current-buffer))))))))
-              (cond
-               ((string= shell "bash")
-                (add-hook 'comint-preoutput-filter-functions 'shell-filter-ctrl-a-ctrl-b)
-                (setq comint-input-ring-file-name
-                      (or (getenv "HISTFILE")
-                          (if (file-exists-p "~/.bash.d/.bash_history")
-                              "~/.bash.d/.bash_history"
-                            "~/.bash_history"))))))))
+              (when (string= shell "bash")
+                (shell-bash-setup)))))
 
 (add-hook 'shell-mode-hook
           (lambda ()
@@ -104,12 +112,6 @@ Otherwise return the value of the last form in BODY."
        (and ,proc
             (with-current-buffer (process-buffer ,proc)
               ,body)))))
-
-(when (require-soft 'pcomplete-bash)
-  (add-hook 'shell-mode-hook 'pcmpl-bash-setup)
-  (add-hook 'shell-mode-hook
-            (lambda ()
-              (local-defkey "<tab>" 'pcomplete))))
 
 (when (require-soft 'anything-shell-history)
   (defkey comint-mode-map "C-c C-l" 'comint-anything-input-ring))
