@@ -40,6 +40,9 @@
 (add-hook 'shell-mode-hook
           (lambda ()
             (setq comint-scroll-to-bottom-on-output 'others)
+            (when (and comint-input-ring-file-name
+                       (file-exists-p comint-input-ring-file-name))
+              (comint-read-input-ring))
 
             ;; sanitise the syntax table
             (modify-syntax-entry ?\, ".")
