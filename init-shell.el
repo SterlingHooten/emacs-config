@@ -31,6 +31,7 @@
             (if (file-exists-p "~/.bash.d/.bash_history")
                 "~/.bash.d/.bash_history"
               "~/.bash_history")))
+  (comint-read-input-ring 'silent)
   (when (require-soft 'pcomplete-bash)
     (add-hook 'shell-mode-hook 'pcmpl-bash-setup)
     (add-hook 'shell-mode-hook
@@ -48,10 +49,7 @@
 (add-hook 'shell-mode-hook
           (lambda ()
             (setq comint-scroll-to-bottom-on-output 'others)
-            (when (and comint-input-ring-file-name
-                       (file-exists-p comint-input-ring-file-name))
-              (comint-read-input-ring))
-
+            
             ;; sanitise the syntax table
             (modify-syntax-entry ?\, ".")
             (modify-syntax-entry ?\@ "_")
