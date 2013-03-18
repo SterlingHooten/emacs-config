@@ -144,7 +144,9 @@ Otherwise return the value of the last form in BODY."
    ((pcomplete-match "ls" 1)
     (let ((current (nth pcomplete-index pcomplete-args)))
       (pcomplete-here* (pcmpl-svn-get-files (or (file-name-directory current) "."))
-                       (file-name-nondirectory current))))))
+                       (file-name-nondirectory current))))
+   (t
+    (while (pcomplete-here (pcomplete-entries))))))
 
 (defun pcmpl-svn-get-files (dir)
   "Return a list of `svn' files in DIR."
