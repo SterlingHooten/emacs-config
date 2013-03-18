@@ -47,7 +47,7 @@
  (rear-context-string . "0K Jun 20 16:55 ")
  (position . 95))
 ("FuSi-Verzeichnis auf Antriebsprojekte/Otto_Mottoren"
- (filename . "//easerv.muc/projekte/Antriebsprojekte/Otto_Motoren/Funktionssicherheit/")
+ (filename . "//europe.bmw.corp/winfs/EA-proj/Antrieb/EE/FuSi/")
  (front-context-string . "Befaehigung/\n  d")
  (rear-context-string . " 0 Jul 19 09:08 ")
  (position . 237))
@@ -66,11 +66,6 @@
  (front-context-string . "MEVD_17_2/\n  drw")
  (rear-context-string . " 0 Apr 15 10:24 ")
  (position . 125))
-("Austausch Diesel (noch einer!)"
- (filename . "//easerv.muc/projekte/Antriebsprojekte/Diesel_Motoren/@Austausch_Diesel/ecl/")
- (front-context-string . "pix/\n  -rwxr-xr-")
- (rear-context-string . " 0 Jul 13  2009 ")
- (position . 1062))
 ("PANAMA-Laufwerk DDE"
  (filename . "//europe.bmw.corp/winfs/Panama/PLW_EA/DDE_SWE/")
  (front-context-string . "_hide_email_reci")
@@ -103,12 +98,12 @@
  (rear-context-string)
  (position . 1))
 ("Diesel Projektlaufwerk DDE7"
- (filename . "//easerv.muc/projekte/Antriebsprojekte/Diesel_Motoren/Projekt_DDE7/")
+ (filename . "//europe.bmw.corp/winfs/EA-proj/Antrieb/EE/Projekt_DDE7")
  (front-context-string . "00_Info/\n  drwxr")
  (rear-context-string . " 0 Jan 26 12:26 ")
  (position . 165))
 ("Diesel/DDE Austausch"
- (filename . "//easerv.muc/projekte/Antriebsprojekte/Diesel_Motoren/Projekt_DDE7/99_Austauschlaufwerk/")
+ (filename . "//europe.bmw.corp/winfs/EA-proj/Antrieb/EE/Projekt_DDE7/99_Austauschlaufwerk/")
  (front-context-string . "/\n  drwxr-xr-x  ")
  (rear-context-string . "Jan 28 15:48 ecl")
  (position . 1845))
