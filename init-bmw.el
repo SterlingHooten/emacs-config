@@ -9,34 +9,37 @@
                            ("https" . "proxy.muc:8080")
                            ("ftp"   . "proxy.muc:8080")))
 
-(add-hook 'text-mode-hook 'fix-broken-outlook-replies)
+(add-hook 'text-mode-hook
+          (lambda nil
+            (let ((bname (buffer-file-name)))
+              (when (and (stringp bname)
+                         (string-match-p "/bmwmail\\." bname))
+                (fix-broken-outlook-replies)))))
 
 (defun fix-broken-outlook-replies ()
-  (let ((bname (buffer-file-name)))
-    (when (and (stringp bname)
-               (string-match-p "/bmwmail\\." bname))
-      (goto-char (point-max))
-      (delete-blank-lines)
-      (goto-char (point-min))
-      ;; (delete-blank-lines)
+  (interactive "*")
+  (goto-char (point-max))
+  (delete-blank-lines)
+  (goto-char (point-min))
+  ;; (delete-blank-lines)
 
-      (let ((sig-start (and (search-forward-regexp "^-- *$" nil t)
-                            (progn (just-one-space)
-                                   (point-at-bol))))
-            (citation-start (and (search-forward-regexp "^_______________+$" nil t)
-                                 (progn (delete-region (point-at-bol) (min (1+ (point-at-eol)) (point-max)))
-                                        (point-at-bol)))))
+  (let ((sig-start (and (search-forward-regexp "^-- *$" nil t)
+                        (progn (just-one-space)
+                               (point-at-bol))))
+        (citation-start (and (search-forward-regexp "^_______________+$" nil t)
+                             (progn (delete-region (point-at-bol) (min (1+ (point-at-eol)) (point-max)))
+                                    (point-at-bol)))))
 
-        (when citation-start
-          (replace-regexp "^" "> " nil citation-start (1- (point-max))))
+    (when citation-start
+      (replace-regexp "^" "> " nil citation-start (1- (point-max))))
 
-        ;; (goto-char (point-max))
+    ;; (goto-char (point-max))
 
-        (save-excursion
-          (when sig-start
-            (let ((sig (delete-and-extract-region sig-start (or citation-start (point-max)))))
-              (goto-char (point-max))
-              (insert "\n" sig))))))))
+    (save-excursion
+      (when sig-start
+        (let ((sig (delete-and-extract-region sig-start (or citation-start (point-max)))))
+          (goto-char (point-max))
+          (insert "\n" sig))))))
 
 (setq exec-path
       (let (path)
