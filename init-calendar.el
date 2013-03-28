@@ -93,7 +93,7 @@
 (setq holiday-solar-holidays
       '((solar-equinoxes-solstices)
         (holiday-sexp calendar-daylight-savings-starts
-                      (format "Begin der Sommerzeit um %s"
+                      (format "Beginn der Sommerzeit um %s"
                               (solar-time-string
                                (/ calendar-daylight-savings-starts-time
                                   (float 60))
