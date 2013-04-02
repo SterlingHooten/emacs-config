@@ -2122,6 +2122,14 @@ With prefix argument CREATE always start a new shell."
 
 (setq diff-switches "--unified")
 (setq diff-default-read-only t)
+(setq diff-advance-after-apply-hunk nil)
+
+(eval-after-load "diff-mode"
+  '(progn
+     (add-hook 'diff-mode-hook
+               (lambda ()
+                 (defkey diff-mode-map "M-k" nil) ; don't override global binding
+                 (defkey diff-mode-map "C-c C-k" 'diff-hunk-kill)))))
 
 (setq ediff-keep-variants nil)
 
