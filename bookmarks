@@ -2,7 +2,17 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("company.xml"
+(("Virtual Machine for DGSB/MDGB-Installation"
+ (filename . "//europe.bmw.corp/WINFS/EA-MIA/Softw/INSTALL_DME/Dxe-msi-src/rb/dgsb/.VirtualPC/")
+ (front-context-string)
+ (rear-context-string . "009-04-09 15:14 ")
+ (position . 661))
+("Urlaubsliste"
+ (filename . "//europe.bmw.corp/winfs/EA-org/EA-7_Org/EA-74/EA-740/40_Allgemein/Allgemeines/")
+ (front-context-string . "LIST_2013_Uebers")
+ (rear-context-string . "013-03-27 09:02 ")
+ (position . 1269))
+("company.xml"
  (filename . "//europe.bmw.corp/WINFS/EA-MIA/Softw/INSTALL_DME/Dxe-tools/msi/prosa/company.xml")
  (front-context-string . "<?xml version=\"1")
  (rear-context-string)
@@ -92,11 +102,6 @@
  (front-context-string . "@Zugriffskontrol")
  (rear-context-string . " 0 Jun 16 15:35 ")
  (position . 143))
-("checkin.bat"
- (filename . "e:/temp/ccm64/bms08/lib/notify/Windows/checkin.bat")
- (front-context-string . "@rem = '--*-Perl")
- (rear-context-string)
- (position . 1))
 ("Diesel Projektlaufwerk DDE7"
  (filename . "//europe.bmw.corp/winfs/EA-proj/Antrieb/EE/Projekt_DDE7")
  (front-context-string . "00_Info/\n  drwxr")
