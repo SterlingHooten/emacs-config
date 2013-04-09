@@ -85,25 +85,15 @@
         (holiday-easter-etc +49 "Pfingstsonntag")
         (holiday-easter-etc +50 "Pfingstmontag")
         (holiday-easter-etc +60 "Fronleichnam")
-        (holiday-fixed 8 15 "Mariae Himmelfahrt")
+        (holiday-fixed 8 15 "Mariæ Himmelfahrt")
         (holiday-fixed 11 1 "Allerheiligen")
         ;; (holiday-float 11 3 1 "Buss- und Bettag" 16)
         (holiday-float 11 0 1 "Totensonntag" 20)))
 
 (setq holiday-solar-holidays
       '((solar-equinoxes-solstices)
-        (holiday-sexp calendar-daylight-savings-starts
-                      (format "Beginn der Sommerzeit um %s"
-                              (solar-time-string
-                               (/ calendar-daylight-savings-starts-time
-                                  (float 60))
-                               calendar-standard-time-zone-name)))
-        (holiday-sexp calendar-daylight-savings-ends
-                      (format "Ende der Sommerzeit um %s"
-                              (solar-time-string
-                               (/ calendar-daylight-savings-ends-time
-                                  (float 60))
-                               calendar-daylight-time-zone-name)))))
+        (holiday-sexp calendar-daylight-savings-starts "Beginn der Sommerzeit")
+        (holiday-sexp calendar-daylight-savings-ends "Ende der Sommerzeit")))
 
 (setq calendar-holidays
       (append holiday-general-holidays holiday-local-holidays holiday-other-holidays
