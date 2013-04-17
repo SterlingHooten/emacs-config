@@ -61,6 +61,7 @@
             ;; Accept `,' as the first char of an abbrev
             (abbrev-table-put shell-mode-abbrev-table
                               :regexp "\\(?:[^[:word:],]\\|^\\)\\(,?[[:word:]]+\\)[^[:word:]]*")
+            (abbrev-table-put shell-mode-abbrev-table :case-fixed t)
             (abbrev-mode 1)))
 
 (defmacro define-shell-abbrev (abbrev expansion)
