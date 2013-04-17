@@ -165,6 +165,8 @@ Otherwise return the value of the last form in BODY."
   (let ((comint-buffer-maximum-size 0))
     (comint-truncate-buffer)))
 
+(defkey comint-mode-map "C-S-l" 'comint-clear-buffer)
+
 ;; http://www.emacswiki.org/emacs-en/comint-kill-output-to-kill-ring.el
 (defun comint-kill-output-to-kill-ring ()
   "Kill output from last command saving it in the kill ring."
