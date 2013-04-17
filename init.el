@@ -2025,11 +2025,7 @@ With prefix argument CREATE always start a new shell."
     (setq buffs (delq nil buffs))
     (if (null buffs)
         (let ((default-directory dir))
-          (shell (generate-new-buffer-name
-                  (format "*shell: %s*"
-                          (if (string-match (format "^%s/?$" (regexp-quote (expand-file-name "~"))) (expand-file-name default-directory))
-                              "~"
-                            (file-name-nondirectory (directory-file-name default-directory)))))))
+          (shell (generate-new-buffer-name "*shell*")))
       (shell (car buffs)))))
 
 (eval-after-load "shell" '(require-soft 'init-shell))
