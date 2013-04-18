@@ -36,7 +36,7 @@
           (blink-cursor-mode -1)
           (show-paren-mode +1)
           (line-number-mode +1)
-          (column-number-mode -1)
+          (column-number-mode +1)
           (savehist-mode +1)))
 
   (setq line-number-display-limit-width 512)
