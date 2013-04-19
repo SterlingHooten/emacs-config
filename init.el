@@ -2063,22 +2063,9 @@ With prefix argument CREATE always start a new shell."
          (let ((buffer-read-only nil))
            (keep-lines regexp))))))
 
-(defvar ack-history nil
-  "History for the `ack' command.")
+(when (require-soft 'gack)
+ (global-defkey "<f8>" 'ack))
 
-(defun ack (command-args)
-  (interactive
-   (let ((sap (thing-at-point 'symbol))
-         (ack-command "ack --nogroup --with-filename --all "))
-     (list (read-shell-command "Run ack (like this): "
-                               (if sap (concat ack-command sap) ack-command)
-                               'ack-history))))
-  (let ((/dev/null (if (and (equal system-type 'windows-nt)
-                            (string-match-p shell-dumb-shell-regexp (or explicit-shell-file-name shell-file-name)))
-                       null-device
-                     "/dev/null")))
-    (compilation-start (concat "< " /dev/null " " command-args) 'grep-mode)))
-(global-defkey "<f8>" 'ack)
 
 ;;; calendar
 (add-hook 'calendar-load-hook
