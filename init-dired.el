@@ -215,7 +215,7 @@ In other words: change all instances of `dired-marker-char' to `dired-del-marker
 (defkey dired-mode-map "* d" 'dired-flag-marked-files)
 
 ;; http://www.masteringemacs.org/articles/2011/03/25/working-multiple-files-dired/
-(setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
+(setq find-ls-option '("-print0 | xargs -0 ls -ldht" . "-ldht"))
 
 (require 'ls-lisp)
 (setq ls-lisp-emulation nil)            ; means GNU
