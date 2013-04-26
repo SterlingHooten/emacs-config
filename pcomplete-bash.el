@@ -26,6 +26,8 @@
 
 ;;; Code:
 
+(require 'pcomplete)
+
 (defcustom pcmpl-bash-file-ignore "~\\'"
   (documentation-property 'pcomplete-file-ignore
 			  'variable-documentation)
