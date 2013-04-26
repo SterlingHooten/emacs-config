@@ -1458,6 +1458,8 @@ Redefined to banish the mouse to the corner of the frame."
   ("i" . 'apropos-info)
   ("l" . 'apropos-value))
 
+(defkey help-map "R" 'menu-bar-read-lispref)
+
 (global-defkey "C-x C-q" 'toggle-read-only)
 (global-defkey "C-x v q" 'vc-toggle-read-only)
 
