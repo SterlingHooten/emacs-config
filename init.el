@@ -2389,12 +2389,6 @@ A new buffer is created containing the disc file's contents and
 
 ;;; Misc
 
-(defadvice describe-function (after where-is activate)
-  "Call `\\[where-is] FUNCTION' iff it's interactive."
-  (let ((func (ad-get-arg 0)))
-    (when (commandp func)
-      (where-is func))))
-
 (defun unfill-paragraph ()
   (interactive "*")
   (let ((fill-column (point-max)))
