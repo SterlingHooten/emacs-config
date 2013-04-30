@@ -1302,6 +1302,12 @@ Redefined to banish the mouse to the corner of the frame."
     (mouse-avoidance-mode)))
 
 
+;;; Filladapt
+(when (require-soft 'filladapt)
+  (setq filladapt-fill-column-tolerance 6)
+  (setq filladapt-mode-line-string nil)
+  (add-hook 'text-mode-hook 'turn-on-filladapt-mode))
+
 ;;; Uniquify
 (require 'uniquify)
 (setq uniquify-after-kill-buffer-p t)
