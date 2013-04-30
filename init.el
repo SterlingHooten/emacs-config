@@ -171,9 +171,6 @@
 
 (setq adaptive-fill-first-line-regexp "\\`[ \t>]*\\'")
 
-;; don't split windows horizontally
-(setq split-width-threshold nil)
-
 (setq auto-save-default t)
 (setq auto-save-file-format t)
 (setq auto-save-visited-file-name nil)
