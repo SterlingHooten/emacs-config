@@ -1311,6 +1311,8 @@ Redefined to banish the mouse to the corner of the frame."
 (setq uniquify-buffer-name-style 'forward)
 (setq uniquify-ignore-buffers-re
       "\\(news\\|mail\\|reply\\|followup\\) message\\*")
+;; also uniquify shell-mode buffers
+(add-to-list 'uniquify-list-buffers-directory-modes 'shell-mode)
 
 ;;; Time-stamp 
 (add-hook 'write-file-hooks 'time-stamp)
