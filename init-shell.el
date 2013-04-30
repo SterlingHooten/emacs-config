@@ -77,6 +77,7 @@
 (define-shell-abbrev ",t" "| tee")
 (define-shell-abbrev ",tt" "2>&1| tee")
 (define-shell-abbrev ",T" "| tail")
+(define-shell-abbrev ",H" "| head")
 (define-shell-abbrev ",h" "--help")
 (define-shell-abbrev ",v" "--verbose")
 (define-shell-abbrev ",V" "--version")
