@@ -1063,9 +1063,8 @@ Only intended for interactive use."
 (global-defkey "C-x 4 C-f" 'ffap-other-window)
 ;;(global-defkey "C-x d"     'dired-at-point)
 (global-defkey "C-x C-r"   'ffap-read-only)
-(global-defkey "C-x 4 r"   'ffap-read-only-other-window)
-(global-defkey "C-x 4 R"   'ffap-read-only-other-window-noselect)
-
+(global-defkey "C-x 4 C-r"   'ffap-read-only-other-window)
+(global-defkey "C-x 4 o"   'ffap-read-only-other-window-noselect)
 
 ;;; Gnuplot
 (autoload 'gnuplot "gnuplot"
@@ -1242,7 +1241,9 @@ emulate -LR zsh
 
 ;;; winner
 (when (require-soft 'winner)
-  (winner-mode +1))
+  (winner-mode +1)
+  (defkey ctl-x-4-map "u" 'winner-undo)
+  (defkey ctl-x-4-map "r" 'winner-redo))
 
 
 (when (require-soft 'pack-windows)
@@ -1436,7 +1437,6 @@ Redefined to banish the mouse to the corner of the frame."
 (global-defkey "C-c j a"        (lambda () (interactive) (find-file "~/.bash.d/aliases")))
 
 (global-defkey "C-c g" 'goto-line)
-(global-defkey "M-g" 'goto-line)
 
 ;; (global-defkey "M-i" 'other-window)
 
@@ -1522,6 +1522,8 @@ Redefined to banish the mouse to the corner of the frame."
 ;; (define-key function-key-map [f12] 'event-apply-hyper-modifier)
 
 (global-defkey "<f12>" 'imenu)
+
+(global-defkey "C-<return>" 'repeat)
 
 (global-defkey "<scroll>" 'toggle-window-dedicated) ; that's `scroll-lock'
 
