@@ -33,10 +33,8 @@
               "~/.bash_history")))
   (comint-read-input-ring 'silent)
   (when (require-soft 'pcomplete-bash)
-    (add-hook 'shell-mode-hook 'pcmpl-bash-setup)
-    (add-hook 'shell-mode-hook
-              (lambda ()
-                (local-defkey "<tab>" 'pcomplete)))))
+    (pcmpl-bash-setup)
+    (local-defkey "<tab>" 'pcomplete)))
 
 (add-hook 'shell-mode-hook
           (lambda ()
