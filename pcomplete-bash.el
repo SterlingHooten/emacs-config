@@ -67,7 +67,7 @@ Uses Bash's builtin `compgen' to get a list of completions."
       cmd)))
 
 (defun pcmpl-bash-default-completion-function ()
-  (while (pcmpl-bash-complete-filename)))
+  (while (pcomplete-here (pcomplete-entries))))
 
 ;; See commentary in eshell/em-cmpl.el for ideas!
 
