@@ -1904,72 +1904,17 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 (autoload 'turn-on-folding-mode  "folding" "Folding mode" t)
 
 
-;;; ibuffer
-(when (require-soft 'ibuffer)
-  (global-defkey "C-x C-b" 'ibuffer)
-  (setq ibuffer-formats
-        '((mark modified read-only " " (name 48 48) " " (mode 16 16) " "  filename)
-          (mark modified read-only " " (name 64 64) " "  filename)
-          (mark modified read-only " " (name 16 16) " " (size 6 -1 :right) " " (mode 16 16) "  " (process 8 -1) " " filename)))
-  (setq ibuffer-elide-long-columns t)
-  (setq ibuffer-never-show-regexps '("^ "))
-  (setq ibuffer-maybe-show-regexps '("^\*" "\.newsrc-dribble"))
-  (setq ibuffer-expert t)
-  (setq-default ibuffer-default-sorting-mode 'major-mode)
+;;; Buffer selection
+(setq bs-configurations
+  '(("files" nil nil nil bs-visits-non-file bs-sort-buffer-interns-are-last)
+    ("dired" nil nil nil (lambda (b)
+                           (with-current-buffer b
+                             (not (eq major-mode 'dired-mode)))) bs-sort-buffer-interns-are-last)
+    ("shell" nil nil nil (lambda (b)
+                           (with-current-buffer b
+                             (not (eq major-mode 'shell-mode)))) bs-sort-buffer-interns-are-last)))
 
-  (setq ibuffer-display-summary nil)
-
-  (setq ibuffer-saved-filter-groups
-        '(("default" 
-           ("Dired" (mode . dired-mode))
-           ("Remote" (predicate file-remote-p (or (buffer-file-name (current-buffer))
-                                                  (directory-file-name default-directory))))
-           ("Shells" (predicate processp (get-buffer-process (current-buffer))))
-           ("Project" (filename . "/bms08/"))
-           ("Org" (or (mode . org-mode) (filename . "u:/cenis/")))
-           ("Gnus" (saved . "gnus"))
-           ("Help" (predicate memq major-mode ibuffer-help-buffer-modes))
-           ("Volatile" (name . "^\\*")))))
-
-  (defun ibuffer-list-shells ()
-    "Show a list of buffers using `shell-mode' using `ibuffer'."
-    (interactive)
-    (ibuffer nil "*Ibuffer Shells*" '((mode . shell-mode)) nil t))
-
-  ;; (global-defkey "C-x S" 'ibuffer-list-shells)
-
-  (setq ibuffer-show-empty-filter-groups nil)
-
-  (defadvice ibuffer-generate-filter-groups (after reverse-ibuffer-groups () activate)
-    (let ((default (assoc-string "Default" ad-return-value)))
-      (setq ad-return-value (nconc (delq default ad-return-value) (list default)))))
-
-  (add-hook 'ibuffer-mode-hook
-            (lambda ()
-              (ibuffer-switch-to-saved-filter-groups "default")))
-
-  (defun ibuffer-dired-buffers ()
-    "*Limit current view to Dired buffers only."
-    (interactive)
-    (ibuffer-filter-by-mode 'dired-mode))
-
-  (defkey ibuffer-mode-map "/ D" 'ibuffer-dired-buffers)
-
-  (defadvice ibuffer-confirm-operation-on (around confirm-with-y-or-n-p activate)
-    "Use `y-or-n-p' instead of `yes-or-no-p' to confirm operations."
-    (flet ((yes-or-no-p (prompt) (y-or-n-p prompt)))
-      ad-do-it))
-
-  (defadvice ibuffer-marked-buffer-names (after current-buffer-if-none-marked activate)
-    "*Return current buffer (and mark it) if none is marked.
-This way the `ibuffer-do-*' commands operate on the current buffer if
-none is marked."
-    (unless ad-return-value
-      (let ((buffer (ibuffer-current-buffer)))
-        (when buffer
-          (ibuffer-mark-interactive 1 ibuffer-marked-char 0)
-          (setq ad-return-value (list buffer))))))
-  )
+(global-defkey "C-x C-b" 'bs-show)
 
 ;;; Dired
 (setq ls-lisp-use-insert-directory-program nil)
