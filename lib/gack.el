@@ -34,8 +34,8 @@
      (list (read-shell-command "Run ack (like this): "
                                (if sap (concat ack-command sap) ack-command)
                                'ack-history))))
-  (let ((/dev/null (if (and (memq system-type '(ms-dos windows-nt))
-                            (string-match-p shell-dumb-shell-regexp (or explicit-shell-file-name shell-file-name)))
+  (let ((/dev/null (if (and (fboundp 'w32-shell-dos-semantics)
+                            (w32-shell-dos-semantics))
                        null-device
                      "/dev/null")))
     (compilation-start (concat "< " /dev/null " " command-args) 'grep-mode)))
