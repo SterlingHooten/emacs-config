@@ -20,6 +20,11 @@
 
 ;;; Commentary:
 
+;; TODO:
+;; * See commentary in eshell/em-cmpl.el for ideas!
+;; * Also: http://www.emacswiki.org/emacs-en/EshellCompletion
+;; * https://github.com/szermatt/emacs-bash-completion/blob/master/bash-completion.el
+
 ;; Caveats:
 ;;   * `shell-prompt-pattern' should be set to a sensible value
 ;;   * Bash option `extglob' should be set ("shopt -s extglob")
@@ -66,10 +71,11 @@ Uses Bash's builtin `compgen' to get a list of completions."
 	(file-name-sans-extension cmd)
       cmd)))
 
+;; (completion-file-name-table "~/h" nil t)
+
 (defun pcmpl-bash-default-completion-function ()
   (while (pcomplete-here (pcomplete-entries))))
 
-;; See commentary in eshell/em-cmpl.el for ideas!
 
 ;; (defun pcmpl-bash-environment-variable-completion ()
 ;;   "Completion data for an environment variable at point, if any."
