@@ -5,6 +5,7 @@
 
 (when (require-soft 'dired-details)
   (setq dired-details-initially-hide nil)
+  (setq dired-details-hidden-string "--- ")
   (dired-details-install))
 
 ;; (setq dired-listing-switches "--group-directories-first --time-style=long-iso -AFGhtlv")
