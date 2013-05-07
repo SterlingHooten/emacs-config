@@ -816,36 +816,15 @@ Return the new value of VAR."
 
 ;; Daniel Lundin [http://ftp.codefactory.se/pub/people/daniel/elisp/dot.emacs]
 (defun toggle-window-dedicated ()
-"*Toggle whether current window is dedicated or not."
-(interactive)
-(message
- (if (let (window (get-buffer-window (current-buffer)))
-       (set-window-dedicated-p window
-		(not (window-dedicated-p window))))
-     "Window dedicated to buffer '%s'"
-   "Window displaying '%s' is not dedicated anymore.")
- (current-buffer)))
-
-;; see http://www.emacswiki.org/emacs/RotateWordCapitalization
-(defun cycle-word-capitalization ()
-  "*Change the capitalization of the current word.
-If the word under point is in lower case, capitalize it.  If it
-is in capitalized form, change it to upper case.  If it is in
-upper case, downcase it."
-  (interactive "*")
-  (let ((case-fold-search nil))
-    (save-excursion
-      (skip-syntax-backward "w")
-      (cond
-       ((looking-at-p "[[:lower:]]+")
-        (capitalize-word 1))
-       ;; ((looking-at-p "[[:upper:]][[:lower:]]+")
-       ;;  (upcase-word 1))
-       ;; ((looking-at-p "[[:upper:]]+")
-       ;;  (downcase-word 1))
-       (t
-        (downcase-word 1))))))
-(global-defkey "M-C" 'cycle-word-capitalization)
+  "*Toggle whether current window is dedicated or not."
+  (interactive)
+  (message
+   (if (let (window (get-buffer-window (current-buffer)))
+         (set-window-dedicated-p window
+                                 (not (window-dedicated-p window))))
+       "Window dedicated to buffer '%s'"
+     "Window displaying '%s' is not dedicated anymore.")
+   (current-buffer)))
 
 ;; http://thread.gmane.org/gmane.emacs.devel/147660/focus=147675
 (defun cat-command ()
@@ -900,52 +879,6 @@ upper case, downcase it."
   
   (browse-url (format "http://www.duden.de/suchen/dudenonline/%s" word)))
 
-(setq spelling-alphabet
-      ;; Buchstabe    Deutschland        ITU/ICAO/NATO
-      '(("A"          "Anton"            "Alfa")
-        ("Ä"          "Ärger"            "?")
-        ("B"          "Berta"            "Bravo")
-        ("C"          "Cäsar"            "Charlie")
-        ("Ch"         "Charlotte"        "?")
-        ("D"          "Dora"             "Delta")
-        ("E"          "Emil"             "Echo")
-        ("F"          "Friedrich"        "Foxtrot")
-        ("G"          "Gustav"           "Golf")
-        ("H"          "Heinrich"         "Hotel")
-        ("I"          "Ida"              "India")
-        ("J"          "Julius"           "Juliett")
-        ("K"          "Kaufmann"         "Kilo")
-        ("L"          "Ludwig"           "Lima")
-        ("M"          "Martha"           "Mike")
-        ("N"          "Nordpol"          "November")
-        ("O"          "Otto"             "Oscar")
-        ("Ö"          "Ökonom"           "?")
-        ("P"          "Paula"            "Papa")
-        ("Q"          "Quelle"           "Quebec")
-        ("R"          "Richard"          "Romeo")
-        ("S"          "Siegfried"        "Sierra")
-        ("Sch"        "Schule"           "?")
-        ("ß"          "Eszett"           "?")
-        ("T"          "Theodor"          "Tango")
-        ("U"          "Ulrich"           "Uniform")
-        ("Ü"          "Übermut"          "?")
-        ("V"          "Viktor"           "Victor")
-        ("W"          "Wilhelm"          "Whiskey")
-        ("X"          "Xanthippe"        "X-Ray")
-        ("Y"          "Ypsilon"          "Yankee")
-        ("Z"          "Zeppelin"         "Zulu")))
-
-;; Stefan Reichör (http://www.xsteve.at/prg/emacs/xsteve-functions.el)
-(defun buchstabiere (str &optional international)
-  (interactive "sBuchstabiere: \nP")
-  (message "%s"
-           (mapcar (lambda (ch)
-                     (or (nth (if international 2 1) (assoc (char-to-string ch) spelling-alphabet)) "?"))
-                   (upcase str))))
-
-(defun spell (str)
-  (interactive "sBuchstabiere: ")
-  (buchstabiere str 1))
 
 (defun next-line-not-matching (regexp)
   "*Go to next line *not* matching REGEXP."
@@ -1302,12 +1235,6 @@ Redefined to banish the mouse to the corner of the frame."
     (mouse-avoidance-mode)))
 
 
-;;; Filladapt
-(when (require-soft 'filladapt)
-  (setq filladapt-fill-column-tolerance 6)
-  (setq filladapt-mode-line-string nil)
-  (add-hook 'text-mode-hook 'turn-on-filladapt-mode))
-
 ;;; Uniquify
 (require 'uniquify)
 (setq uniquify-after-kill-buffer-p t)
@@ -1604,41 +1531,6 @@ in the minibuffer history."
   (setq kill-ring (delete (ad-get-arg 0) kill-ring))
   ad-do-it)
 
-;;; Major modes
-
-;;; Ispell
-
-(setq-default ispell-local-dictionary "deutsch8")
-
-(global-defkey "C-c i w" 'ispell-word)
-(global-defkey "C-c i m" 'ispell-message)
-(global-defkey "C-c i b" 'ispell-buffer)
-(global-defkey "C-c i r" 'ispell-region)
-(global-defkey "C-c i c" 'ispell-change-dictionary)
-(global-defkey "C-c i k" 'ispell-kill-ispell)
-
-(global-defkey "C-c i d"
-  (lambda () "*Set German dictionary (Ispell)."
-    (interactive) 
-    (ispell-change-dictionary "deutsch8")))
-(global-defkey "C-c i e"
-  (lambda () "*Set English dictionary (Ispell)."
-    (interactive)
-    (ispell-change-dictionary "english")))
-(global-defkey "C-c i p"
-  (lambda () "*Set Portuguese dictionary (Ispell)."
-    (interactive)
-    (ispell-change-dictionary "portugues")))
-
-(defun show-current-ispell-dictionary ()
-  "*Display the value of ispell-dictionary in the echo area."
-  (interactive)
-  (if ispell-dictionary
-      (message "Current dictionary: %s" ispell-dictionary)
-    (message "Variable `ispell-dictionary' is not set.")))
-
-(global-defkey "C-c i w" 'show-current-ispell-dictionary)
-
 
 ;;; magit
 (add-to-path 'load-path (concat user-emacs-directory "lib/magit"))
@@ -1747,16 +1639,6 @@ in the minibuffer history."
 With prefix arg clear the buffers content."
   (interactive "P")
   (switch-to-buffer-create "*scratch*" 'lisp-interaction-mode arg))
-
-(defun jump-to-text-scratch-buffer (&optional arg)
-  "*Switch to buffer `*text scratch*', creating it if necessary.
-With prefix arg generate a fresh buffer."
-  (interactive "P")
-  (let ((buffer-name "*text scratch*"))
-    (switch-to-buffer-create
-     (if arg (generate-new-buffer-name buffer-name) buffer-name)
-     'text-mode
-     nil)))
 
 
 ;;; Perl mode
@@ -2337,17 +2219,11 @@ A new buffer is created containing the disc file's contents and
 
 ;;; Misc
 
-(defun unfill-paragraph ()
-  (interactive "*")
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-
 ;; see http://angg.twu.net/eev-article.html
 (defun ee (s e)
   "Save the region in a temporary script"
   (interactive "r")
   (write-region s e "~/.ee.sh"))
-
 
 (global-defkey "<down-mouse-3>" 'mouse-major-mode-menu)
 
