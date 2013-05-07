@@ -223,13 +223,16 @@ In other words: change all instances of `dired-marker-char' to `dired-del-marker
 ;; http://www.masteringemacs.org/articles/2011/03/25/working-multiple-files-dired/
 (setq find-ls-option '("-print0 | xargs -0 ls -ldht" . "-ldht"))
 
-(require 'ls-lisp)
-(setq ls-lisp-emulation nil)            ; means GNU
-(setq ls-lisp-dirs-first t)
-(setq ls-lisp-ignore-case nil)
-(setq ls-lisp-use-localized-time-format t
-      ls-lisp-format-time-list '("%Y-%m-%d %H:%M"
-                                 "%Y-%m-%d %H:%M"))
+(if (executable-find "ls")
+    (setq ls-lisp-use-insert-directory-program t)
+  (require 'ls-lisp)
+  (setq ls-lisp-use-insert-directory-program nil)
+  (setq ls-lisp-emulation nil)          ; means GNU
+  (setq ls-lisp-dirs-first t)
+  (setq ls-lisp-ignore-case nil)
+  (setq ls-lisp-use-localized-time-format t
+        ls-lisp-format-time-list '("%Y-%m-%d %H:%M"
+                                   "%Y-%m-%d %H:%M")))
 
 (setq dired-isearch-filenames 'dwim)
 

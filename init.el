@@ -1802,7 +1802,6 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 (global-defkey "C-x C-b" 'bs-show)
 
 ;;; Dired
-(setq ls-lisp-use-insert-directory-program nil)
 (eval-after-load "dired" '(require-soft 'init-dired))
 (autoload 'dired-jump "dired"
   "Jump to Dired buffer corresponding to current buffer." t)
