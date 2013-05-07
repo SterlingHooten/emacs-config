@@ -1238,7 +1238,7 @@ Redefined to banish the mouse to the corner of the frame."
 ;;; Uniquify
 (require 'uniquify)
 (setq uniquify-after-kill-buffer-p t)
-(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-buffer-name-style 'post-forward)
 (setq uniquify-ignore-buffers-re
       "\\(news\\|mail\\|reply\\|followup\\) message\\*")
 ;; also uniquify shell-mode buffers
