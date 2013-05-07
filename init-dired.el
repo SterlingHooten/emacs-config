@@ -20,8 +20,12 @@
 (setq dired-recursive-copies 'always)
 (setq dired-dwim-target t)
 (setq dired-find-subdir t)
-;; (setq dired-omit-files-p t)
+
 (setq dired-omit-extensions (delete ".pdf" dired-omit-extensions))
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (dired-omit-mode 1)))
+
 ;; (setq dired-enable-local-variables 'ask)
 (setq dired-enable-local-variables t)
 (setq dired-guess-shell-gzip-quiet t)
