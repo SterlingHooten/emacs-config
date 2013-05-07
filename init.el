@@ -432,7 +432,7 @@ Subject to `buffer-ignore-regexp'."
             (error (beep)))))
       (message "Done.")))))
 
-(global-defkey "M-i" 'change-window)
+(global-defkey "M-i" 'other-window-or-other-buffer)
 ;; (display-buffers-matching (lambda (b) (with-current-buffer b (string-match "shell-mode" (symbol-name major-mode)))))
 ;; (display-buffers-matching (lambda (b) (with-current-buffer b (string-match "org-mode" (symbol-name major-mode)))))
 
