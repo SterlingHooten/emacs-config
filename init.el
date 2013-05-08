@@ -1807,6 +1807,10 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
   "Jump to Dired buffer corresponding to current buffer." t)
 
 
+;;; Text-mode
+(require-soft 'init-text)
+
+
 ;;; Org-mode
 (setq org-startup-folded nil)           ; no folding on startup
 
