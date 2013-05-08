@@ -1850,7 +1850,12 @@ With prefix argument CREATE always start a new shell."
 
 (defun shell-hier (&optional dir)
   (interactive)
-  (let* ((dir (or dir default-directory))
+  (let* ((dir (or dir
+                  (and (eq major-mode 'dired-mode)
+                       (save-excursion
+                         (dired-next-subdir 0 'noerror)
+                         (dired-get-subdir)))
+                  default-directory))
          (buffs (mapcar (lambda (buffer)
                           (with-current-buffer buffer
                             (and (eq major-mode 'shell-mode)
