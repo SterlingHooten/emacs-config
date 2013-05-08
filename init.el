@@ -1424,7 +1424,7 @@ Redefined to banish the mouse to the corner of the frame."
 (global-defkey "S-<f2>"         'revert-buffer-preserve-modes)
 
 (global-defkey "<f3>"           'dired-jump)
-(global-defkey "S-<f3>"         'shell-hier)
+(global-defkey "S-<f3>"         'shell-here)
 
 (global-defkey "<f4>"           'iswitchb-buffer)
 ;; (global-defkey "<f4>"           'anything-switch-buffer)
@@ -1848,7 +1848,7 @@ With prefix argument CREATE always start a new shell."
                    next-shell-buffer)))
     (shell buffer)))
 
-(defun shell-hier (&optional dir)
+(defun shell-here (&optional dir)
   (interactive)
   (let* ((dir (or dir
                   (and (eq major-mode 'dired-mode)
