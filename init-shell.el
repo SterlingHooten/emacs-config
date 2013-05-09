@@ -227,4 +227,19 @@ Otherwise return the value of the last form in BODY."
 
 (add-hook 'comint-mode-hook 'comint-setup)
 
+;; added the "for '[^']+'" bits for git
+(setq comint-password-prompt-regexp
+      (concat
+       "\\(^ *\\|"
+       (regexp-opt
+        '("Enter" "enter" "Enter same" "enter same" "Enter the" "enter the"
+          "Old" "old" "New" "new" "'s" "login"
+          "Kerberos" "CVS" "UNIX" " SMB" "LDAP" "[sudo]" "Repeat" "Bad") t)
+       " +\\)"
+       (regexp-opt
+        '("password" "Password" "passphrase" "Passphrase"
+          "pass phrase" "Pass phrase" "Response"))
+       "\\(?:\\(?:, try\\)? *again\\| (empty for no passphrase)\\| (again)\\)?\
+\\(?: for [^:]+\\| for '[^']+'\\)?:\\s *\\'"))
+
 (provide 'init-shell)
