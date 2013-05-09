@@ -42,7 +42,7 @@
   (setq line-number-display-limit-width 512)
 
   (add-to-list 'default-frame-alist '(cursor-type . box))
-  (add-to-list 'default-frame-alist '(font . "Consolas 12"))
+  (add-to-list 'default-frame-alist `(font . ,(if running-nt "Consolas 12" "DejaVu Sans Mono-16")))
 
   (when (and (display-color-p)
              (require-soft 'solarized-definitions))
