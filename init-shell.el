@@ -118,8 +118,6 @@ Otherwise return the value of the last form in BODY."
 
 
 ;;; http://www.masteringemacs.org/articles/2012/01/16/pcomplete-context-sensitive-completion-emacs/
-(add-to-list 'process-coding-system-alist '("svn" . undecided-dos))
-
 (defconst pcmpl-svn-commands
   '("add" "blame" "praise" "annotate" "ann"
     "cat" "changelist" "cl" "checkout" "co"

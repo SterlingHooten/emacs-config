@@ -30,7 +30,9 @@ to the filename."
 (global-defkey "C-c k" 'normalize-file-path-on-kill-ring)
 
 (setq w32-quote-process-args t)
-(setq process-coding-system-alist '(("bash" . undecided-unix) ("zsh" . undecided-unix)))
+(add-to-list 'process-coding-system-alist '("bash" . undecided-unix))
+(add-to-list 'process-coding-system-alist '("zsh" . undecided-unix))
+(add-to-list 'process-coding-system-alist '("svn" . undecided-dos))
 (setq shell-file-name "bash")
 (setq explicit-bash-args '("-i"))
 (setenv "SHELL" shell-file-name)
