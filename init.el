@@ -1284,6 +1284,7 @@ Redefined to banish the mouse to the corner of the frame."
 (global-defkey "C-x C-h" help-map)
 
 (global-defkey "C-M-<backspace>" 'backward-kill-sexp)
+(global-defkey "C-M-<delete>" 'backward-kill-sexp)
 
 ;; (global-defkey "C-M-<SPC>" 'copy-sexp)
 (global-defkey "M-k" 'copy-line)
