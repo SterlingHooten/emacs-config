@@ -241,7 +241,9 @@ In other words: change all instances of `dired-marker-char' to `dired-del-marker
 (defkey dired-mode-map "N" 'dired-next-subdir)
 (defkey dired-mode-map "P" 'dired-prev-subdir)
 
-(defkey dired-mode-map "X" 'dired-w32-open-files)
+(if (fboundp 'w32-shell-execute)
+    (defkey dired-mode-map "X" 'dired-w32-open-files)
+  (defkey dired-mode-map "X" 'dired-do-shell-command))
 
 (defkey dired-mode-map "," 'dired-goto-first-file-subdir)
 (defkey dired-mode-map "W" 'dired-copy-dirname-as-kill)
