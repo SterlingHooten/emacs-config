@@ -898,6 +898,14 @@ Return the new value of VAR."
 ;; sooner or later it will be loaded, so do it now.
 (require 'tramp)
 
+;; For all hosts except my local one connect
+;; via `ssh' first, and apply `sudo -u root' afterwards:
+;; /sudo:lampone:~
+(add-to-list 'tramp-default-proxies-alist
+             '(nil "\\`root\\'" "/ssh:%h:"))
+(add-to-list 'tramp-default-proxies-alist
+             '((regexp-quote (system-name)) nil nil))
+
 ;; jka-compr provides transparent access to compressed files.
 (require 'jka-compr)
 (auto-compression-mode 1)
