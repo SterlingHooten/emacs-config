@@ -2260,7 +2260,7 @@ A new buffer is created containing the disc file's contents and
 ;;; Local Configuration
 
 (when (equal system-type 'windows-nt)
-  (require-soft 'init-windows))
+  (require-soft 'init-w32))
 
 (when (getenv "BMW")
   (require-soft 'init-bmw))

@@ -56,4 +56,4 @@ to the filename."
   (let ((explicit-shell-file-name "f:/Apps/PortableGit-1.7.4/bin/bash.exe"))
     (shell (generate-new-buffer-name "*shell*"))))
 
-(provide 'init-windows)
+(provide 'init-w32)
