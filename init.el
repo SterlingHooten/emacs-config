@@ -42,7 +42,7 @@
   (setq line-number-display-limit-width 512)
 
   (add-to-list 'default-frame-alist '(cursor-type . box))
-  (add-to-list 'default-frame-alist `(font . ,(if running-nt "Consolas 12" "DejaVu Sans Mono-16")))
+  (add-to-list 'default-frame-alist `(font . ,(if running-nt "Consolas 12" "DejaVu Sans Mono-14")))
 
   (when (and (display-color-p)
              (require-soft 'solarized-definitions))
@@ -898,6 +898,14 @@ Return the new value of VAR."
 ;; sooner or later it will be loaded, so do it now.
 (require 'tramp)
 
+;; For all hosts except my local one connect
+;; via `ssh' first, and apply `sudo -u root' afterwards:
+;; /sudo:lampone:~
+(add-to-list 'tramp-default-proxies-alist
+             '(nil "\\`root\\'" "/ssh:%h:"))
+(add-to-list 'tramp-default-proxies-alist
+             '((regexp-quote (system-name)) nil nil))
+
 ;; jka-compr provides transparent access to compressed files.
 (require 'jka-compr)
 (auto-compression-mode 1)
@@ -1276,6 +1284,7 @@ Redefined to banish the mouse to the corner of the frame."
 (global-defkey "C-x C-h" help-map)
 
 (global-defkey "C-M-<backspace>" 'backward-kill-sexp)
+(global-defkey "C-M-<delete>" 'backward-kill-sexp)
 
 ;; (global-defkey "C-M-<SPC>" 'copy-sexp)
 (global-defkey "M-k" 'copy-line)
