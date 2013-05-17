@@ -1541,11 +1541,6 @@ in the minibuffer history."
   ad-do-it)
 
 
-;;; magit
-(add-to-path 'load-path (concat user-emacs-directory "lib/magit"))
-(autoload 'magit-status "magit" nil t)
-
-
 ;;; nxml
 ;; (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
 ;; (defun nxml-kill-element (&optional arg)
