@@ -23,11 +23,8 @@
             (abbrev-mode 1)))
 
 ;;; Ispell
-(when (executable-find "hunspell")
-  (setq ispell-program-name "hunspell")
-  (setq ispell-local-dictionary-alist
-        '(("deutsch" "[[:alpha:]]" "[^[:alpha:]]" "[']" t ("-d" "de_DE") nil utf-8)))
-  (setq-default ispell-local-dictionary "deutsch"))
+(setq ispell-local-dictionary-alist
+      '(("deutsch" "[[:alpha:]]" "[^[:alpha:]]" "[']" t ("-d" "de_DE") nil utf-8)))
 
 (setq-default ispell-local-dictionary "deutsch")
 
