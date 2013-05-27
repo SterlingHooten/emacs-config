@@ -23,7 +23,10 @@
             (abbrev-mode 1)))
 
 ;;; Ispell
-(setq-default ispell-local-dictionary "deutsch8")
+(setq ispell-local-dictionary-alist
+      '(("deutsch" "[[:alpha:]]" "[^[:alpha:]]" "[']" t ("-d" "de_DE") nil utf-8)))
+
+(setq-default ispell-local-dictionary "deutsch")
 
 (global-defkey "C-c i m" 'ispell-message)
 (global-defkey "C-c i b" 'ispell-buffer)
@@ -33,7 +36,7 @@
 
 (global-defkey "C-c i d"
   (lambda () "*Set German dictionary (Ispell)."
-    (interactive) 
+    (interactive)
     (ispell-change-dictionary "deutsch8")))
 (global-defkey "C-c i e"
   (lambda () "*Set English dictionary (Ispell)."
