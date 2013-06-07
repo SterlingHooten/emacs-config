@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("EA-740 Mitarbeiter-Austausch"
+(("Exchange/Austausch Folder on Demand"
+ (filename . "//europe.bmw.corp/winfs/EA-proj/_XChange/")
+ (front-context-string . "Create_My_Data_E")
+ (rear-context-string . "6k Mar 19 14:29 ")
+ (position . 196))
+("EA-740 Mitarbeiter-Austausch"
  (filename . "//europe.bmw.corp/winfs/EA-org/EA-7_Org/EA-74/EA-740/40_Allgemein/Mitarbeiter/")
  (front-context-string . "Goldschmitt/\n  d")
  (rear-context-string . "013-04-26 13:27 ")
