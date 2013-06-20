@@ -2013,7 +2013,7 @@ With prefix argument CREATE always start a new shell."
   (ediff-really-quit reverse-default-keep-variants))
 
 (defun vc-ediff-dwim (file &optional historic)
-  "*Compare revisions of the FILE using Ediff.
+  "*Compare revisions of FILE using Ediff.
 If FILE was changed with respect to the latest version in the
 version control system, show the differences to its current
 state.  If FILE has not been edited by the user, ask if we should
