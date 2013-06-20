@@ -22,9 +22,6 @@
 (setq dired-find-subdir t)
 
 (setq dired-omit-extensions (delete ".pdf" dired-omit-extensions))
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (dired-omit-mode 1)))
 
 ;; (setq dired-enable-local-variables 'ask)
 (setq dired-enable-local-variables t)
