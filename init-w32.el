@@ -53,7 +53,7 @@ to the filename."
 
 (defun shell-bash3 ()
   (interactive)
-  (let ((explicit-shell-file-name "f:/Apps/PortableGit-1.7.4/bin/bash.exe"))
+  (let ((explicit-shell-file-name "c:/MinGW/msys/bin/bash.exe"))
     (shell (generate-new-buffer-name "*shell*"))))
 
 (provide 'init-w32)
