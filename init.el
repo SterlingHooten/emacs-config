@@ -1959,6 +1959,7 @@ With prefix argument CREATE always start a new shell."
   '(progn
      (add-hook 'diff-mode-hook
                (lambda ()
+                 (diff-auto-refine-mode -1)
                  (defkey diff-mode-map "M-k" nil) ; don't override global binding
                  (defkey diff-mode-map "C-c C-k" 'diff-hunk-kill)))))
 
