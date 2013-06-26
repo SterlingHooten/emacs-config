@@ -19,7 +19,8 @@
           (,mu4e-refile-folder         . ?a)))
 
   (setq mu4e-bookmarks
-        '(("flag:unread OR flag:flagged"      "Unread/flagged messages" ?u)
+        '(("(flag:unread OR flag:flagged) AND NOT flag:trashed"
+                                              "Unread/flagged messages" ?u)
           ("date:today..now"                  "Today's messages"        ?t)
           ("date:7d..now"                     "Last 7 days"             ?w)))
 
