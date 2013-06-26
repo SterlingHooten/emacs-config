@@ -90,6 +90,12 @@
         ;; (holiday-float 11 3 1 "Buss- und Bettag" 16)
         (holiday-float 11 0 1 "Totensonntag" 20)))
 
+(setq holiday-other-holidays
+      '((holiday-fixed 6 12 "Dia dos Namorados")))
+
+;; TODO: Muttertag, "dia dos pais"
+;;    '(list (list (calendar-nth-named-day 2 0 5 displayed-year) "Muttertag"))
+
 (setq holiday-solar-holidays
       '((solar-equinoxes-solstices)
         (holiday-sexp calendar-daylight-savings-starts "Beginn der Sommerzeit")
