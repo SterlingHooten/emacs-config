@@ -219,10 +219,39 @@ Otherwise return the value of the last form in BODY."
 
   (defkey comint-mode-map "M-." 'comint-insert-previous-argument)
   (add-hook 'comint-output-filter-functions 'comint-watch-for-password-prompt)
-  (add-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom)
+  (add-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom*)
   (add-hook 'comint-output-filter-functions 'comint-truncate-buffer))
 
 (add-hook 'comint-mode-hook 'comint-setup)
+
+(defun comint-postoutput-scroll-to-bottom* (_string)
+  "Like `comint-postoutput-scroll-to-bottom' but ignores the minibuffer when considering `comint-move-point-for-output'."
+  (let* ((current (current-buffer))
+	 (process (get-buffer-process current)))
+    (unwind-protect
+	(cond
+	 ((null process))
+	 ((bound-and-true-p follow-mode)
+	  (follow-comint-scroll-to-bottom))
+	 (t
+	  (let* ((this-window (selected-window))
+                 ;; `selected' is the selected window, unless we are in
+                 ;; the minibuffer, in which case it is the window
+                 ;; that was selected as the minibuffer was entered.
+                 (selected (if (minibuffer-window-active-p this-window) 
+                               (minibuffer-selected-window)
+                             this-window))) 
+	    (dolist (w (get-buffer-window-list current nil t))
+	      (select-window w)
+	      (unwind-protect
+		  (progn
+		    (comint-adjust-point selected)
+		    ;; Optionally scroll to the bottom of the window.
+		    (and comint-scroll-show-maximum-output
+			 (eobp)
+			 (recenter (- -1 scroll-margin))))
+		(select-window this-window))))))
+      (set-buffer current))))
 
 ;; added the "for '[^']+'" bits for git
 (setq comint-password-prompt-regexp
