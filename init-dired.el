@@ -8,8 +8,8 @@
   (setq dired-details-hidden-string "--- ")
   (dired-details-install))
 
-;; (setq dired-listing-switches "--group-directories-first --time-style=long-iso -AFhtl")
-(setq dired-listing-switches "-AFhtl")
+;; (setq dired-listing-switches "--group-directories-first --time-style=long-iso -FhtlA")
+(setq dired-listing-switches "-FhtlA")
 (setq dired-ls-F-marks-symlinks t)
 (setq dired-guess-shell-gnutar "tar")
 (setq dired-bind-jump nil)
