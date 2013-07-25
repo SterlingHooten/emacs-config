@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("EA-740 Server/E-Disk"
+(("Ablage Projektrunde"
+ (filename . "//EUROPE.BMW.CORP/WINFS/EA-proj/Antrieb/EE/SE-Team_SW_Meta/03_Projekt_META/50_Programmstands_V/70_Dokumentation/Projektrunde/")
+ (front-context-string)
+ (rear-context-string . " 0 Jul 23 12:56 ")
+ (position . 233))
+("EA-740 Server/E-Disk"
  (filename . "//smuc4612/data/")
  (front-context-string . "CodeWrightAutoSa")
  (rear-context-string . " 0 Jun  5 13:09 ")
