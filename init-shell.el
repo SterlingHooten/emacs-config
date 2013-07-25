@@ -33,7 +33,8 @@
               "~/.bash_history")))
   (comint-read-input-ring 'silent)
   (when (require-soft 'bash-completion)
-    (add-hook 'comint-dynamic-complete-functions 'bash-completion-dynamic-complete)))
+    ;; (add-hook 'comint-dynamic-complete-functions 'bash-completion-dynamic-complete)
+    (setq comint-dynamic-complete-functions '(bash-completion-dynamic-complete))))
 
 (add-hook 'shell-mode-hook
           (lambda ()
