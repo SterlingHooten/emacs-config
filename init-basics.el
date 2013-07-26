@@ -30,5 +30,13 @@ KEY should be a string constant in the format used for
 saving keyboard macros (cf. `insert-kbd-macro')."
   `(define-key ,keymap (kbd ,key) ,def))
 
+(defmacro dbg (expr)
+  "*Print the value of EXPR and return it.
+Evaluate EXPR only once."
+  (let ((result (make-symbol "result")))
+    `(let ((,result ,expr))
+       (message "DEBUG: %s => %s" (quote ,expr) (prin1-to-string ,result))
+       ,result)))
+
 (provide 'init-basics)
 ;;; init-basics.el ends here
