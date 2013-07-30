@@ -165,17 +165,10 @@ to remove the extra space Bash adds after a completion."
 ;;; ---------- Internal variables and constants
 
 (defvar-local bash-completion-initialized nil
-  "Non-nil if `bash-completion-alist' was already initialized.")
+  "Non-nil if `bash-completion' was already initialized.")
 
-(defvar-local bash-completion-alist nil
-  "Maps from command name to the 'complete' arguments.
-
-For example if the following completion is defined in Bash:
-  complete -F _cdargs_aliases cdb
-the following entry is added to `bash-completion-alist':
- (\"cdb\" . (\"-F\" \"_cdargs\"))
-
-See `bash-completion-build-alist'.")
+(defvar-local bash-completion-rules nil
+  "Mapping from command names to Bash's `complete' rules.")
 
 (defconst bash-completion-wordbreaks '(?\" ?' ?@ ?> ?< ?= ?\; ?| ?& ?\( ?:)
   "List of word break characters.
@@ -183,9 +176,6 @@ This is the equivalent of COMP_WORDBREAKS: special characters
 that are considered word breaks in some cases when doing
 completion.  This was introduced initially to support file
 completion in colon-separated values.")
-
-(defconst bash-completion-output-buffer " *bash-completion*"
-  "Buffer containing output of Bash's completion functions.")
 
 (defconst bash-completion-candidates-prefix "\e\[bash-completion]:"
   "A prefix to be added by Bash's `compgen' to tag completion candidates.")
@@ -296,8 +286,12 @@ completion.  Return nil if no match was found."
                                   (skip-chars-backward wordbreak-regexp)
                                   (bash-completion-get-token pos)))
          (stub (bash-completion-token-string token-after-wordbreak)))
-    (bash-completion-send (bash-completion-compgen -f -- ,stub))
-    (let ((completions (bash-completion-extract-candidates stub open-quote)))
+    ;; TODO: Warning: reference to free variable `open-quote'
+    (let ((completions 
+           (bash-completion-call-with-temp-buffer
+            (lambda (temp-buffer)
+              (bash-completion-send (bash-completion-compgen -f -- ,stub) temp-buffer)
+              (bash-completion-extract-candidates temp-buffer stub open-quote)))))
       (when completions
         (completion-in-region (bash-completion-token-begin token-after-wordbreak)
                               (save-excursion
@@ -549,26 +543,29 @@ OPEN-QUOTE should be the quote, a character, that's still open in
 the last word or nil.
 
 The result is a list of candidates, which might be empty."
-  (bash-completion-send
-   (concat
-    (bash-completion-generate-line line pos words cword stub)
-    " 2>/dev/null"))
-  (bash-completion-extract-candidates stub open-quote))
+  (bash-completion-call-with-temp-buffer
+   (lambda (temp-buffer)
+     (bash-completion-send
+      (concat
+       (bash-completion-generate-line line pos words cword stub)
+       " 2>/dev/null")
+      temp-buffer)
+     (bash-completion-extract-candidates temp-buffer stub open-quote))))
 
-(defun bash-completion-extract-candidates (stub open-quote)
+(defun bash-completion-extract-candidates (buffer stub open-quote)
   "Extract the completion candidates for STUB.
-This command takes the contents of `bash-completion-output-buffer', splits
-it on newlines, post-processes the candidates and returns them as a list
-of strings.  If STUB is quoted, the quote character, ' or \", should be passed
-in OPEN-QUOTE.
+This command takes the contents of BUFFER, splits it on newlines,
+post-processes the candidates and returns them as a list of
+strings.  If STUB is quoted, the quote character, ' or \", should
+be passed in OPEN-QUOTE.
 
-The completion candidates are subject to post-processing by `bash-completion-postprocess',
-which see."
+The completion candidates are subject to post-processing by
+`bash-completion-postprocess', which see."
   (bash-completion-filter-map
    (lambda (str)
      (and (bash-completion-starts-with str bash-completion-candidates-prefix)
           (bash-completion-postprocess (substring str (length bash-completion-candidates-prefix)) stub open-quote)))
-   (with-current-buffer bash-completion-output-buffer
+   (with-current-buffer buffer
      (save-match-data
        (split-string (buffer-string) "\n" t)))))
 
@@ -727,52 +724,40 @@ Return a CONS containing (before . after)."
 
 ;;; ---------- Functions: Bash subprocess
 
-;; TODO: use a hash table
-(defun bash-completion-build-alist (buffer)
-  "Build `bash-completion-alist' from the contents of BUFFER.
-
-BUFFER should contain the output of \"complete -p\".
-
-Return `bash-completion-alist', which is a slightly parsed version
-of the output of \"complete -p\"."
+(defun bash-completion-initialize-rules (buffer rules)
+  "Initialize hash table RULES from the contents of BUFFER.
+BUFFER should contain the output of \"complete -p\"."
   (with-current-buffer buffer
     (save-excursion
-      (setq bash-completion-alist nil)
       (goto-char (point-max))
       (while (= 0 (forward-line -1))
-        (bash-completion-add-to-alist
+        (bash-completion-add-rule
          (bash-completion-strings-from-tokens
-          (bash-completion-tokenize
-           (line-beginning-position)
-           (line-end-position)))))))
-  bash-completion-alist)
+          (bash-completion-tokenize (line-beginning-position) (line-end-position)))
+         rules)))))
 
-(defun bash-completion-add-to-alist (words)
-  "Add WORDS, a list of tokens from a single `complete' command, to `bash-completion-alist'.
-The key of the association cons cell is the command name for
-which a completion is defined by WORDS."
+(defun bash-completion-add-rule (words rules)
+  "Add the completion rule defined by WORDS to the hash table RULES.
+The hash key is the command name for which a the rule is defined."
   (when (string= "complete" (pop words))
-    (let ((command (last words))
+    (let ((command (car (last words)))
           (options (nbutlast words)))
       (when (and command options)
-        (push (append command options) bash-completion-alist))))
-  bash-completion-alist)
+        (puthash command options rules)))))
 
 (defun bash-completion-specification (command)
-  "Return the completion specification for COMMAND.
-If there is no completion specification for COMMAND in
-`bash-completion-alist', return nil."
+  "Return the completion specification for COMMAND or nil, if none found."
   (unless bash-completion-initialized
     (bash-completion-initialize)
     (setq bash-completion-initialized t))
-  (cdr (assoc command bash-completion-alist)))
+  (gethash command bash-completion-rules))
 
 (defun bash-completion-generate-line (line pos words cword stub)
   "Generate a command-line that calls Bash's `compgen'.
 
-This function looks into `bash-completion-alist' for a matching completion 
-specification.  If it finds one, it uses it. Otherwise, it tries to
-complete the current word as a filename.
+This function looks for a completion rule matching the command
+name in LINE.  If it finds one, it uses it.  Otherwise, it tries
+to complete the current word as a filename.
 
 LINE is the command-line to complete.
 POS is the position of the cursor on LINE
@@ -830,44 +815,50 @@ Call this function if you have updated your ~/.bashrc or any Bash init scripts
 and would like Bash completion in Emacs to take these changes into account."
   (interactive)
   (setq bash-completion-initialized nil)
-  (setq bash-completion-alist nil))
+  (setq bash-completion-rules nil))
 
-(defun bash-completion-send (commandline &optional process)
-  "Send COMMANDLINE to the Bash process.
-
-COMMANDLINE should be a Bash command, without the final newline.
-
-Optional Argument PROCESS defaults to the process associated with
-the current buffer.
-
-Once this command has run without errors, you will find the result
-of the command in the buffer  `bash-completion-output-buffer'."
-  (let ((process (or process (get-buffer-process (current-buffer)))))
-    (with-current-buffer (get-buffer-create bash-completion-output-buffer)
-      (erase-buffer))
-    (let ((process-buffer (process-buffer process)))
-      (unwind-protect
-          (with-current-buffer process-buffer
-            ;; prepend a space to COMMANDLINE so that Bash doesn't add it to the
-            ;; history.  Requires HISTCONTROL/HISTIGNORE to be set accordingly.
-            (comint-redirect-send-command-to-process (concat " " commandline) bash-completion-output-buffer process nil t)
-            (while (null comint-redirect-completed)
-              (accept-process-output nil 1)))
-        ;; make sure the clean-up is done in the right buffer.
-        ;; `comint-redirect-completed' is buffer-local and
-        ;; `comint-redirect-cleanup' operates on the current-buffer only.
+(defun bash-completion-send (cmd output-buffer)
+  "Send CMD to the Bash process, the process associated with the current buffer.
+CMD is a Bash command, without the final newline.  The output of
+CMD, if any, goes into the buffer given by OUTPUT-BUFFER."
+  (let* ((process (get-buffer-process (current-buffer)))
+         (process-buffer (process-buffer process)))
+    (unwind-protect
         (with-current-buffer process-buffer
-          (unless comint-redirect-completed
-            (comint-redirect-cleanup)))))))
+          ;; prepend a space to CMD so that Bash doesn't add it to the
+          ;; history.  Requires HISTCONTROL/HISTIGNORE to be set accordingly.
+          (comint-redirect-send-command-to-process (concat " " cmd) output-buffer process nil t)
+          (while (null comint-redirect-completed)
+            (accept-process-output nil 1)))
+      ;; make sure the clean-up is done in the right buffer.
+      ;; `comint-redirect-completed' is buffer-local and
+      ;; `comint-redirect-cleanup' operates on the current-buffer only.
+      (with-current-buffer process-buffer
+        (unless comint-redirect-completed
+          (comint-redirect-cleanup))))))
 
 (defun bash-completion-initialize ()
-  "Initialize `bash-completion-alist' from the ouput of \"complete -p\"."
-  (bash-completion-send
-   (concat
-    "function __bash_complete_wrapper { eval $__BASH_COMPLETE_WRAPPER; };"
-    "function quote_readline { echo \"$1\"; };"
-    "complete -p"))
-  (bash-completion-build-alist bash-completion-output-buffer))
+  "Initialize `bash-completion'."
+  (setq bash-completion-rules (make-hash-table :test 'equal))
+  (bash-completion-call-with-temp-buffer
+   (lambda (temp-buffer)
+     (bash-completion-send
+      (concat
+       "function __bash_complete_wrapper { eval $__BASH_COMPLETE_WRAPPER; };"
+       "function quote_readline { echo \"$1\"; };"
+       "complete -p")
+      temp-buffer)
+     (bash-completion-initialize-rules temp-buffer bash-completion-rules))))
+
+(defmacro bash-completion-call-with-temp-buffer (thunk)
+  "Call THUNK with a freshly created temporary buffer as an argument.
+Like `with-temp-buffer' but does not change the current buffer."
+  (let ((temp-buffer (make-symbol "temp-buffer")))
+    `(let ((,temp-buffer (generate-new-buffer " *temp*")))
+       (unwind-protect
+           (funcall ,thunk ,temp-buffer)
+         (and (buffer-name ,temp-buffer)
+              (kill-buffer ,temp-buffer))))))
 
 (provide 'bash-completion)
 ;;; bash-completion.el ends here
