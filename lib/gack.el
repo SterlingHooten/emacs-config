@@ -1,8 +1,8 @@
 ;;; gack.el --- grepping with Ack
 
-;; Copyright (C) 2012  Emilio C. Lopes
+;; Copyright (C) 2012, 2013  Emilio C. Lopes
 
-;; Author: Emilio C. Lopes <Emilio.Lopes@partner.bmw.de>
+;; Author: Emilio C. Lopes <eclig@gmx.net>
 ;; Keywords: tools, processes
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -20,7 +20,8 @@
 
 ;;; Commentary:
 
-;; Simple wrapper to run `ack' (http://betterthangrep.com) using `grep'.
+;; Simple wrapper to run `ack' (http://beyondgrep.com) using Emacs'
+;; `grep' interface.
 
 ;;; Code:
 
@@ -30,7 +31,7 @@
 (defun ack (command-args)
   (interactive
    (let ((sap (thing-at-point 'symbol))
-         (ack-command "ack --nogroup --with-filename --all "))
+         (ack-command "ack --nofilter --nogroup --with-filename "))
      (list (read-shell-command "Run ack (like this): "
                                (if sap (concat ack-command sap) ack-command)
                                'ack-history))))
