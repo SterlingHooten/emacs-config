@@ -33,7 +33,7 @@
                "e:/tools/GSTools/GSView/2.4/gsview32.exe"
                )
            '("\\.e?ps$" "zathura" "gv" "lpr -o raw"))
-        ("\\.pdf$" "zathura" "xpdf" "gv" "lpr -o raw")
+        ("\\.pdf$" "zathura" "xpdf" "gv")
         ("\\.\\(jpe?g\\|gif\\|png\\)$" "feh  --info \"exiv2 %F | mawk -F' : ' '/timestamp/ { print \\$2 }'\" -d -F *" "xli -quiet" "display")
         (,(rx ?\. (or "avi" "mkv" "mpg" "mpeg" "mp4" "flv" "wmv" "rm" "asf" "wav" "VOB" "ram" "divx" "mov" "ogv" "flc" "swf") eos) "mplayer -really-quiet --")))
 
