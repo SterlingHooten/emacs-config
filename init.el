@@ -481,7 +481,8 @@ Subject to `buffer-ignore-regexp'."
     (display-buffers-matching
      (lambda (b)
        (with-current-buffer b
-         (string-match "shell-mode" (symbol-name major-mode)))))))
+         (and (string-match "shell-mode" (symbol-name major-mode))
+              (not (string-match-p "\\`\\*Async Shell " (buffer-name)))))))))
 
 (defun describe-face-at-point ()
   "*Display the properties of the face at point."
