@@ -31,7 +31,7 @@
 (defun ack (command-args)
   (interactive
    (let ((sap (thing-at-point 'symbol))
-         (ack-command "ack --nofilter --nogroup --with-filename "))
+         (ack-command "ack --nofilter --nogroup --with-filename --smart-case "))
      (list (read-shell-command "Run ack (like this): "
                                (if sap (concat ack-command sap) ack-command)
                                'ack-history))))
