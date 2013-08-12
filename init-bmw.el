@@ -64,6 +64,12 @@
   (setq woman-manpath
         (mapcar (lambda (dir) (concat cygwin-prefix dir)) '("/usr/local/man" "/usr/man"))))
 
+(mapc (lambda (dir)
+        (when (file-accessible-directory-p dir)
+          (add-to-path 'exec-path dir 'append)))
+      '("f:/bin"
+        "f:/Apps/PortableGit-1.8.1.2/bin"))
+
 (setenv "PATH" (mapconcat (if running-nt
                               (lambda (dir)
                                 (subst-char-in-string ?/ ?\\ dir))
