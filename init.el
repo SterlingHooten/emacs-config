@@ -892,9 +892,10 @@ Return the new value of VAR."
   "Use an unique buffer name for asynchronous commands."
   (when (and (not (ad-get-arg 1))
              (string-match-p "[ \t]*&[ \t]*\\'" (ad-get-arg 0)))
+    (require 'cl-macs)
     (cl-do ((i 1 (1+ i))
-         (buf "*Async Shell Command*"))
-        ((not (get-buffer-process buf)) (ad-set-arg 1 buf))
+            (buf "*Async Shell Command*"))
+           ((not (get-buffer-process buf)) (ad-set-arg 1 buf))
       (setq buf (format "*Async Shell Command*<%d>" i)))))
 
 ;;; Packages
