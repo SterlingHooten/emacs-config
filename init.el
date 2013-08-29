@@ -891,9 +891,11 @@ Return the new value of VAR."
 (defadvice shell-command (before rename-async-buffer activate)
   "Use an unique buffer name for asynchronous commands."
   (when (and (not (ad-get-arg 1))
-             (string-match-p "[ \t]*&[ \t]*\\'" (ad-get-arg 0))
-             (get-buffer-process "*Async Shell Command*"))
-    (ad-set-arg 1 (generate-new-buffer-name "*Async Shell Command*"))))
+             (string-match-p "[ \t]*&[ \t]*\\'" (ad-get-arg 0)))
+    (cl-do ((i 1 (1+ i))
+         (buf "*Async Shell Command*"))
+        ((not (get-buffer-process buf)) (ad-set-arg 1 buf))
+      (setq buf (format "*Async Shell Command*<%d>" i)))))
 
 ;;; Packages
 ;; sooner or later it will be loaded, so do it now.
