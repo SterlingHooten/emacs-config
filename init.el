@@ -1589,6 +1589,7 @@ in the minibuffer history."
   (setq LaTeX-math-abbrev-prefix "#")
   (setq TeX-open-quote "\"")              ; disable "smart quoting".
   (setq TeX-close-quote "\"")
+  (TeX-global-PDF-mode 1)
   (add-hook 'LaTeX-mode-hook
             (lambda ()
               (setq  TeX-show-compilation nil)
