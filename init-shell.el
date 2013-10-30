@@ -21,6 +21,18 @@
 
 (setq comint-process-echoes nil)
 
+(setq comint-input-ignored-regexps
+      (list (rx bos (* (syntax whitespace)) eos)
+            (rx bos (or "y" "yes" "n" "no" "j" "ja" "nein") eos)))
+
+(setq comint-input-filter
+      (lambda (str)
+        (not
+         (catch 'matched
+           (dolist (rx comint-input-ignored-regexps)
+             (and (string-match-p rx str)
+                  (throw 'matched t)))))))
+
 ;; (add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
 
 (defun shell-bash-setup ()
