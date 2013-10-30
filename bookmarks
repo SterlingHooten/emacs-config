@@ -2,12 +2,22 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Ablage Projektrunde"
+(("jenkins-build-project.sh"
+ (filename . "//smuc4612/_dev/jenkins-slave/scripts/jenkins-build-project.sh")
+ (front-context-string . "#!/bin/bash\n\nREG")
+ (rear-context-string)
+ (position . 1))
+("LimitedSearch.py"
+ (filename . "/sudo:root@eas254.muc:/usr/local/wiki/share/moin/data/plugin/macro/LimitedSearch.py")
+ (front-context-string . "\">' % text,\n    ")
+ (rear-context-string . "e=\"30\" value=\"%s")
+ (position . 940))
+("Ablage Projektrunde"
  (filename . "//EUROPE.BMW.CORP/WINFS/EA-proj/Antrieb/EE/SE-Team_SW_Meta/03_Projekt_META/50_Programmstands_V/70_Dokumentation/Projektrunde/")
  (front-context-string)
  (rear-context-string . " 0 Jul 23 12:56 ")
  (position . 233))
-("EA-740 Server/E-Disk"
+("EA-740 Server/Jenkins/E-Disk"
  (filename . "//smuc4612/data/")
  (front-context-string . "CodeWrightAutoSa")
  (rear-context-string . " 0 Jun  5 13:09 ")
@@ -17,21 +27,11 @@
  (front-context-string . "Create_My_Data_E")
  (rear-context-string . "6k Mar 19 14:29 ")
  (position . 196))
-("EA-740 Mitarbeiter-Austausch"
- (filename . "//europe.bmw.corp/winfs/EA-org/EA-7_Org/EA-74/EA-740/40_Allgemein/Mitarbeiter/")
- (front-context-string . "Goldschmitt/\n  d")
- (rear-context-string . "013-04-26 13:27 ")
- (position . 179))
 ("Virtual Machine for DGSB/MDGB-Installation"
  (filename . "//europe.bmw.corp/WINFS/EA-MIA/Softw/INSTALL_DME/Dxe-msi-src/rb/dgsb/.VirtualPC/")
  (front-context-string)
  (rear-context-string . "009-04-09 15:14 ")
  (position . 661))
-("Urlaubsliste"
- (filename . "//europe.bmw.corp/winfs/EA-org/EA-7_Org/EA-74/EA-740/40_Allgemein/Allgemeines/")
- (front-context-string . "LIST_2013_Uebers")
- (rear-context-string . "013-03-27 09:02 ")
- (position . 1269))
 ("company.xml"
  (filename . "//europe.bmw.corp/WINFS/EA-MIA/Softw/INSTALL_DME/Dxe-tools/msi/prosa/company.xml")
  (front-context-string . "<?xml version=\"1")
@@ -133,7 +133,7 @@
  (rear-context-string . "Jan 28 15:48 ecl")
  (position . 1845))
 ("EA-740 Austausch"
- (filename . "//europe.bmw.corp/winfs/EA-org/EA-7_Org/EA-74/EA-740/40_Allgemein/99_Austausch/")
+ (filename . "//europe.bmw.corp/winfs/EA-org/EA-7_Org/EA-74/EA-740/01_Austausch/")
  (front-context-string . "/\n  drwxr-xr-x  ")
  (rear-context-string . "May 26 12:29 ecl")
  (position . 3223)
