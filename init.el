@@ -1977,17 +1977,19 @@ compare the current revision of FILE with its predecessor.
 With a prefix argument HISTORIC, prompt for two revision
 designators specifying the revisions to compare."
   (interactive (list (buffer-file-name) current-prefix-arg))
-  (cond
-   (historic
-    (call-interactively 'vc-version-diff))
-   ((memq (vc-state file) '(up-to-date needs-update))
-    (unless (and (called-interactively-p)
-                 (not (y-or-n-p "This file is up-to-date.  Compare this revision with its predecessor? ")))
-      (let* ((backend (vc-backend file))
-             (current (vc-working-revision file))
-             (previous (vc-call-backend backend 'previous-revision file current)))
-        (vc-version-diff file previous current))))
-   (t (vc-diff))))
+  (let ((backend (vc-backend file)))
+    (cond
+     (historic
+      (call-interactively 'vc-version-diff))
+     ((progn
+        (vc-state-refresh file backend)
+        (memq (vc-state file) '(up-to-date needs-update)))
+      (unless (and (called-interactively-p)
+                   (not (y-or-n-p "This file is up-to-date.  Compare this revision with its predecessor? ")))
+        (let* ((current (vc-working-revision file))
+               (previous (vc-call-backend backend 'previous-revision file current)))
+          (vc-version-diff file previous current))))
+     (t (vc-diff)))))
 
 (global-defkey "C-x v -" 'vc-diff-dwim)
 
