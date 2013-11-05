@@ -35,7 +35,7 @@
            '("\\.e?ps\\'" "zathura" "gv" "lpr -o raw"))
         ("\\.pdf\\'" "zathura" "xpdf" "gv")
         (,(rx ?\. (or "jpeg" "jpg" "gif" "png" "cr2" "nef" "raf" "dng") eos)
-         "geeqie -f"
+         "geeqie -f *"
          "feh  --info \"exiv2 %F | mawk -F' : ' '/timestamp/ { print \\$2 }'\" -d -F *"
          "xli -quiet"
          "display")
