@@ -1968,6 +1968,30 @@ With prefix argument CREATE always start a new shell."
                  (defkey diff-mode-map "M-k" nil) ; don't override global binding
                  (defkey diff-mode-map "C-c C-k" 'diff-hunk-kill)))))
 
+(defun vc-diff-dwim (file &optional historic)
+  "*Display diffs between file revisions.
+If FILE was changed with respect to the latest version in the
+version control system, show the differences to its current
+state.  If FILE has not been edited by the user, ask if we should
+compare the current revision of FILE with its predecessor.
+
+With a prefix argument HISTORIC, prompt for two revision
+designators specifying the revisions to compare."
+  (interactive (list (buffer-file-name) current-prefix-arg))
+  (if historic
+      (call-interactively 'vc-version-diff)
+    (let ((backend (vc-backend file)))
+      (vc-state-refresh file backend)
+      (if (and (memq (vc-state file) '(up-to-date needs-update))
+               (called-interactively-p)
+               (y-or-n-p "This working file is unmodified.  Compare this revision with its predecessor? "))
+          (let* ((current (vc-working-revision file))
+                 (previous (vc-call-backend backend 'previous-revision file current)))
+            (vc-version-diff file previous current))
+        (vc-diff)))))
+
+(global-defkey "C-x v -" 'vc-diff-dwim)
+
 (setq ediff-keep-variants nil)
 
 (add-hook 'ediff-load-hook
@@ -2035,7 +2059,7 @@ designators specifying the revisions to compare."
     (ediff-revision file))
    ((memq (vc-state file) '(up-to-date needs-update))
     (unless (and (called-interactively-p)
-                 (not (y-or-n-p "This file is up-to-date.  Compare this revision with its predecessor? ")))
+                 (not (y-or-n-p "This working file is unmodified.  Compare this revision with its predecessor? ")))
       (let* ((backend (vc-backend file))
              (current (ediff-vc-working-revision file))
              (previous (vc-call-backend backend 'previous-revision file current)))
@@ -2043,7 +2067,6 @@ designators specifying the revisions to compare."
    (t (ediff-vc-internal "" "" nil))))
 
 (global-defkey "C-x v =" 'vc-ediff-dwim)
-(global-defkey "C-x v -" 'vc-diff)
 
 ;;; Adapted from Dave Love's "fx-misc.el", http://www.loveshack.ukfsn.org/emacs
 (defun ediff-diff-buffer-with-saved ()
