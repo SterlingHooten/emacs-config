@@ -1592,9 +1592,9 @@ in the minibuffer history."
   (setq LaTeX-math-abbrev-prefix "#")
   (setq TeX-open-quote "\"")              ; disable "smart quoting".
   (setq TeX-close-quote "\"")
-  (TeX-global-PDF-mode 1)
   (add-hook 'LaTeX-mode-hook
             (lambda ()
+              (TeX-global-PDF-mode 1)
               (setq  TeX-show-compilation nil)
               (setq LaTeX-default-environment "equation")
               ;;             (local-defkey "{" 'TeX-insert-braces)
