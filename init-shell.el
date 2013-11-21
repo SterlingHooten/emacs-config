@@ -102,6 +102,10 @@
   (defkey shell-mode-map "C-x C-r" 'view-file))
 
 (add-hook 'shell-mode-hook 'shell-setup-keys)
+
+(ansi-color-map-update 'ansi-color-names-vector
+                       ["black" "red2" "green3" "orange" "blue3" "magenta2" "cyan3" "white"])
+
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 ;; (add-hook 'shell-mode-hook 'pcomplete-shell-setup)
 
