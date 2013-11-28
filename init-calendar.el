@@ -91,10 +91,9 @@
         (holiday-float 11 0 1 "Totensonntag" 20)))
 
 (setq holiday-other-holidays
-      '((holiday-fixed 6 12 "Dia dos Namorados")))
-
-;; TODO: Muttertag, "dia dos pais"
-;;    '(list (list (calendar-nth-named-day 2 0 5 displayed-year) "Muttertag"))
+      '((holiday-fixed 6 12 "Dia dos Namorados")
+        (holiday-float 5 0 2 "Dias das Mães")
+        (holiday-float 8 0 2 "Dias dos Pais")))
 
 (setq holiday-solar-holidays
       '((solar-equinoxes-solstices)
