@@ -1508,6 +1508,10 @@ Redefined to banish the mouse to the corner of the frame."
 ;;; kill-ring
 (setq kill-ring-max 1024)
 (setq save-interprogram-paste-before-kill t)
+(setq x-select-enable-clipboard t)
+(setq select-active-regions nil)
+(when (eq window-system 'x)
+  (setq x-select-enable-primary t))
 
 ;; Thanks to Karl Fogel:
 ;; http://svn.red-bean.com/repos/kfogel/trunk/.emacs
