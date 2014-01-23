@@ -46,7 +46,27 @@
   (comint-read-input-ring 'silent)
   (when (require-soft 'bash-completion)
     ;; (add-hook 'comint-dynamic-complete-functions 'bash-completion-dynamic-complete)
-    (setq comint-dynamic-complete-functions '(bash-completion-dynamic-complete))))
+    (setq comint-dynamic-complete-functions '(bash-completion-dynamic-complete
+                                              comint-complete-from-history))))
+
+(defun comint-complete-from-history ()
+  "*Complete symbol at point from history entries."
+  (let ((bounds (bounds-of-thing-at-point 'symbol)))
+    (and bounds
+         (destructuring-bind (beg . end) bounds
+           (let ((candidates
+                  (let (lst)
+                    (dotimes (idx (1- (ring-size comint-input-ring)) lst)
+                      (setq lst
+                            (nconc lst
+                                   (save-match-data
+                                     ;; split on whitespace or punctuation
+                                     (split-string (ring-ref comint-input-ring idx)
+                                                   "\\(?:\\s-\\|\\s.\\)+"
+                                                   'omit-nulls))))))))
+             (and candidates
+                  (completion-in-region beg end candidates)))))))
+(add-hook 'comint-dynamic-complete-functions 'comint-complete-from-history 'append)
 
 (add-hook 'shell-mode-hook
           (lambda ()
