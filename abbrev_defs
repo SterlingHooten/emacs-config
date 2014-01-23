@@ -5,9 +5,7 @@
 
 (define-abbrev-table 'apropos-mode-abbrev-table '())
 
-(define-abbrev-table 'awk-mode-abbrev-table
-  '(
-   ))
+(define-abbrev-table 'awk-mode-abbrev-table '())
 
 (define-abbrev-table 'bibtex-mode-abbrev-table '())
 
@@ -17,13 +15,9 @@
 
 (define-abbrev-table 'browse-kill-ring-mode-abbrev-table '())
 
-(define-abbrev-table 'c++-mode-abbrev-table
-  '(
-   ))
+(define-abbrev-table 'c++-mode-abbrev-table '())
 
-(define-abbrev-table 'c-mode-abbrev-table
-  '(
-   ))
+(define-abbrev-table 'c-mode-abbrev-table '())
 
 (define-abbrev-table 'calendar-mode-abbrev-table '())
 
@@ -85,6 +79,8 @@
 
 (define-abbrev-table 'edebug-eval-mode-abbrev-table '())
 
+(define-abbrev-table 'emacs-lisp-byte-code-mode-abbrev-table '())
+
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table '())
 
 (define-abbrev-table 'eshell-mode-abbrev-table '())
@@ -101,6 +97,8 @@
 
 (define-abbrev-table 'grep-mode-abbrev-table '())
 
+(define-abbrev-table 'helm-grep-mode-abbrev-table '())
+
 (define-abbrev-table 'help-mode-abbrev-table '())
 
 (define-abbrev-table 'html-mode-abbrev-table '())
@@ -108,6 +106,10 @@
 (define-abbrev-table 'ibuffer-occur-mode-abbrev-table '())
 
 (define-abbrev-table 'idl-mode-abbrev-table '())
+
+(define-abbrev-table 'image-dired-display-image-mode-abbrev-table '())
+
+(define-abbrev-table 'image-dired-thumbnail-mode-abbrev-table '())
 
 (define-abbrev-table 'inferior-python-mode-abbrev-table '())
 
@@ -117,9 +119,7 @@
 
 (define-abbrev-table 'internal-ange-ftp-mode-abbrev-table '())
 
-(define-abbrev-table 'java-mode-abbrev-table
-  '(
-   ))
+(define-abbrev-table 'java-mode-abbrev-table '())
 
 (define-abbrev-table 'js-mode-abbrev-table '())
 
@@ -177,9 +177,7 @@
 
 (define-abbrev-table 'nxml-mode-abbrev-table '())
 
-(define-abbrev-table 'objc-mode-abbrev-table
-  '(
-   ))
+(define-abbrev-table 'objc-mode-abbrev-table '())
 
 (define-abbrev-table 'occur-edit-mode-abbrev-table '())
 
@@ -191,9 +189,7 @@
 
 (define-abbrev-table 'perl-mode-abbrev-table '())
 
-(define-abbrev-table 'pike-mode-abbrev-table
-  '(
-   ))
+(define-abbrev-table 'pike-mode-abbrev-table '())
 
 (define-abbrev-table 'plain-tex-mode-abbrev-table '())
 
@@ -245,19 +241,22 @@
 
 (define-abbrev-table 'shell-mode-abbrev-table
   '(
-    (",g" "| grep" nil 21)
+    (",H" "| head" nil 0)
+    (",T" "| tail" nil 0)
+    (",V" "--version" nil 0)
+    (",g" "| grep" nil 0)
     (",gg" "2>&1 | grep" nil 0)
     (",gi" "| grep -i" nil 0)
-    (",h" "--help" nil 32)
-    (",nn" "> /dev/null 2>&1" nil 1)
-    (",nul" "/dev/null" nil 1)
+    (",h" "--help" nil 0)
+    (",nn" "> /dev/null 2>&1" nil 0)
+    (",nul" "/dev/null" nil 0)
     (",s" "| sort " nil 0)
     (",sn" "| sort --numeric-sort" nil 0)
     (",t" "| tee" nil 0)
     (",tt" "2>&1| tee" nil 0)
-    (",v" "--verbose" nil 1)
+    (",v" "--verbose" nil 0)
     (",wcl" " | wc --lines" nil 0)
-    (",x" "| xargs" nil 2)
+    (",x" "| xargs" nil 0)
    ))
 
 (define-abbrev-table 'slitex-mode-abbrev-table '())
@@ -267,6 +266,8 @@
 (define-abbrev-table 'special-mode-abbrev-table '())
 
 (define-abbrev-table 'sql-mode-abbrev-table '())
+
+(define-abbrev-table 'tabulated-list-mode-abbrev-table '())
 
 (define-abbrev-table 'tar-mode-abbrev-table '())
 
@@ -280,24 +281,23 @@
 
 (define-abbrev-table 'text-mode-abbrev-table
   '(
+    ("bkt" "barkeit" nil 0)
     ("bzgl" "bezüglich" nil 0)
     ("fÜr" "für" nil 0)
-    ("ggf" "gegebenenfalls" nil 10)
+    ("ggf" "gegebenenfalls" nil 0)
     ("gr" "Gruß
 
- Emílio
-" nil 107)
+ Emílio" nil 0)
     ("gre" "are" nil 0)
     ("grs" "Grüße
 
- Emílio
-" nil 1)
+ Emílio" nil 0)
     ("hlk" "Hallo liebe Kollegen!" nil 5)
+    ("lkt" "lichkeit" nil 0)
     ("mfg" "Mit freundlichen Grüßen
 
- Emílio Lopes
-" nil 2)
-    ("mgl" "möglich" nil 5)
+ Emílio Lopes" nil 0)
+    ("mgl" "möglich" nil 0)
    ))
 
 (define-abbrev-table 'vc-annotate-mode-abbrev-table '())
@@ -305,6 +305,8 @@
 (define-abbrev-table 'vc-dir-mode-abbrev-table '())
 
 (define-abbrev-table 'vc-dired-mode-abbrev-table '())
+
+(define-abbrev-table 'vc-git-log-edit-mode-abbrev-table '())
 
 (define-abbrev-table 'vc-git-log-view-mode-abbrev-table '())
 
