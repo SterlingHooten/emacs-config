@@ -1037,38 +1037,43 @@ Only intended for interactive use."
   (let ((apropos-do-all t))
     (call-interactively 'apropos-command)))
 
-;;; anything
-(when (require-soft 'anything)
-  (setq anything-command-map-prefix-key "M-<RET>")
-  (require 'anything-config)
-  (require-soft 'anything-match-plugin)
+;;; helm (formerly `anything')
+(add-to-path 'load-path (concat user-emacs-directory "lib/helm"))
+(when (require-soft 'helm-config)
+  (autoload 'helm "helm")
+  ;; (setq helm-command-map-prefix-key "M-<RET>")
 
-  (defkey anything-map "<f4>" 'anything-next-line)
-  (defkey anything-map "<S-f4>" 'anything-previous-line)
-  (defkey anything-map "C-h" 'anything-previous-line)
+  (eval-after-load "helm"
+    '(progn
+       (defkey helm-map "<f4>" 'helm-next-line)
+       (defkey helm-map "<S-f4>" 'helm-previous-line)
+       (defkey helm-map "C-h" 'helm-previous-line)))
 
   ;; override original definition to provide default selection of the
   ;; symbol at point.
-  (defun anything-imenu ()
-    "*Preconfigured `anything' for `imenu'."
+  (defun helm-imenu ()
+    "*Preconfigured `helm' for `imenu'."
     (interactive)
-    (anything 'anything-c-source-imenu nil nil nil (thing-at-point 'symbol) "*anything imenu*"))
+    (helm 'helm-c-source-imenu nil nil nil (thing-at-point 'symbol) "*helm imenu*"))
 
-  (global-defkey "<f11>" 'anything-show-kill-ring)
+  (global-defkey "<f11>" 'helm-show-kill-ring)
   ;; http://emacs-fu.blogspot.com/2011/09/finding-just-about-anything.html
-  (defun anything-switch-buffer ()
+  (defun helm-switch-buffer ()
     (interactive)
-    (anything
+    (require 'helm-buffers)
+    (require 'helm-files)
+    (require 'helm-bookmark)
+    (helm
      :prompt "Switch to: "
      :candidate-number-limit 10 ;; up to 10 of each 
      :sources
-     '(anything-c-source-buffers             ;; buffers 
-       anything-c-source-recentf             ;; recent files 
-       anything-c-source-files-in-current-dir+ ;; current dir
-       anything-c-source-bookmarks             ;; bookmarks
+     '(helm-source-buffers-list         ;; buffers 
+       helm-source-recentf              ;; recent files 
+       helm-source-files-in-current-dir ;; current dir
+       helm-source-bookmarks            ;; bookmarks
        )))
 
-  (defkey ctl-x-map "b" 'anything-switch-buffer))
+  (defkey ctl-x-map "b" 'helm-switch-buffer))
 
 ;;; iswitchb
 (if (fboundp 'iswitchb-mode)

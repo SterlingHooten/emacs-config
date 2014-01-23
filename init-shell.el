@@ -130,8 +130,8 @@ Otherwise return the value of the last form in BODY."
             (with-current-buffer (process-buffer ,proc)
               ,body)))))
 
-(when (require-soft 'anything-shell-history)
-  (defkey comint-mode-map "C-c C-l" 'comint-anything-input-ring))
+(when (require-soft 'helm-shell-history)
+  (defkey comint-mode-map "C-c C-l" 'comint-helm-input-ring))
 
 
 ;;; http://www.masteringemacs.org/articles/2012/01/16/pcomplete-context-sensitive-completion-emacs/
