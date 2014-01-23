@@ -44,9 +44,9 @@
                 "~/.bash.d/.bash_history"
               "~/.bash_history")))
   (comint-read-input-ring 'silent)
-  (when (require-soft 'bash-completion)
-    ;; (add-hook 'comint-dynamic-complete-functions 'bash-completion-dynamic-complete)
-    (setq comint-dynamic-complete-functions '(bash-completion-dynamic-complete
+  (when (require-soft 'bacom)
+    ;; (add-hook 'comint-dynamic-complete-functions 'bacom-dynamic-complete)
+    (setq comint-dynamic-complete-functions '(bacom-dynamic-complete
                                               comint-complete-from-history))))
 
 (defun comint-complete-from-history ()
