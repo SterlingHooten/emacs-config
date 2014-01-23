@@ -61,13 +61,14 @@
             (setq comint-scroll-to-bottom-on-output 'others)
             
             ;; sanitise the syntax table
-            (modify-syntax-entry ?\, ".")
-            (modify-syntax-entry ?\@ "_")
-            (modify-syntax-entry ?\` "$")
-            (modify-syntax-entry ?\# "<")
+            (modify-syntax-entry ?\, ".") ; punctuation
+            (modify-syntax-entry ?\= ".") ; punctuation
+            (modify-syntax-entry ?\@ "_") ; symbol
+            (modify-syntax-entry ?\` "$") ; paired delimiters
+            (modify-syntax-entry ?\# "<") ; comment starter
             (modify-syntax-entry ?\. "_")
             (modify-syntax-entry ?\: "_")
-            (modify-syntax-entry ?\' "\"")
+            (modify-syntax-entry ?\' "\"") ; string quote
             ;; Accept `,' as the first char of an abbrev
             (abbrev-table-put shell-mode-abbrev-table
                               :regexp "\\(?:[^[:word:],]\\|^\\)\\(,?[[:word:]]+\\)[^[:word:]]*")
