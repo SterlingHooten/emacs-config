@@ -47,7 +47,8 @@
   (when (require-soft 'bacom)
     ;; (add-hook 'comint-dynamic-complete-functions 'bacom-dynamic-complete)
     (setq comint-dynamic-complete-functions '(bacom-dynamic-complete
-                                              comint-complete-from-history))))
+                                              comint-complete-from-history
+                                              shell-hippie-expand))))
 
 (defun comint-complete-from-history ()
   "*Complete symbol at point from history entries."
@@ -71,6 +72,19 @@
                 (completion-in-region beg end candidates))))))
 
 (add-hook 'comint-dynamic-complete-functions 'comint-complete-from-history 'append)
+
+(defun shell-hippie-expand ()
+  (let ((hippie-expand-verbose nil)
+        (hippie-expand-dabbrev-as-symbol t)
+        (hippie-expand-only-buffers '(shell-mode))
+        (hippie-expand-try-functions-list
+         '(try-expand-dabbrev
+           try-expand-dabbrev-all-buffers
+           try-complete-file-name-partially
+           try-complete-file-name)))
+    (hippie-expand 1)))
+
+(add-hook 'comint-dynamic-complete-functions 'shell-hippie-expand 'append)
 
 (add-hook 'shell-mode-hook
           (lambda ()
