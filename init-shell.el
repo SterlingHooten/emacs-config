@@ -53,19 +53,19 @@
   "*Complete symbol at point from history entries."
   (let ((bounds (bounds-of-thing-at-point 'symbol)))
     (and bounds
-         (destructuring-bind (beg . end) bounds
-           (let ((candidates
-                  (let (lst)
-                    (dotimes (idx (1- (ring-size comint-input-ring)) lst)
-                      (setq lst
-                            (nconc lst
-                                   (save-match-data
-                                     ;; split on whitespace or punctuation
-                                     (split-string (ring-ref comint-input-ring idx)
-                                                   "\\(?:\\s-\\|\\s.\\)+"
-                                                   'omit-nulls))))))))
-             (and candidates
-                  (completion-in-region beg end candidates)))))))
+         (let ((candidates
+                (let (lst)
+                  (dotimes (idx (1- (ring-size comint-input-ring)) lst)
+                    (setq lst
+                          (nconc lst
+                                 (save-match-data
+                                   ;; split on whitespace, punctuation, etc.
+                                   (split-string (ring-ref comint-input-ring idx)
+                                                 "\\(?:\\s-\\|\\s.\\|\\s(\\|\\s)\\|\\s\"\\)+"
+                                                 'omit-nulls))))))))
+           (and candidates
+                (completion-in-region (car bounds) (cdr bounds) candidates))))))
+
 (add-hook 'comint-dynamic-complete-functions 'comint-complete-from-history 'append)
 
 (add-hook 'shell-mode-hook
