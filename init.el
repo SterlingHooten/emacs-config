@@ -937,12 +937,10 @@ Return the new value of VAR."
         try-expand-dabbrev-all-buffers
         try-expand-dabbrev-from-kill
         try-expand-all-abbrevs
-        try-expand-list
         try-complete-file-name-partially
         try-complete-file-name))
 
 (global-defkey "M-/" 'hippie-expand)
-(global-defkey "C-M-/" 'dabbrev-completion)
 
 (setq-default truncate-lines nil)
 (setq truncate-partial-width-windows nil)
