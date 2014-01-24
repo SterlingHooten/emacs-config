@@ -1547,6 +1547,13 @@ in the minibuffer history."
   (insert-for-yank string))
 
 (setq kill-do-not-save-duplicates t)
+
+(defun yank-pop-forward (arg)
+"Like `yank-pop' but insert a more recent kill."
+  (interactive "p")
+  (yank-pop (- arg)))
+
+(global-defkey "M-Y" 'yank-pop-forward)
 
 ;;; nxml
 ;; (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
