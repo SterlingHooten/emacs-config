@@ -9,7 +9,7 @@
   (dired-details-install))
 
 ;; (setq dired-listing-switches "--group-directories-first --time-style=long-iso -FhtlA")
-(setq dired-listing-switches "-FhtlA")
+(setq dired-listing-switches "-Fhtl")
 (setq dired-ls-F-marks-symlinks t)
 (setq dired-guess-shell-gnutar "tar")
 (setq dired-bind-jump nil)
