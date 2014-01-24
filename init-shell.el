@@ -83,6 +83,9 @@
             ;; sanitise the syntax table
             (modify-syntax-entry ?\, ".") ; punctuation
             (modify-syntax-entry ?\= ".") ; punctuation
+            (modify-syntax-entry ?\& ".") ; punctuation
+            (modify-syntax-entry ?\> ".") ; punctuation
+            (modify-syntax-entry ?\< ".") ; punctuation
             (modify-syntax-entry ?\@ "_") ; symbol
             (modify-syntax-entry ?\` "$") ; paired delimiters
             (modify-syntax-entry ?\# "<") ; comment starter
