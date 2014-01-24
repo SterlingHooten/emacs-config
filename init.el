@@ -1546,14 +1546,7 @@ in the minibuffer history."
   (interactive (list (read-string "Yank from kill-ring: " nil 'kill-ring)))
   (insert-for-yank string))
 
-;; Emacs 23.2 introduced `kill-do-not-save-duplicates': if it is
-;; non-nil, identical subsequent kills are not duplicated in the
-;; `kill-ring'.
-(defadvice kill-new (around kill-ring-avoid-duplicates activate)
-  "Only insert STRING in the kill-ring if not already there."
-  (setq kill-ring (delete (ad-get-arg 0) kill-ring))
-  ad-do-it)
-
+(setq kill-do-not-save-duplicates t)
 
 ;;; nxml
 ;; (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
