@@ -47,8 +47,7 @@
   (when (require-soft 'bacom)
     ;; (add-hook 'comint-dynamic-complete-functions 'bacom-dynamic-complete)
     (setq comint-dynamic-complete-functions '(bacom-dynamic-complete
-                                              comint-complete-from-history
-                                              shell-hippie-expand))))
+                                              comint-complete-from-history))))
 
 (defun comint-complete-from-history ()
   "*Complete symbol at point from history entries."
@@ -73,7 +72,24 @@
 
 (add-hook 'comint-dynamic-complete-functions 'comint-complete-from-history 'append)
 
-(defun shell-hippie-expand ()
+;; In a perfect world, we would add this function to
+;; `shell-mode-hook'.  But as of Emacs 24.3 "hippie-expand" has a bug
+;; so that making `hippie-expand-ignore-buffers' and
+;; `hippie-expand-only-buffers' buffer-local does not have the desired
+;; effect.
+
+;; (defun shell-setup-hippie-expand ()
+;;   (set (make-local-variable 'hippie-expand-verbose) nil)
+;;   (set (make-local-variable 'hippie-expand-dabbrev-as-symbol) t)
+;;   (set (make-local-variable 'hippie-expand-only-buffers) '(shell-mode))
+;;   (set (make-local-variable 'hippie-expand-try-functions-list)
+;;        '(try-expand-dabbrev
+;;          try-expand-dabbrev-all-buffers
+;;          try-complete-file-name-partially
+;;          try-complete-file-name)))
+
+(defun shell-hippie-expand (arg)
+  (interactive "P")
   (let ((hippie-expand-verbose nil)
         (hippie-expand-dabbrev-as-symbol t)
         (hippie-expand-only-buffers '(shell-mode))
@@ -82,9 +98,11 @@
            try-expand-dabbrev-all-buffers
            try-complete-file-name-partially
            try-complete-file-name)))
-    (hippie-expand 1)))
+    (hippie-expand arg)))
 
-(add-hook 'comint-dynamic-complete-functions 'shell-hippie-expand 'append)
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (define-key shell-mode-map [remap hippie-expand] 'shell-hippie-expand)))
 
 (add-hook 'shell-mode-hook
           (lambda ()
