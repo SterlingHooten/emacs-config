@@ -35,6 +35,8 @@
 
 ;; (add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
 
+(add-to-path 'load-path (concat user-emacs-directory "lib/bacom"))
+
 (defun shell-bash-setup ()
   "*Bash specific setup for `shell-mode-hook'."
   (add-hook 'comint-preoutput-filter-functions 'shell-filter-ctrl-a-ctrl-b)
@@ -45,9 +47,7 @@
               "~/.bash_history")))
   (comint-read-input-ring 'silent)
   (when (require-soft 'bacom)
-    ;; (add-hook 'comint-dynamic-complete-functions 'bacom-dynamic-complete)
-    (setq comint-dynamic-complete-functions '(bacom-dynamic-complete
-                                              comint-complete-from-history))))
+    (add-hook 'completion-at-point-functions 'bacom-dynamic-complete nil t)))
 
 (defun comint-complete-from-history ()
   "*Complete symbol at point from history entries."
@@ -70,7 +70,9 @@
            (and candidates
                 (completion-in-region beg end candidates))))))
 
-(add-hook 'comint-dynamic-complete-functions 'comint-complete-from-history 'append)
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (add-hook 'completion-at-point-functions 'comint-complete-from-history 'append t)))
 
 ;; In a perfect world, we would add this function to
 ;; `shell-mode-hook'.  But as of Emacs 24.3 "hippie-expand" has a bug
