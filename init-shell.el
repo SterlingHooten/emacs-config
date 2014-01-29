@@ -140,6 +140,21 @@
               (remove-hook 'completion-at-point-functions 'comint-completion-at-point t)
               (add-hook 'completion-at-point-functions 'bacom-dynamic-complete nil t))))
 
+;; BEWARE: As of Emacs 24.3 `completion-at-point' does not work
+;; correctly for non-prefix completion (like "partial-completion" or
+;; "substring") in conjunction with completion functions that are
+;; non-exclusive.  See comments in `completion--capf-wrapper'.
+;;
+;; To give an example, suppose you have the symbol `partial-completion'
+;; in `completion-styles' and the shell buffer contains the text
+;;
+;;     somecmd --a-lo-opt
+;;
+;; Further the string "--a-long-option" can be found in
+;; `comint-input-ring'.  With the point at the end of the line,
+;; hitting <TAB> won't complete because "--a-lo-opt" is not a prefix
+;; of "--a-long-option".  But if the point is right after "--a-" it
+;; will complete correctly, since "--a-" is a prefix of "--a-long-option".
 (defun comint-complete-from-history ()
   "*Complete symbol at point from history entries."
   (let ((bounds (bounds-of-thing-at-point 'symbol)))
@@ -155,11 +170,14 @@
                 candidates) 
            (dotimes (index (1- (ring-size comint-input-ring)))
              (let ((history-entry (ring-ref comint-input-ring index)))
-               (dolist (word (split-string history-entry rx 'omit-nulls))
-                 (and (string-prefix-p stub word)
-                      (push word candidates)))))
+               ;; To allow for fancier completion styles such as
+               ;; "partial-completion" and "substring" we do not try
+               ;; to filter matching candidates here.  Just return
+               ;; everything we find and let the completion engine do
+               ;; the work according to `completion-styles'.
+               (setq candidates (nconc candidates (split-string history-entry rx 'omit-nulls)))))
            (and candidates
-                (completion-in-region beg end candidates))))))
+                (list beg end candidates :exclusive 'no))))))
 
 (add-hook 'shell-mode-hook
           (lambda ()
