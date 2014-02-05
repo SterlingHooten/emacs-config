@@ -176,8 +176,6 @@ string).  It returns t if a new completion is found, nil otherwise."
     (he-substitute-string (pop he-expand-list))
     t))
 
-(require-soft 'pcmpl-ack)
-
 ;; In a perfect world we would just add the snippet bellow to
 ;; `shell-mode-hook'.  But as of Emacs 24.3 "hippie-expand" has a bug
 ;; so that making `hippie-expand-ignore-buffers' and
