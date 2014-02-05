@@ -184,14 +184,14 @@ string).  It returns t if a new completion is found, nil otherwise."
 ;;
 ;; (add-hook 'shell-mode-hook
 ;;           (lambda ()
-;;             (set (make-local-variable 'hippie-expand-verbose) nil)
-;;             (set (make-local-variable 'hippie-expand-dabbrev-as-symbol) t)
-;;             (set (make-local-variable 'hippie-expand-only-buffers) '(shell-mode))
-;;             (set (make-local-variable 'hippie-expand-try-functions-list)
-;;                  '(try-expand-dabbrev
-;;                    try-expand-dabbrev-all-buffers
-;;                    try-complete-file-name-partially
-;;                    try-complete-file-name))))
+;;             (setq-local hippie-expand-verbose nil)
+;;             (setq-local hippie-expand-dabbrev-as-symbol t)
+;;             (setq-local hippie-expand-only-buffers '(shell-mode))
+;;             (setq-local hippie-expand-try-functions-list
+;;                         '(try-expand-dabbrev
+;;                           try-expand-dabbrev-all-buffers
+;;                           try-complete-file-name-partially
+;;                           try-complete-file-name))))
 
 (defun shell-hippie-expand (arg)
   (interactive "P")
