@@ -889,9 +889,17 @@ Return the new value of VAR."
   (interactive (_init_read_word))
   (browse-url (format "http://www.dwds.de/?qu=%s" word)))
 
+(defun synonym (word)
+  (interactive (_init_read_word))
+  (browse-url (format "http://www.openthesaurus.de/synonyme/%s" word)))
+
 (defun duden (word)
   (interactive (_init_read_word))
   (browse-url (format "http://www.duden.de/suchen/dudenonline/%s" word)))
+
+(defun emacswiki (word)
+  (interactive (_init_read_word))
+  (browse-url (format "http://www.emacswiki.org/cgi-bin/emacs?search=%s" word)))
 
 ;; Thank you, Jorgen Schäfer.
 ;; http://www.emacswiki.org/emacs-fr/JorgenSchaefersEmacsConfig
