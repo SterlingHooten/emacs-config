@@ -137,8 +137,7 @@
           (lambda ()
             (when (and (shell= "bash")
                        (require-soft 'bacom))
-              (remove-hook 'completion-at-point-functions 'comint-completion-at-point t)
-              (add-hook 'completion-at-point-functions 'bacom-dynamic-complete nil t))))
+              (setq completion-at-point-functions '(bacom-dynamic-complete)))))
 
 ;; BEWARE: As of Emacs 24.3 `completion-at-point' does not work
 ;; correctly for non-prefix completion (like "partial-completion" or
@@ -178,10 +177,6 @@
                (setq candidates (nconc candidates (split-string history-entry rx 'omit-nulls)))))
            (and candidates
                 (list beg end candidates :exclusive 'no))))))
-
-(add-hook 'shell-mode-hook
-          (lambda ()
-            (add-hook 'completion-at-point-functions 'comint-complete-from-history 'append t)))
 
 (require-soft 'pcmpl-ack)
 
