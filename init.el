@@ -156,7 +156,7 @@
 (setq window-min-width 10)
 
 (setq enable-recursive-minibuffers t)
-(setq history-length 512)
+(setq history-length 1000)
 
 (setq minibuffer-prompt-properties
       (plist-put minibuffer-prompt-properties 'point-entered 'minibuffer-avoid-prompt))
@@ -2324,13 +2324,13 @@ A new buffer is created containing the disc file's contents and
 ;;; Misc history
 ;; Add *all* visited files to `file-name-history', no matter if they
 ;; are visited through Dired or gnuclient or whatever.
-(defun add-filename-to-history ()
-  "*Add or move the visited file to the beginning of `file-name-history'."
-  (let ((filename buffer-file-name))
-    (when filename
-      (setq file-name-history (cons filename (delete filename file-name-history)))))
+(defun add-file-name-to-history ()
+  "*Add the name of the visited file to `file-name-history'."
+  (when buffer-file-name
+    (setq file-name-history (cons buffer-file-name (delete buffer-file-name file-name-history))))
   nil)
-(add-hook 'find-file-hook 'add-filename-to-history)
+(add-hook 'find-file-hook 'add-file-name-to-history)
+(add-hook 'write-file-functions 'add-file-name-to-history)
 
 ;;  show paren
 (setq show-paren-mode-hook nil)
