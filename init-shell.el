@@ -131,13 +131,13 @@
 (setq shell-completion-fignore '("~" "#" "%"))
 (setq comint-completion-autolist t)
 
-(add-to-path 'load-path (concat user-emacs-directory "lib/bacom"))
+(add-to-path 'load-path (concat user-emacs-directory "lib/bashcomp"))
 
 (add-hook 'shell-mode-hook
           (lambda ()
             (when (and (shell= "bash")
-                       (require-soft 'bacom))
-              (setq completion-at-point-functions '(bacom-dynamic-complete)))))
+                       (require-soft 'bashcomp))
+              (setq completion-at-point-functions '(bashcomp-dynamic-complete)))))
 
 (defun try-complete-from-comint-history (old)
   "*Complete symbol at point from comint history entries.
