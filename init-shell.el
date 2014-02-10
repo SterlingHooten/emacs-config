@@ -255,7 +255,7 @@ string).  It returns t if a new completion is found, nil otherwise."
 ;;; Colors in shell buffers
 
 (ansi-color-map-update 'ansi-color-names-vector
-                       ["black" "red2" "green3" "orange" "blue3" "magenta2" "cyan3" "white"])
+                       ["black" "red3" "green4" "orange" "blue2" "magenta2" "cyan3" "gray90"])
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
