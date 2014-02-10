@@ -99,18 +99,6 @@ This command must be bound to a mouse event."
     (beginning-of-defun)
     (indent-sexp)))
 
-;; for SLIB
-(unless (getenv "SCHEME_LIBRARY_PATH")
-  (setenv "SCHEME_LIBRARY_PATH" "/usr/local/share/slib/"))
-
-;; for MzScheme
-(unless (getenv "PLTCOLLECTS")
-  (setenv "PLTCOLLECTS" "/usr/local/lib/plt/collects:/usr/lib/plt/collects"))
-
-;; for Scsh
-(unless (getenv "SCSH_LIB_DIRS")
-  (setenv "SCSH_LIB_DIRS" "\"/usr/local/scsh-packages/0.6\""))
-
 (defun scheme-insert-sexp-and-go (arg)
   "*Copy the sexp following point to the inferior Scheme buffer.
 Then switch to the process buffer.
@@ -174,72 +162,109 @@ Code taken from the \"quack\" package."
             ;;(local-defkey "C-M-q" 'lisp-indent-definition)
             ))
 
-;; MIT-Scheme
-;; (add-hook 'scheme-mode-hook (lambda ()
-;;                               (require 'xscheme)
-;;                               (require 'tempo-scheme)
-;;                               (make-local-variable 'show-paren-mode)
-;;                               (show-paren-mode 1)
-;;                               (set (make-local-variable 'comment-add) 1) ;default to `;;' in comment-region
-;;                               (setq same-window-buffer-names (delete "*scheme*" same-window-buffer-names))
-;;                               (local-defkey "C-c C-s" (lambda () (interactive)
-;;                                                         (display-buffer xscheme-buffer-name)))
-;;                               (local-unset-key (kbd "M-z"))))
+
+;; Scheme templates
+(require 'tempo)
+(defvar scheme-tempo-tags nil)
 
-;; MzScheme with ilisp
-;; (require-soft 'ilisp-start)
-;; (setq scheme-program-name "mzscheme")
-;; (add-hook 'scheme-mode-hook (lambda ()
-;;                               (require 'tempo-scheme)
-;;                               (when (featurep 'ilisp-start)
-;;                                 (local-defkey "C-x C-e" 'eval-defun-lisp))
-;;                               (make-local-variable 'show-paren-mode)
-;;                               (show-paren-mode 1)
-;;                               (set (make-local-variable 'comment-add) 1) ;default to `;;' in comment-region
-;;                               (setq same-window-buffer-names (delete "*scheme*" same-window-buffer-names))))
+(tempo-define-template "scheme-define"
+               '("(define" p > r ")")
+               "define"
+               "Insert a `define' expression"
+               'scheme-tempo-tags)
 
-;; MzScheme with cmuscheme (comint-based)
-;; (setq scheme-program-name "mzscheme")
-;; (add-hook 'scheme-mode-hook (lambda ()
-;;                               (require 'cmuscheme)
-;;                               (require-soft 'mzscheme)
-;;                               (require 'tempo-scheme)
-;;                               (when (require-soft 'scheme-x)
-;;                                 (setq scheme-trace-command "(begin (require (lib \"trace.ss\")) (trace %s))"))
-;;                               (make-local-variable 'show-paren-mode)
-;;                               (show-paren-mode 1)
-;;                               (when (display-graphic-p)
-;;                                 (prettify-lambda))
-;;                               (set (make-local-variable 'comment-add) 1) ;default to `;;' in comment-region
-;;                               (setq same-window-buffer-names (delete "*scheme*" same-window-buffer-names))))
-;;
-;; (add-hook 'inferior-scheme-mode-hook
-;; 	  '(lambda ()
-;;              (defun comint-maybe-add-newline-to-output (str)
-;;                "Add a newline character to the output if STR is empty."
-;;                (if (string-match "\\`\n" str)
-;;                    str
-;;                  (concat "\n" str)))
-;;              (add-hook 'comint-preoutput-filter-functions 'comint-maybe-add-newline-to-output)
-;; 	     (split-window)))
+(tempo-define-template "scheme-defun"
+               '("(define (" p ")" n> r ")")
+               "defun"
+               "Insert an expression for defining a function"
+               'scheme-tempo-tags)
 
+(tempo-define-template "scheme-lambda"
+               '("(lambda (" p ")" n> r ")")
+               "lambda"
+               "Insert a `lambda' expression"
+               'scheme-tempo-tags)
+
+(tempo-define-template "scheme-if"
+               '("(if " p n> r ")")
+               "if"
+               "Insert an `if' expression"
+               'scheme-tempo-tags)
+
+(tempo-define-template "scheme-when"
+               '("(when " p n> p r> ")")
+               "when"
+               "Insert an `when' expression"
+               'scheme-tempo-tags)
+
+(tempo-define-template "scheme-unless"
+               '("(unless " p n> p r> ")")
+               "unless"
+               "Insert an `unless' expression"
+               'scheme-tempo-tags)
+
+(tempo-define-template "scheme-cond"
+               '("(cond ((" p ")" r "))")
+               "cond"
+               "Insert a `cond' expression"
+               'scheme-tempo-tags)
+
+(tempo-define-template "scheme-let"
+               '("(let ((" p "))" r n> ")")
+               "cond"
+               "Insert a `let' expression"
+               'scheme-tempo-tags)
+
+(tempo-define-template "scheme-let*"
+               '("(let* ((" p "))" r n> ")")
+               "cond"
+               "Insert a `let*' expression"
+               'scheme-tempo-tags)
+
+(tempo-define-template "scheme-loop"
+                '("(let loop ((" p "))" n> r> ")")
+                "loop"
+                "Insert a loop construction using `let'"
+                'scheme-tempo-tags)
+
+(define-abbrev scheme-mode-abbrev-table "cond" "" 'tempo-template-scheme-cond)
+(define-abbrev scheme-mode-abbrev-table "define" "" 'tempo-template-scheme-define)
+(define-abbrev scheme-mode-abbrev-table "defun" "" 'tempo-template-scheme-defun)
+(define-abbrev scheme-mode-abbrev-table "if" "" 'tempo-template-scheme-if)
+(define-abbrev scheme-mode-abbrev-table "lambda" "" 'tempo-template-scheme-lambda)
+(define-abbrev scheme-mode-abbrev-table "let" "" 'tempo-template-scheme-let)
+(define-abbrev scheme-mode-abbrev-table "lets" "" 'tempo-template-scheme-let*)
+(define-abbrev scheme-mode-abbrev-table "loop" "" 'tempo-template-scheme-loop)
+(define-abbrev scheme-mode-abbrev-table "unless" "" 'tempo-template-scheme-unless)
+(define-abbrev scheme-mode-abbrev-table "when" "" 'tempo-template-scheme-when)
+
+(add-hook 'scheme-mode-hook
+          (lambda ()
+            (local-defkey "C-c C-f" 'tempo-forward-mark)
+            (local-defkey "C-c C-b" 'tempo-backward-mark)
+
+            (local-defkey "C-c t f" 'tempo-template-define)
+            (local-defkey "C-c t l" 'tempo-template-lambda)
+            (local-defkey "C-c t i" 'tempo-template-if)
+            (local-defkey "C-c t c" 'tempo-template-cond)
+
+            (local-defkey "M-S-<tab>" 'tempo-complete-tag)
+            (tempo-use-tag-list 'scheme-tempo-tags)))
+
+
 ;; scsh/scheme 48 setup
-(setq scheme-program-name "scsh-local.bat")
 (setq scheme-mit-dialect nil)
 (add-hook 'scheme-mode-hook (lambda ()
                               (require 'cmuscheme)
-                              ;;(require 'tempo-scheme)
                               (setq scheme-trace-command ",trace %s"
                                     scheme-untrace-command ",untrace %s"
                                     scheme-macro-expand-command ",expand %s")
                               (make-local-variable 'show-paren-mode)
                               (show-paren-mode 1)
-                              ;; (when (display-graphic-p)
-;;                                 (prettify-lambda))
+                              (when (display-graphic-p)
+                                (prettify-lambda))
                               (set (make-local-variable 'comment-add) 1) ;default to `;;' in comment-region
                               (setq same-window-buffer-names (delete "*scheme*" same-window-buffer-names))))
-
-;; (setq special-display-buffer-names '("*scheme*"))
 
 (add-hook 'scheme-mode-hook
           (lambda ()
@@ -285,22 +310,6 @@ Code taken from the \"quack\" package."
             (font-lock-add-keywords
              nil
              '(("^,\\S-+" . font-lock-preprocessor-face))))) ; scheme48 *commands*
-
-;; ;; Karl Pflästerer [http://groups.google.de/group/comp.lang.scheme/msg/56ce4a9d60e26323]
-;; (defun my-scheme-eval-last-sexp (&optional insert)
-;;   (interactive "P")
-;;   (let ((standard-output (if insert (current-buffer) t))
-;;         (cmd (buffer-substring (save-excursion (backward-sexp) (point)) (point))))
-;;     (with-temp-buffer
-;;       (comint-redirect-send-command-to-process cmd (current-buffer) (scheme-proc) t t)
-;;       ;; /ECL/ folgende Zeile blockiert Emacs bis output kommt.  Vielleicht
-;;       ;; koennte man da was mit einem "Sentinel" machen?
-;;       (while (string= (buffer-string) "") (sleep-for 0.01))
-;;       (princ (buffer-string)))))
-;; (add-hook 'scheme-mode-hook
-;;           (lambda ()
-;;             (defkey scheme-mode-map "C-c C-e" 'my-scheme-eval-last-sexp)))
-
 
 ;; From http://www.cs.indiana.edu/chezscheme/emacs/iuscheme.el
 (defun scheme-return ()
