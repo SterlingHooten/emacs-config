@@ -2326,11 +2326,15 @@ A new buffer is created containing the disc file's contents and
 ;; are visited through Dired or gnuclient or whatever.
 (defun add-file-name-to-history ()
   "*Add the name of the visited file to `file-name-history'."
-  (when buffer-file-name
-    (setq file-name-history (cons buffer-file-name (delete buffer-file-name file-name-history))))
+  (let ((fn (or buffer-file-name
+                (and (eq major-mode 'dired-mode) default-directory))))
+    (when fn
+      (setq file-name-history (cons fn (delete fn file-name-history)))))
   nil)
+
 (add-hook 'find-file-hook 'add-file-name-to-history)
 (add-hook 'write-file-functions 'add-file-name-to-history)
+(add-hook 'dired-after-readin-hook 'add-file-name-to-history)
 
 ;;  show paren
 (setq show-paren-mode-hook nil)
