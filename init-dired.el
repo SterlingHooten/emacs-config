@@ -22,6 +22,7 @@
 (setq dired-find-subdir t)
 
 (setq dired-omit-extensions (delete ".pdf" dired-omit-extensions))
+(setq dired-omit-extensions (cons ".log" dired-omit-extensions))
 
 ;; (setq dired-enable-local-variables 'ask)
 (setq dired-enable-local-variables t)
