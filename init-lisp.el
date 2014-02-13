@@ -227,19 +227,20 @@ Code taken from the \"quack\" package."
                 "Insert a loop construction using `let'"
                 'scheme-tempo-tags)
 
-(define-abbrev scheme-mode-abbrev-table "cond" "" 'tempo-template-scheme-cond)
-(define-abbrev scheme-mode-abbrev-table "define" "" 'tempo-template-scheme-define)
-(define-abbrev scheme-mode-abbrev-table "defun" "" 'tempo-template-scheme-defun)
-(define-abbrev scheme-mode-abbrev-table "if" "" 'tempo-template-scheme-if)
-(define-abbrev scheme-mode-abbrev-table "lambda" "" 'tempo-template-scheme-lambda)
-(define-abbrev scheme-mode-abbrev-table "let" "" 'tempo-template-scheme-let)
-(define-abbrev scheme-mode-abbrev-table "lets" "" 'tempo-template-scheme-let*)
-(define-abbrev scheme-mode-abbrev-table "loop" "" 'tempo-template-scheme-loop)
-(define-abbrev scheme-mode-abbrev-table "unless" "" 'tempo-template-scheme-unless)
-(define-abbrev scheme-mode-abbrev-table "when" "" 'tempo-template-scheme-when)
-
 (add-hook 'scheme-mode-hook
           (lambda ()
+
+            (define-abbrev scheme-mode-abbrev-table "cond" "" 'tempo-template-scheme-cond)
+            (define-abbrev scheme-mode-abbrev-table "define" "" 'tempo-template-scheme-define)
+            (define-abbrev scheme-mode-abbrev-table "defun" "" 'tempo-template-scheme-defun)
+            (define-abbrev scheme-mode-abbrev-table "if" "" 'tempo-template-scheme-if)
+            (define-abbrev scheme-mode-abbrev-table "lambda" "" 'tempo-template-scheme-lambda)
+            (define-abbrev scheme-mode-abbrev-table "let" "" 'tempo-template-scheme-let)
+            (define-abbrev scheme-mode-abbrev-table "lets" "" 'tempo-template-scheme-let*)
+            (define-abbrev scheme-mode-abbrev-table "loop" "" 'tempo-template-scheme-loop)
+            (define-abbrev scheme-mode-abbrev-table "unless" "" 'tempo-template-scheme-unless)
+            (define-abbrev scheme-mode-abbrev-table "when" "" 'tempo-template-scheme-when)
+
             (local-defkey "C-c C-f" 'tempo-forward-mark)
             (local-defkey "C-c C-b" 'tempo-backward-mark)
 
