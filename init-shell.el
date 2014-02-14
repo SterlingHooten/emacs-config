@@ -289,6 +289,17 @@ Otherwise return the value of the last form in BODY."
 
 ;;; Manipulating the contents of the shell buffer
 
+;; Zsh's `copy-prev-shell-word'
+(defun comint-insert-previous-word ()
+  "*Duplicate the word to the left of the cursor, obeying quoting."
+  (interactive)
+  (insert (comint-arguments
+           (buffer-substring-no-properties (comint-line-beginning-position)
+                                           (point))
+           nil nil)))
+
+(defkey comint-mode-map "C-c ^" 'comint-insert-previous-word)
+
 ;; http://www.emacswiki.org/emacs/ShellMode
 (defun comint-clear-buffer ()
   "*Clear the process buffer, deleting its entire contents."
