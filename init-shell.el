@@ -197,7 +197,7 @@ string).  It returns t if a new completion is found, nil otherwise."
   (interactive "P")
   (require 'hippie-exp)
   (let ((hippie-expand-verbose nil)
-        (hippie-expand-dabbrev-as-symbol t)
+        (hippie-expand-dabbrev-as-symbol nil)
         (hippie-expand-only-buffers '(shell-mode))
         (hippie-expand-try-functions-list
          '(try-complete-from-comint-history
