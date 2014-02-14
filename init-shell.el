@@ -135,6 +135,7 @@
 
 (add-hook 'shell-mode-hook
           (lambda ()
+            (setq-local completion-cycle-threshold 4)
             (when (and (shell= "bash")
                        (require-soft 'bashcomp))
               (setq completion-at-point-functions '(bashcomp-completion-at-point)))))
