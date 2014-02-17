@@ -852,78 +852,48 @@ Return the new value of VAR."
 
 
 ;;; Quick commands for web searches
+(setq webjump-sites
+      (append
+       ;; Thank you, Jorgen Schäfer.
+       ;; http://www.emacswiki.org/emacs-fr/JorgenSchaefersEmacsConfig
+       '(("google-file" .
+          (format "http://www.google.de/search?q=+intitle:\"index+of\" -inurl:htm -inurl:html -inurl:php %s"
+                  (read-from-minibuffer "Search for file: ")))
+         ("google-message-id" .
+          (let ((message-id (read-from-minibuffer "Message-ID: "
+                                                  (let ((url (thing-at-point 'url)))
+                                                    (when (string-match "mailto:\\(.*\\)" url)
+                                                      (match-string 1 url))))))
+            (when (string-match "<\\(.*\\)>" message-id)
+              (setq message-id (match-string 1 message-id)))
+            (format "http://www.google.de/groups?selm=%s" message-id))))
+
+       (mapc
+        (lambda (x)
+          (setcdr x `(format ,(cdr x) (_init_read_word))))
+        '(("leo" . "http://dict.leo.org/?search=%s")
+          ("leo.it" . "http://dict.leo.org/itde/?search=%s")
+          ("leo.es" . "http://dict.leo.org/esde/?search=%s")
+          ("leo.pt" . "http://dict.leo.org/ptde/?search=%s")
+
+          ("wp" . "http://en.wikipedia.org/wiki/Special:Search?search=%s")
+          ("wp.de" . "http://de.wikipedia.org/wiki/Special:Search?search=%s")
+
+          ("dwds" . "http://www.dwds.de/?qu=%s")
+          ("duden" . "http://www.duden.de/suchen/dudenonline/%s")
+          ("synonym" . "http://www.openthesaurus.de/synonyme/%s")
+
+          ("emacswiki" . "http://www.emacswiki.org/cgi-bin/emacs?search=%s")
+
+          ("google" . "http://www.google.de/search?q=%s")))))
 
 (defun _init_read_word ()
   (require 'thingatpt)
-  (list 
-   (let ((word (thing-at-point 'word)))
+  (let ((word (thing-at-point 'word)))
+    (url-encode-url
      (if word
          (read-string (format "Word [default \"%s\"]: " word) nil nil word)
        (read-string "Word: ")))))
-
-(defun leo (word)
-  (interactive (_init_read_word))
-  (browse-url (format "http://dict.leo.org/?search=%s" (string-make-unibyte word))))
-
-(defun leo.it (word)
-  (interactive (_init_read_word))
-  (browse-url (format "http://dict.leo.org/itde/?search=%s" (string-make-unibyte word))))
-
-(defun leo.es (word)
-  (interactive (_init_read_word))
-  (browse-url (format "http://dict.leo.org/esde/?search=%s" (string-make-unibyte word))))
-
-(defun leo.pt (word)
-  (interactive (_init_read_word))
-  (browse-url (format "http://dict.leo.org/ptde/?search=%s" (string-make-unibyte word))))
-
-(defun wp (word)
-  (interactive (_init_read_word))
-  (browse-url (format "http://en.wikipedia.org/wiki/Special:Search?search=%s" word)))
-
-(defun wp.de (word)
-  (interactive (_init_read_word))
-  (browse-url (format "http://de.wikipedia.org/wiki/Special:Search?search=%s" word)))
-
-(defun dwds (word)
-  (interactive (_init_read_word))
-  (browse-url (format "http://www.dwds.de/?qu=%s" word)))
-
-(defun synonym (word)
-  (interactive (_init_read_word))
-  (browse-url (format "http://www.openthesaurus.de/synonyme/%s" word)))
-
-(defun duden (word)
-  (interactive (_init_read_word))
-  (browse-url (format "http://www.duden.de/suchen/dudenonline/%s" word)))
-
-(defun emacswiki (word)
-  (interactive (_init_read_word))
-  (browse-url (format "http://www.emacswiki.org/cgi-bin/emacs?search=%s" word)))
-
-;; Thank you, Jorgen Schäfer.
-;; http://www.emacswiki.org/emacs-fr/JorgenSchaefersEmacsConfig
-(defun google (what)
-  "Use google to search for WHAT."
-  (interactive (_init_read_word))
-  (browse-url (format "http://www.google.de/search?q=%s" what)))
-
-(defun google-file (file)
-  "Use google to search for a file named FILE."
-  (interactive "sSearch for file: ")
-  (browse-url
-   (format "http://www.google.de/search?q=+intitle:\"index+of\" -inurl:htm -inurl:html -inurl:php %s" file)))
-
-(defun google-message-id (message-id)
-  "View MESSAGE-ID in Google Groups."
-  (interactive
-   (list (read-from-minibuffer "Message-ID: "
-                               (let ((url (thing-at-point 'url)))
-                                 (when (string-match "mailto:\\(.*\\)" url)
-                                   (match-string 1 url))))))
-  (when (string-match "<\\(.*\\)>" message-id)
-    (setq message-id (match-string 1 message-id)))
-  (browse-url (format "http://www.google.de/groups?selm=%s" message-id)))
 
 
 (defun next-line-not-matching (regexp)
