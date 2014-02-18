@@ -229,8 +229,16 @@ string).  It returns t if a new completion is found, nil otherwise."
 (define-abbrev shell-mode-abbrev-table ",H" "| head")
 (define-abbrev shell-mode-abbrev-table ",h" "--help")
 (define-abbrev shell-mode-abbrev-table ",v" "--verbose")
-(define-abbrev shell-mode-abbrev-table ",V" "--version")
+(define-abbrev shell-mode-abbrev-table ",vv" "--version")
 (define-abbrev shell-mode-abbrev-table ",x" "| xargs")
+(define-abbrev shell-mode-abbrev-table ",x0" "| xargs --null")
+
+(dotimes (i 9)
+  (define-abbrev shell-mode-abbrev-table (format ",%d" (1+ i)) (format "~+%d" (1+ i))))
+
+(define-abbrev shell-mode-abbrev-table ",uu" "../..") ; `u' as in `up'
+(define-abbrev shell-mode-abbrev-table ",uuu" "../../..")
+(define-abbrev shell-mode-abbrev-table ",uuuu" "../../../..")
 
 (add-hook 'shell-mode-hook
           (lambda ()
