@@ -17,7 +17,8 @@
         ("grs" "Grüße\n\n Emílio")
         ("mfg" "Mit freundlichen Grüßen\n\n Emílio Lopes")
         ("mgl" "möglich")
-        ("vllt" "vielleicht")))
+        ("vllt" "vielleicht")
+        ("zv" "zur Verfügung")))
 
 (add-hook 'text-mode-hook
           (lambda ()
