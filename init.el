@@ -1291,8 +1291,8 @@ Redefined to banish the mouse to the corner of the frame."
                           (delete-other-windows))))
 (global-defkey "C-c 2" (recursive-edit-preserving-window-config (split-window-vertically)))
 (global-defkey "C-c 3" (recursive-edit-preserving-window-config (split-window-horizontally)))
-(global-defkey "C-c 4 b" (recursive-edit-preserving-window-config (iswitchb-buffer-other-window)))
-(global-defkey "C-c 4 C-o" (recursive-edit-preserving-window-config (iswitchb-display-buffer)))
+(global-defkey "C-c 4 b" (recursive-edit-preserving-window-config (ido-switch-buffer-other-window)))
+(global-defkey "C-c 4 C-o" (recursive-edit-preserving-window-config (ido-switch-display-buffer)))
 
 (global-defkey "C-c $" 'toggle-truncate-lines)
 (global-defkey "C-c \\" 'the-the)
@@ -1426,7 +1426,6 @@ Redefined to banish the mouse to the corner of the frame."
 (global-defkey "<f3>"           'dired-jump)
 (global-defkey "S-<f3>"         'shell-here)
 
-(global-defkey "<f4>"           'iswitchb-buffer)
 ;; (global-defkey "<f4>"           'anything-switch-buffer)
 (global-defkey "S-<f4>"         'bury-buffer)
 
@@ -1771,17 +1770,6 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
   (defkey bookmark-bmenu-mode-map "w" 'bookmark-location-as-kill))
 
 (add-hook 'bookmark-load-hook 'my-bookmark-load-hook)
-
-;; From http://www.emacswiki.org/cgi-bin/wiki.pl/GraphicalBookmarkJump
-(defun iswitchb-bookmark-jump (bname)
-  "*Switch to bookmark interactively using `iswitchb'."
-  (interactive (list (flet
-                         ((iswitchb-make-buflist (default)
-                                                 (require 'bookmark)
-                                                 (setq iswitchb-buflist (bookmark-all-names))))
-                       (iswitchb-read-buffer "Jump to bookmark: "))))
-  (bookmark-jump bname))
-(substitute-key-definition 'bookmark-jump 'iswitchb-bookmark-jump global-map)
 
 
 ;;; folding
