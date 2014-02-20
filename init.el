@@ -1088,88 +1088,48 @@ Only intended for interactive use."
 
   (defkey ctl-x-map "b" 'helm-switch-buffer))
 
-;;; iswitchb
-(if (fboundp 'iswitchb-mode)
-    (iswitchb-mode)
-  (iswitchb-default-keybindings))
-(setq read-buffer-function 'iswitchb-read-buffer)
-(setq iswitchb-case t)
-(when (and running-interactively (require-soft 'recentf))
-  (recentf-mode 1)
-  (setq recentf-save-file (locate-user-emacs-file ".recentf" ".recentf"))
-  (setq iswitchb-use-virtual-buffers t))
-(setq iswitchb-regexp nil)
-(setq iswitchb-prompt-newbuffer nil)
-(setq iswitchb-default-method 'samewindow)
-(setq iswitchb-all-frames 'no)
-(add-to-list 'iswitchb-buffer-ignore "^\\*Ibuffer")
+(when (and running-interactively
+           (require-soft 'ido))
+  (ido-mode +1)
 
-(defun major-mode-matches (buffer regexp)
-  "*Return t if `mode-name' in  BUFFER matches REGEXP.
-To be used mainly as a filter in iswitchb to select only buffers
-whose major-mode matches REGEXP."
-  (with-current-buffer buffer
-    (string-match regexp (format-mode-line mode-name))))
+  (setq ido-ignore-buffers '("\\` " "\\*\\(:?Quail \\)?Completions\\*"))
+  (setq ido-show-dot-for-dired t)
+  (setq ido-use-filename-at-point t)
 
-(defun iswitchb-only-dired-buffers (buffer)
-  "*Ignore all buffers not in dired-mode."
-  (not (major-mode-matches buffer "\\`Dired\\>")))
+  (add-hook 'ido-setup-hook
+            (lambda ()
+              (defkey ido-completion-map "<f4>" 'ido-next-match)
+              (defkey ido-completion-map "<S-f4>" 'ido-prev-match)))
 
-(defun iswitchb-dired-buffers ()
-  "*Switch to a Dired buffer."
-  (interactive)
-  (let ((iswitchb-buffer-ignore '(iswitchb-only-dired-buffers)))
-    (call-interactively 'iswitchb-buffer)))
+  ;; Thank you, anonymous.
+  ;; http://www.emacswiki.org/emacs/InteractivelyDoThings
+  (defun ido-sort-mtime ()
+    (setq ido-temp-list
+          (sort ido-temp-list
+                (lambda (a b)
+                  (time-less-p
+                   (sixth (file-attributes (concat ido-current-directory b)))
+                   (sixth (file-attributes (concat ido-current-directory a)))))))
+    (ido-to-end ;; move . files to end (again)
+     (delq nil (mapcar
+                (lambda (x) (and (char-equal (string-to-char x) ?.) x))
+                ido-temp-list))))
 
-(global-defkey "C-x D" 'iswitchb-dired-buffers)
+  (add-hook 'ido-make-file-list-hook 'ido-sort-mtime)
+  (add-hook 'ido-make-dir-list-hook 'ido-sort-mtime)
 
-(defun iswitchb-only-shell-buffers (buffer)
-  "*Ignore all buffers not in shell-mode."
-  (not (major-mode-matches buffer "\\`Shell\\'")))
+  (global-defkey "<f4>" 'ido-switch-buffer)
 
-(defun iswitchb-shell-buffers ()
-  "*Switch to a Shell buffer."
-  (interactive)
-  (let ((iswitchb-buffer-ignore '(iswitchb-only-shell-buffers)))
-    (call-interactively 'iswitchb-buffer)))
+  (global-defkey "<kp-add>" 'ido-switch-buffer)
 
-;; Kin Cho
-(defun iswitchb-exclude-nonmatching ()
-  "*Exclude non matching buffer names."
-  (interactive)
-  (setq iswitchb-buflist iswitchb-matches)
-  (setq iswitchb-rescan t)
-  (delete-minibuffer-contents))
+  (defun ido-bookmark-jump (bname)
+    "*Switch to bookmark interactively using `ido'."
+    (interactive (list (ido-completing-read "Bookmark: " (bookmark-all-names) nil t)))
+    (bookmark-jump bname))
 
-(defun iswitchb-rescan ()
-  "*Regenerate the list of matching buffer names."
-  (interactive)
-  (iswitchb-make-buflist iswitchb-default)
-  (setq iswitchb-rescan t))
-
-(add-hook 'iswitchb-define-mode-map-hook 'iswitchb-my-keys)
-(defun iswitchb-my-keys ()
- "*Add custom keybindings for iswitchb."
- (defkey iswitchb-mode-map "C-o" 'iswitchb-exclude-nonmatching)
- (defkey iswitchb-mode-map "C-M-l" 'iswitchb-rescan)
-;; Cause problem in conjunction with minibuffer-complete-cycle!
-;; (defkey iswitchb-mode-map "ESC" 'keyboard-escape-quit)
- (defkey iswitchb-mode-map "<f4>" 'iswitchb-next-match)
- (defkey iswitchb-mode-map "<S-f4>" 'iswitchb-prev-match)
- (defkey iswitchb-mode-map "<kp-add>" 'iswitchb-next-match)
- (defkey iswitchb-mode-map "<kp-subtract>" 'iswitchb-prev-match)
- (defkey iswitchb-mode-map "C-a" 'iswitchb-toggle-ignore)
- (defkey iswitchb-mode-map "C-z C-f" 'iswitchb-find-file))
+  (substitute-key-definition 'bookmark-jump 'ido-bookmark-jump global-map))
 
 (global-defkey "<kp-subtract>" 'bury-buffer)
-(global-defkey "<kp-add>"      'iswitchb-buffer)
-
-(defadvice iswitchb-kill-buffer (after rescan-after-kill activate)
-  "*Regenerate the list of matching buffer names after a kill.
-Necessary if using `uniquify' with `uniquify-after-kill-buffer-p'
-set to non-nil."
-  (setq iswitchb-buflist iswitchb-matches)
-  (iswitchb-rescan))
 
 
 (require-soft 'minibuf-isearch)
