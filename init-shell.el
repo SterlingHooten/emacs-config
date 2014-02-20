@@ -223,6 +223,8 @@ string).  It returns t if a new completion is found, nil otherwise."
 (define-abbrev shell-mode-abbrev-table ",wcl" " | wc --lines")
 (define-abbrev shell-mode-abbrev-table ",nul" "/dev/null")
 (define-abbrev shell-mode-abbrev-table ",nn" "> /dev/null 2>&1")
+(define-abbrev shell-mode-abbrev-table ",p" "| emacspipe")
+(define-abbrev shell-mode-abbrev-table ",po" "| emacspipe -o")
 (define-abbrev shell-mode-abbrev-table ",t" "| tee")
 (define-abbrev shell-mode-abbrev-table ",tt" "2>&1| tee")
 (define-abbrev shell-mode-abbrev-table ",T" "| tail")
