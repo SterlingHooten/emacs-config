@@ -21,6 +21,7 @@
 ;;; Load-path
 (add-to-path 'load-path user-emacs-directory)
 (add-to-path 'load-path (concat user-emacs-directory "lib"))
+(setq custom-theme-directory (concat user-emacs-directory "lib"))
 
 (when running-interactively
   (setq visible-bell t)
@@ -44,9 +45,8 @@
   (add-to-list 'default-frame-alist '(cursor-type . box))
   (add-to-list 'default-frame-alist `(font . ,(if running-nt "Consolas 12" "DejaVu Sans Mono-14")))
 
-  (when (and (display-color-p)
-             (require-soft 'solarized-definitions))
-    (create-solarized-theme light))
+  (when (display-color-p)
+    (load-theme 'tango-plus t))
 
   (setq-default frame-title-format (list "" "Emacs Macht Alle Computer Sch\366n"))
   (setq-default icon-title-format frame-title-format))
