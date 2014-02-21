@@ -66,6 +66,23 @@
 (when (require-soft 'helm-shell-history)
   (defkey comint-mode-map "C-c C-l" 'comint-helm-input-ring))
 
+;; Thank you, Joe Bloggs.
+;; http://www.emacswiki.org/emacs/ComintMode
+(defun comint-end-of-input-history ()
+  "Move to the end of the input history.
+This corresponds to the line currently being entered."
+  (interactive)
+  (comint-restore-input))
+
+(defkey comint-mode-map "C-c M->" 'comint-end-of-input-history)
+
+(defun comint-beginning-of-input-history ()
+  "Move to the first line in the input history."
+  (interactive)
+  (comint-next-input (1+ (or comint-input-ring-index 0))))
+
+(defkey comint-mode-map "C-c M-<" 'comint-beginning-of-input-history)
+
 
 ;;; Output filters
 
