@@ -347,6 +347,33 @@ Otherwise return the value of the last form in BODY."
         (kill-ring-save comint-last-input-end pmark)
         (goto-char (process-mark proc))))))
 
+(defun comint-previous-output-boundaries ()
+  ;; TODO: arg n
+  ;; TODO: clean up this mess
+  (let* ((pt (point))
+         (beg (if (and (eq (get-char-property pt 'field) 'output)
+                       (eq (get-char-property (1- pt) 'field) 'boundary))
+                  pt
+                (while (and
+                        (setq prev-pt pt)
+                        (setq pt (previous-single-char-property-change pt 'field))
+                        (not (or (= pt prev-pt)
+                                 (eq (get-char-property pt 'field) 'output)))))
+                pt))
+         (end (save-excursion
+                (goto-char (next-single-char-property-change beg 'field))
+                ;; can't use `point-at-bol' here due to field boundaries
+                (forward-line 0)
+                (if (> (point) 0) (1- (point)) (point)))))
+    (list beg end)))
+
+(defun comint-copy-previous-output ()
+  ;; TODO: arg n
+  (interactive)
+  (destructuring-bind (beg end) (comint-previous-output-boundaries)
+    (when (> end beg)
+      (copy-region-as-kill beg end))))
+
 ;; (defun comint-delete-output ()
 ;;   "Delete all output from interpreter since previous input.
 ;; Does not delete the prompt."
