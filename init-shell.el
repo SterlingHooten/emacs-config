@@ -63,9 +63,6 @@
                           "~/.bash_history")))
               (comint-read-input-ring 'silent))))
 
-(when (require-soft 'helm-shell-history)
-  (defkey comint-mode-map "C-c C-l" 'comint-helm-input-ring))
-
 ;; Thank you, Joe Bloggs.
 ;; http://www.emacswiki.org/emacs/ComintMode
 (defun comint-end-of-input-history ()

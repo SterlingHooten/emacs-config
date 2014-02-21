@@ -1050,44 +1050,7 @@ Only intended for interactive use."
   (let ((apropos-do-all t))
     (call-interactively 'apropos-command)))
 
-;;; helm (formerly `anything')
-(add-to-path 'load-path (concat user-emacs-directory "lib/helm"))
-(when (require-soft 'helm-config)
-  (autoload 'helm "helm")
-  ;; (setq helm-command-map-prefix-key "M-<RET>")
-
-  (eval-after-load "helm"
-    '(progn
-       (defkey helm-map "<f4>" 'helm-next-line)
-       (defkey helm-map "<S-f4>" 'helm-previous-line)
-       (defkey helm-map "C-h" 'helm-previous-line)))
-
-  ;; override original definition to provide default selection of the
-  ;; symbol at point.
-  (defun helm-imenu ()
-    "*Preconfigured `helm' for `imenu'."
-    (interactive)
-    (helm 'helm-c-source-imenu nil nil nil (thing-at-point 'symbol) "*helm imenu*"))
-
-  (global-defkey "<f11>" 'helm-show-kill-ring)
-  ;; http://emacs-fu.blogspot.com/2011/09/finding-just-about-anything.html
-  (defun helm-switch-buffer ()
-    (interactive)
-    (require 'helm-buffers)
-    (require 'helm-files)
-    (require 'helm-bookmark)
-    (helm
-     :prompt "Switch to: "
-     :candidate-number-limit 10 ;; up to 10 of each 
-     :sources
-     '(helm-source-buffers-list         ;; buffers 
-       helm-source-recentf              ;; recent files 
-       helm-source-files-in-current-dir ;; current dir
-       helm-source-bookmarks            ;; bookmarks
-       )))
-
-  (defkey ctl-x-map "b" 'helm-switch-buffer))
-
+;;; ido
 (when (and running-interactively
            (require-soft 'ido))
   (ido-mode +1)
