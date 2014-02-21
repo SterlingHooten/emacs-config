@@ -68,7 +68,7 @@
         (when (file-accessible-directory-p dir)
           (add-to-path 'exec-path dir 'append)))
       '("f:/bin"
-        "f:/Apps/PortableGit-1.8.1.2/bin"))
+        "f:/Apps/PortableGit-1.9.0-preview20140217/bin"))
 
 (setenv "PATH" (mapconcat (if running-nt
                               (lambda (dir)
