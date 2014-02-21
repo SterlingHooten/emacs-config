@@ -1124,6 +1124,7 @@ Only intended for interactive use."
 
   (defun ido-bookmark-jump (bname)
     "*Switch to bookmark interactively using `ido'."
+    (require 'bookmark)
     (interactive (list (ido-completing-read "Bookmark: " (bookmark-all-names) nil t)))
     (bookmark-jump bname))
 
