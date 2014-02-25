@@ -1055,7 +1055,7 @@ Only intended for interactive use."
            (require-soft 'ido))
   (ido-mode +1)
 
-  (setq ido-ignore-buffers '("\\` " "\\*\\(:?Quail \\)?Completions\\*"))
+  (setq ido-ignore-buffers '("\\` " "\\*\\(?:Quail \\)?Completions\\*"))
   (setq ido-show-dot-for-dired t)
   (setq ido-use-filename-at-point t)
 
