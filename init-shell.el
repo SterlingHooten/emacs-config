@@ -152,7 +152,8 @@ This corresponds to the line currently being entered."
             (setq-local completion-cycle-threshold 4)
             (when (and (shell= "bash")
                        (require-soft 'bashcomp))
-              (setq completion-at-point-functions '(bashcomp-completion-at-point)))))
+              (setq completion-at-point-functions '(bashcomp-completion-at-point
+                                                    bashcomp-wordbreak-completion-at-point)))))
 
 (defun try-complete-from-comint-history (old)
   "*Complete symbol at point from comint history entries.
