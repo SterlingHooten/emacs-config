@@ -124,12 +124,12 @@ upper case, downcase it."
     (save-excursion
       (skip-syntax-backward "w")
       (cond
-       ((looking-at-p "[[:lower:]]+")
+       ((looking-at-p "[[:lower:]]+\\b")
         (capitalize-word 1))
-       ;; ((looking-at-p "[[:upper:]][[:lower:]]+")
-       ;;  (upcase-word 1))
-       ;; ((looking-at-p "[[:upper:]]+")
-       ;;  (downcase-word 1))
+       ((looking-at-p "[[:upper:]][[:lower:]]+")
+        (upcase-word 1))
+       ((looking-at-p "[[:upper:]]+")
+        (downcase-word 1))
        (t
         (downcase-word 1))))))
 
