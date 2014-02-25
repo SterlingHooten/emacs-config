@@ -985,42 +985,6 @@ Return the new value of VAR."
   (autopair-global-mode 1)
   (setq autopair-autowrap t))
 
-;;; Find file at point
-(require 'ffap)
-(setq ffap-require-prefix t)
-(setq ffap-highlight nil)
-
-(defun ffap-read-only ()
-  "Like \\[find-file] but marks buffer as read-only.
-Only intended for interactive use."
-  (interactive)
-  (let ((ffap-file-finder 'find-file-read-only))
-    (call-interactively 'ffap)))
-
-(defun ffap-read-only-other-window ()
-  "Like \\[ffap-other-window] but marks buffer as read-only.
-Only intended for interactive use."
-  (interactive)
-  (let ((ffap-file-finder 'find-file-read-only-other-window))
-    (call-interactively 'ffap)))
-
-(defun ffap-read-only-other-window-noselect ()
-  "Like \\[ffap-read-only-other-window] but don't select buffer.
-Only intended for interactive use."
-  (interactive)
-  (let ((ffap-file-finder 'find-file-read-only-other-window))
-    (save-selected-window
-      (call-interactively 'ffap))))
-
-;;(ffap-bindings)
-(global-defkey "C-x C-f"   'find-file-at-point)
-(global-defkey "C-x 4 f"   'ffap-other-window)
-(global-defkey "C-x 4 C-f" 'ffap-other-window)
-;;(global-defkey "C-x d"     'dired-at-point)
-(global-defkey "C-x C-r"   'ffap-read-only)
-(global-defkey "C-x 4 C-r"   'ffap-read-only-other-window)
-(global-defkey "C-x 4 o"   'ffap-read-only-other-window-noselect)
-
 ;;; Gnuplot
 (autoload 'gnuplot "gnuplot"
   "Run Gnuplot interactively in a Emacs buffer." t nil)
