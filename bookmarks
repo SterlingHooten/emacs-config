@@ -17,7 +17,7 @@
  (front-context-string)
  (rear-context-string . " 0 Jul 23 12:56 ")
  (position . 233))
-("EA-740 Server/Jenkins/E-Disk"
+("EA-360 Server/Jenkins/E-Disk"
  (filename . "//smuc4612/data/")
  (front-context-string . "CodeWrightAutoSa")
  (rear-context-string . " 0 Jun  5 13:09 ")
@@ -132,8 +132,8 @@
  (front-context-string . "/\n  drwxr-xr-x  ")
  (rear-context-string . "Jan 28 15:48 ecl")
  (position . 1845))
-("EA-740 Austausch"
- (filename . "//europe.bmw.corp/winfs/EA-org/EA-7_Org/EA-74/EA-740/01_Austausch/")
+("EA-360 Austausch"
+ (filename . "//europe.bmw.corp/winfs/EA-org/EA-3_Org/EA-36/EA-360/99_Austausch/")
  (front-context-string . "/\n  drwxr-xr-x  ")
  (rear-context-string . "May 26 12:29 ecl")
  (position . 3223)
