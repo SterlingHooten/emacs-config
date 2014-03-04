@@ -1019,29 +1019,11 @@ Return the new value of VAR."
 
   (setq ido-ignore-buffers '("\\` " "\\*\\(?:Quail \\)?Completions\\*"))
   (setq ido-show-dot-for-dired t)
-  (setq ido-use-filename-at-point t)
 
   (add-hook 'ido-setup-hook
             (lambda ()
               (defkey ido-completion-map "<f4>" 'ido-next-match)
               (defkey ido-completion-map "<S-f4>" 'ido-prev-match)))
-
-  ;; Thank you, anonymous.
-  ;; http://www.emacswiki.org/emacs/InteractivelyDoThings
-  (defun ido-sort-mtime ()
-    (setq ido-temp-list
-          (sort ido-temp-list
-                (lambda (a b)
-                  (time-less-p
-                   (sixth (file-attributes (concat ido-current-directory b)))
-                   (sixth (file-attributes (concat ido-current-directory a)))))))
-    (ido-to-end ;; move . files to end (again)
-     (delq nil (mapcar
-                (lambda (x) (and (char-equal (string-to-char x) ?.) x))
-                ido-temp-list))))
-
-  (add-hook 'ido-make-file-list-hook 'ido-sort-mtime)
-  (add-hook 'ido-make-dir-list-hook 'ido-sort-mtime)
 
   (global-defkey "<f4>" 'ido-switch-buffer)
 
