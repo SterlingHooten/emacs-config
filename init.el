@@ -1162,6 +1162,18 @@ Redefined to banish the mouse to the corner of the frame."
   (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
 
 
+;;; ace-jump
+(when (require-soft 'ace-jump-mode)
+  (setq ace-jump-mode-scope 'window)
+
+  (setq ace-jump-mode-submode-list
+        '(ace-jump-line-mode
+          ace-jump-word-mode
+          ace-jump-char-mode))
+
+  (define-key global-map (kbd "C-c C-SPC") 'ace-jump-mode))
+
+
 ;;; Time-stamp 
 (add-hook 'write-file-hooks 'time-stamp)
 (setq time-stamp-active t)
