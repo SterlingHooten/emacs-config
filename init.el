@@ -994,8 +994,6 @@ Return the new value of VAR."
 ;;; Shell-script
 (autoload 'sh-mode "sh-script" 
   "Major mode for editing shell scripts" t nil)
-(eval-after-load "sh-script"
-  '(set-face-foreground 'sh-heredoc-face (face-foreground 'font-lock-constant-face)))
 (add-hook 'after-save-hook
   'executable-make-buffer-file-executable-if-script-p)
 (add-hook 'sh-mode-hook
@@ -1908,17 +1906,6 @@ designators specifying the revisions to compare."
 (add-hook 'ediff-load-hook
           (lambda ()
             (setq ediff-custom-diff-options "--unified")
-            ;; (setq ediff-diff-options (concat ediff-diff-options " --minimal --ignore-all-space"))
-            (mapc (lambda (face)
-                    (set-face-foreground face "black")
-                    (set-face-background face "sky blue"))
-                  (list ediff-current-diff-face-A
-                        ediff-current-diff-face-B))
-
-            (set-face-foreground ediff-fine-diff-face-A "firebrick")
-            (set-face-background ediff-fine-diff-face-A "pale green")
-            (set-face-foreground ediff-fine-diff-face-B "dark orchid")
-            (set-face-background ediff-fine-diff-face-B "yellow")
 
             (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
@@ -2193,13 +2180,6 @@ A new buffer is created containing the disc file's contents and
 (add-hook 'find-file-hook 'add-file-name-to-history)
 (add-hook 'write-file-functions 'add-file-name-to-history)
 (add-hook 'dired-after-readin-hook 'add-file-name-to-history)
-
-;;  show paren
-(setq show-paren-mode-hook nil)
-(add-hook 'show-paren-mode-hook 
-          (lambda ()
-            (set-face-foreground 'show-paren-match-face "orange")
-            (set-face-background 'show-paren-match-face "moccasin")))
 
 ;;; periodically kill old buffers
 (require 'midnight)
