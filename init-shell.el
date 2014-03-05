@@ -63,6 +63,24 @@
                           "~/.bash_history")))
               (comint-read-input-ring 'silent))))
 
+(defun ido-comint-insert-matching-input ()
+  "Insert a previous history item, using `ido' to search through earlier input."
+  (interactive)
+  (unless (comint-after-pmark-p)
+    (user-error "Not at command line"))
+  (let ((item (ido-completing-read "History item matching: "
+                                   (delete-dups
+                                    (ring-elements comint-input-ring))
+                                   nil t)))
+   (when item
+     (unless comint-input-ring-index
+       (setq comint-stored-incomplete-input
+             (funcall comint-get-old-input)))
+     (comint-delete-input)
+     (insert item))))
+
+(defkey comint-mode-map "C-c C-l" 'ido-comint-insert-matching-input)
+
 ;; Thank you, Joe Bloggs.
 ;; http://www.emacswiki.org/emacs/ComintMode
 (defun comint-end-of-input-history ()
