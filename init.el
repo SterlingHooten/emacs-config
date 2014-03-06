@@ -1026,11 +1026,17 @@ Return the new value of VAR."
            (require-soft 'ido))
   (ido-mode +1)
 
+  (when (require-soft 'ido-vertical-mode)
+    (ido-vertical-mode +1))
+
   (setq ido-ignore-buffers '("\\` " "\\*\\(?:Quail \\)?Completions\\*"))
   (setq ido-show-dot-for-dired t)
 
   (add-hook 'ido-setup-hook
             (lambda ()
+              (when (and (boundp 'ido-vertical-mode)
+                         ido-vertical-mode)
+                (define-key ido-completion-map (kbd "C-h") 'ido-prev-match))
               (defkey ido-completion-map "<f4>" 'ido-next-match)
               (defkey ido-completion-map "<S-f4>" 'ido-prev-match)))
 
