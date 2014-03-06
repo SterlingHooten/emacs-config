@@ -994,12 +994,6 @@ Return the new value of VAR."
   (autopair-global-mode 1)
   (setq autopair-autowrap t))
 
-;;; Gnuplot
-(autoload 'gnuplot "gnuplot"
-  "Run Gnuplot interactively in a Emacs buffer." t nil)
-(autoload 'gnuplot-interaction-mode "gnuplot-interaction"
-  "Major mode for editing Gnuplot input files." t nil)
-
 ;;; Shell-script
 (autoload 'sh-mode "sh-script" 
   "Major mode for editing shell scripts" t nil)
@@ -1419,7 +1413,6 @@ Redefined to banish the mouse to the corner of the frame."
                                 ("\\.fi\\'" . fortran-mode)
                                 ("\\.bash_\\(functions\\|aliases\\)\\'" . sh-mode)
                                 ("\\.\\(SCORE\\|ADAPT\\)\\'" . gnus-score-mode)
-                                ("\\.gpt?\\'" . gnuplot-interaction-mode)
                                 ("\\.mak\\'" . makefile-mode)
                                 ("\\.xslt?\\'" . xml-mode)
                                 ("\\.col\\'" . c-mode)
