@@ -415,6 +415,21 @@ Otherwise return the value of the last form in BODY."
 ;;     (goto-char (point-at-bol)))
 ;;   ())
 
+(defvar shell-man-function #'woman
+  "*Function run to get help for a given command.
+This variable should be usually set to `man' or `woman'.")
+
+(defun shell-man ()
+  "*Run `woman' for the command in the current command line."
+  (interactive)
+  (let* ((end (if (search-forward-regexp (regexp-opt-charset comint-delimiter-argument-list) nil t)
+                  (match-beginning 0) (point)))
+         (cmdline (buffer-substring-no-properties (comint-line-beginning-position) end))
+         (this-cmd (or (car (comint-delim-arg cmdline)) ""))
+         (prog (comint-arguments this-cmd 0 0)))
+    (if (zerop (length prog))
+        (error "No command found")
+      (funcall shell-man-function prog))))
 
 ;;; Miscellaneuous keybindings
 
