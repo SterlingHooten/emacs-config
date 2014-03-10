@@ -154,8 +154,7 @@ This corresponds to the line currently being entered."
             (when (shell= "bash")
               (add-hook 'comint-preoutput-filter-functions 'shell-filter-ctrl-a-ctrl-b))
             (add-hook 'comint-output-filter-functions 'comint-watch-for-password-prompt)
-            (add-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom*)
-            (add-hook 'comint-output-filter-functions 'comint-truncate-buffer)))
+            (add-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom*)))
 
 
 ;;; Completion
