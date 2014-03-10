@@ -42,7 +42,8 @@
 (setq comint-input-ignoredups t)
 
 (defvar comint-input-ignored-regexps
-  (list (rx bos (* (syntax whitespace)))
+  (list (rx bos (* (syntax whitespace)) eos)
+        (rx bos (+ (syntax whitespace)))
         (rx bos (or "y" "yes" "n" "no" "j" "ja" "nein") eos)))
 
 (setq comint-input-filter
