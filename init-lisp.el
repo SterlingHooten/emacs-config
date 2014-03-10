@@ -9,7 +9,6 @@
         lisp-interaction-mode
         inferior-lisp-mode
         scheme-mode
-        scheme48-mode
         inferior-scheme-mode))
 
 ;; http://carcaddar.blogspot.com/2011/01/mouse-copy-for-emacs.html
@@ -57,7 +56,6 @@ This command must be bound to a mouse event."
 (add-hook 'lisp-mode-hook (lambda () (paredit-mode +1)))
 (add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode +1)))
 (add-hook 'scheme-mode-hook (lambda () (paredit-mode +1)))
-(add-hook 'scheme48-mode-hook (lambda () (paredit-mode +1)))
 
 (mapc (lambda (hook)
         (add-hook hook
@@ -69,7 +67,6 @@ This command must be bound to a mouse event."
         lisp-interaction-mode-hook
         inferior-lisp-mode-hook
         scheme-mode-hook
-        scheme48-mode-hook
         inferior-scheme-mode-hook))
 
 (defun run-scheme48 ()
@@ -81,13 +78,6 @@ This command must be bound to a mouse event."
   "*Run Scsh as an inferior Scheme process."
   (interactive)
   (run-scheme "scsh-local"))
-
-(autoload 's48-mode "s48" "ya major mode for Scheme48 development" t)
-
-(autoload 'scheme48-mode "scheme48" "major mode for Scheme48 development" t)
-(add-hook 'scheme48-mode-hook
-          (lambda ()
-            (setq local-abbrev-table scheme-mode-abbrev-table)))
 
 ;; Automode
 (add-to-list 'interpreter-mode-alist '("scsh" . scheme-mode))
@@ -336,79 +326,7 @@ and indents."
             (defkey inferior-scheme-mode-map "<return>" 'scheme-return)
             (defkey inferior-scheme-mode-map "C-j" 'comint-send-input)))
 
-
-(setq s48-commands '("?"
-                     "bound?"
-                     "build"
-                     "collect"
-                     "condition"
-                     "config"
-                     "config-package-is"
-                     "d"
-                     "debug"
-                     "dis"
-                     "dump"
-                     "exec"
-                     "exit"
-                     "exit-when-done"
-                     "expand"
-                     "flush"
-                     "for-syntax"
-                     "forget"
-                     "go"
-                     "help"
-                     "in"
-                     "inspect"
-                     "keep"
-                     "load"
-                     "load-package"
-                     "load-script"
-                     "menu"
-                     "new-package"
-                     "open"
-                     "pop"
-                     "preview"
-                     "proceed"
-                     "push"
-                     "q"
-                     "reload-package"
-                     "reset"
-                     "run"
-                     "set"
-                     "structure"
-                     "template"
-                     "threads"
-                     "time"
-                     "trace"
-                     "translate"
-                     "u"
-                     "undefine"
-                     "unset"
-                     "untrace"
-                     "user"
-                     "user-package-is"
-                     "where"))
 
-(defvar s48-command-history '()
-  "History list of shortcut command names.")
-
-(defvar s48-command-dispatch-char ?\,
-  "Character used to start Scheme48 commands.")
-
-(defun s48-handle-command (&optional arg)
-  (interactive "P")
-  (if (or arg
-          (= (point) (marker-position (process-mark (get-buffer-process (current-buffer))))))
-      (let ((cmd (completing-read "Command: "
-                                  s48-commands
-                                  nil t nil
-                                  's48-command-history)))
-        (insert (format ",%s " cmd)))
-    (insert (string s48-command-dispatch-char))))
-
-;; (add-hook 'inferior-scheme-mode-hook
-;;           (lambda ()
-;;             (define-key inferior-scheme-mode-map (string s48-command-dispatch-char) 's48-handle-command)))
 
 
 (provide 'init-lisp)
