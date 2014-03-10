@@ -366,7 +366,7 @@ Otherwise return the value of the last form in BODY."
         (kill-ring-save comint-last-input-end pmark)
         (goto-char (process-mark proc))))))
 
-(defun comint-previous-output-boundaries ()
+(defun comint-boundaries-of-previous-output ()
   ;; TODO: arg n
   ;; TODO: clean up this mess
   (let* ((pt (point))
@@ -389,7 +389,7 @@ Otherwise return the value of the last form in BODY."
 (defun comint-copy-previous-output ()
   ;; TODO: arg n
   (interactive)
-  (destructuring-bind (beg end) (comint-previous-output-boundaries)
+  (destructuring-bind (beg end) (comint-boundaries-of-previous-output)
     (when (> end beg)
       (copy-region-as-kill beg end))))
 
