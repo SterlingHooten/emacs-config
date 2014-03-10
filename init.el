@@ -1189,7 +1189,7 @@ Redefined to banish the mouse to the corner of the frame."
   (setq font-lock-verbose nil)
   (add-hook 'font-lock-mode-hook
             (lambda ()
-              (font-lock-add-keywords nil '(("\\*\\(ECL\\|FIXME\\)\\*:?" 0 'show-paren-mismatch-face t))))))
+              (font-lock-add-keywords nil '(("\\<\\(TODO\\|FIXME\\):" 1 'font-lock-warning-face prepend))))))
 
 ;;; Keybindings
 (when running-nt
