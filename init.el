@@ -1493,9 +1493,9 @@ in the minibuffer history."
              (setq path (cons (xmltok-start-tag-local-name) path)))
            (message "/%s" (mapconcat 'identity path "/")))))))
 
-;; (add-hook 'nxml-mode-hook
-;;           (lambda ()
-;;             (defkey nxml-mode-map "C-c M-k" 'nxml-kill-element)))
+(add-hook 'nxml-mode-hook
+          (lambda ()
+            (rng-validate-mode -1)))
 
 
 
