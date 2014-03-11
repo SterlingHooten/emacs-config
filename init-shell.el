@@ -243,6 +243,7 @@ string).  It returns t if a new completion is found, nil otherwise."
 
 (add-hook 'shell-mode-hook
           (lambda ()
+            (defkey shell-mode-map "C-c M-h" 'shell-man)
             (define-key shell-mode-map [remap hippie-expand] 'shell-hippie-expand)))
 
 
@@ -417,17 +418,29 @@ Otherwise return the value of the last form in BODY."
 ;;   ())
 
 (defvar shell-man-function #'woman
-  "*Function run to get help for a given command.
+  "*Function run to get the manual page for a given command.
 This variable should be usually set to `man' or `woman'.")
 
+(defvar shell-man-confirm t
+  "*Non-nil if `shell-man' should ask to confirm the command name.")
+
 (defun shell-man ()
-  "*Run `woman' for the command in the current command line."
+  "*Browse the manual page for the current command in the command line.
+Use the function given by `shell-man-function' to actually
+display the manual page.  Ask for confirmation if the variable
+`shell-man-confirm' is non-nil."
   (interactive)
-  (let* ((end (if (search-forward-regexp (regexp-opt-charset comint-delimiter-argument-list) nil t)
-                  (match-beginning 0) (point)))
-         (cmdline (buffer-substring-no-properties (comint-line-beginning-position) end))
-         (this-cmd (or (car (comint-delim-arg cmdline)) ""))
-         (prog (comint-arguments this-cmd 0 0)))
+  (let* ((begin (save-excursion (shell-backward-command 1) (point)))
+         (end (save-excursion (shell-forward-command 1) (point)))
+         (this-cmd (buffer-substring-no-properties begin end))
+         (prog (comint-arguments this-cmd 0 0))
+         (not-found (zerop (length prog))))
+    (when (or shell-man-confirm
+              not-found)
+      (let ((default (if not-found
+                         ""
+                       (format " (default %s)" prog))))
+        (setq prog (read-string (format "Manual entry%s: " default) nil nil prog))))
     (if (zerop (length prog))
         (error "No command found")
       (funcall shell-man-function prog))))
