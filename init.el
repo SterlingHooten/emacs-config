@@ -321,8 +321,8 @@ The read-only status of the buffer is also preserved."
     (revert-buffer nil t t)))
 
 (defun confirm-exit ()
-  (interactive)
   (yes-or-no-p "Really exit Emacs? "))
+
 (add-hook 'kill-emacs-query-functions 'confirm-exit)
 
 (defun mark-backup-buffers-read-only ()
@@ -484,17 +484,6 @@ Subject to `buffer-ignore-regexp'."
          (and (string-match "shell-mode" (symbol-name major-mode))
               (not (string-match-p "\\`\\*Async Shell " (buffer-name)))))))))
 
-(defun describe-face-at-point ()
-  "*Display the properties of the face at point."
-  (interactive)
-  (let ((face (or (get-char-property (point) 'face) 'default)))
-    (describe-face face)
-    (with-current-buffer "*Help*"
-      (let ((inhibit-read-only t))
-        (goto-char (point-min))
-        (insert "Face at point: " (propertize (format "%s" face) 'face face) "\n\n")
-        (set-buffer-modified-p nil)))))
-
 (defun untabify-buffer ()
   "*Like `untabify', but operate on the whole buffer."
   (interactive "*")
@@ -556,30 +545,6 @@ contents."
     (switch-to-buffer (generate-new-buffer name))
     (funcall mode)))
 
-;; Noah Friedman
-;; http://www.splode.com/users/friedman/software/emacs-lisp/src/buffer-fns.el
-(defun messages ()
-  "*Display message log buffer, if it exists."
-  (interactive)
-  (let* ((buffer-name "*Messages*")
-         (buf (get-buffer buffer-name))
-         (curbuf (current-buffer))
-         (curwin (selected-window))
-         winbuf)
-    (cond (buf
-           (unwind-protect
-               (progn
-                 (setq winbuf (display-buffer buf))
-                 (select-window winbuf)
-                 (set-buffer buf)
-                 (goto-char (point-max))
-                 (recenter -1))
-             (select-window curwin)
-             (set-buffer curbuf)))
-          (t
-           (message "Message log is empty.")))))
-(global-defkey "C-h M" 'messages)
-
 (defun kill-buffer-and-window-no-confirm ()
   "*Kill the current buffer and delete the selected window, WITHOUT asking."
   (interactive)
@@ -637,19 +602,6 @@ Assumes that the frame is only split into two."
   "*Move the point to the the bottom of the current window."
   (interactive)
   (move-to-window-line -1))
-
-(defun kill-backward-up-list (&optional arg)
-  "Kill the form containing the current sexp, leaving the sexp itself.
-A prefix argument ARG causes the relevant number of surrounding
-forms to be removed."
-  (interactive "p")
-  (let ((current-sexp (thing-at-point 'sexp)))
-    (if current-sexp
-        (save-excursion
-          (backward-up-list arg)
-          (kill-sexp)
-          (insert current-sexp))
-      (error "Not at a sexp"))))
 
 (global-defkey "C-<backspace>" 'kill-backward-up-list)
 
@@ -798,31 +750,6 @@ Return the new value of VAR."
              (when (local-variable-p var) " in this buffer"))
      var (symbol-value var)))
   (symbol-value var))                   ; return the new value of var
-
-;; See also:
-;; http://www.splode.com/users/friedman/software/emacs-lisp/src/win-disp-util.el
-
-(unless (fboundp 'toggle-truncate-lines)
-  (defun toggle-truncate-lines (&optional arg)
-    "*Toggle the value of the variable `truncate-lines'."
-    (interactive "P")
-    (setq truncate-partial-width-windows (toggle-variable 'truncate-lines arg))
-    ;; If disabling truncation, make sure that window is entirely scrolled
-    ;; to the right, otherwise truncation will remain in effect while still
-    ;; horizontally scrolled.
-    (or truncate-lines
-        (scroll-right (window-hscroll)))
-    (force-mode-line-update)
-    (when (interactive-p)
-      (message
-       (concat "Line truncation" (if truncate-lines " enabled" " disabled")
-               " in this buffer")))))
-
-(defun toggle-stack-trace-on-error (&optional arg)
-  (interactive "P")
-  (setq stack-trace-on-error (if (null arg)
-                                 (not stack-trace-on-error)
-                               (> (prefix-numeric-value arg) 0))))
 
 ;; Daniel Lundin [http://ftp.codefactory.se/pub/people/daniel/elisp/dot.emacs]
 (defun toggle-window-dedicated ()
@@ -1083,11 +1010,6 @@ emulate -LR zsh
   (winner-mode +1)
   (defkey ctl-x-4-map "u" 'winner-undo)
   (defkey ctl-x-4-map "r" 'winner-redo))
-
-
-(when (require-soft 'pack-windows)
-  (global-defkey "C-x -" 'pack-windows)
-  (global-defkey "C-x _" 'shrink-window-if-larger-than-buffer))
 
 
 ;;; completion
@@ -1451,15 +1373,6 @@ in the minibuffer history."
 (global-defkey "M-Y" 'yank-pop-forward)
 
 ;;; nxml
-;; (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
-;; (defun nxml-kill-element (&optional arg)
-;;   "*Kill the following element.
-;; With optional argument ARG kill the next ARG elements."
-;;   (interactive "*")
-;;   (kill-region (point)
-;;                (save-excursion 
-;;                  (nxml-forward-element arg)
-;;                  (point))))
 (eval-after-load "nxml-mode"
   '(defun nxml-where ()
      "Display the hierarchy of XML elements the point is on as a path."
@@ -1798,7 +1711,6 @@ With prefix argument CREATE always start a new shell."
 
 (eval-after-load "grep"
   '(progn
-     (add-to-list 'grep-find-ignored-directories "_darcs")
      (define-key grep-mode-map "F"
        (lambda (regexp) (interactive "sFlush lines matching: ")
          "Delete lines containing matches for REGEXP."
