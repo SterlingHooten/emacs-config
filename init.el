@@ -1429,8 +1429,6 @@ Redefined to banish the mouse to the corner of the frame."
 (when (eq window-system 'x)
   (setq x-select-enable-primary t))
 
-;; Thank you, Karl Fogel.
-;; http://svn.red-bean.com/repos/kfogel/trunk/.emacs
 (when (require-soft 'browse-kill-ring)
   (global-defkey "<f11>" 'browse-kill-ring))
 
