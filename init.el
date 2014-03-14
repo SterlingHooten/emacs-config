@@ -1007,11 +1007,11 @@ emulate -LR zsh
 
 ;;; tempo
 (put 'tempo-define-template 'lisp-indent-function 1)
-(defun setup-tempo-mode ()
+(defun setup-tempo ()
   "Setup keybindings for `tempo'."
-  (local-defkey "C-c C-<tab>" 'tempo-complete-tag)
+  (local-defkey "C-c C-<tab>" 'tempo-expand-if-complete)
   (local-defkey "C-c M-n" 'tempo-forward-mark)
-  (local-defkey "C-c M-n" 'tempo-backward-mark))
+  (local-defkey "C-c M-p" 'tempo-backward-mark))
 
 
 ;;; winner
@@ -1485,7 +1485,7 @@ With prefix arg clear the buffers content."
 (add-hook 'cperl-mode-hook
 	  (lambda ()
             (cperl-lazy-install)
-            (setup-tempo-mode)
+            (setup-tempo)
             (tempo-use-tag-list 'perl-tempo-tags)
             (when (fboundp 'skeleton-pair-insert-maybe)
               (fset 'cperl-electric-paren 'skeleton-pair-insert-maybe)
@@ -1530,7 +1530,7 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 ;; (setq makefile-electric-keys t)
 (add-hook 'makefile-mode-hook
           (lambda ()
-            (setup-tempo-mode)
+            (setup-tempo)
             (tempo-use-tag-list 'make-tempo-tags)
             (modify-syntax-entry ?. "_"  makefile-mode-syntax-table)))
 
