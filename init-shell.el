@@ -392,30 +392,20 @@ Otherwise return the value of the last form in BODY."
   (interactive)
   (destructuring-bind (beg end) (comint-boundaries-of-previous-output)
     (when (> end beg)
-      (copy-region-as-kill beg end))))
+      (kill-ring-save beg end))))
 
-;; (defun comint-delete-output ()
-;;   "Delete all output from interpreter since previous input.
-;; Does not delete the prompt."
-;;   (interactive)
-;;   (let* ((beg (previous-single-char-property-change (point) 'field))
-;;          (end (save-excursion
-;;                 (goto-char (next-single-char-property-change beg 'field))
-;;                 ;; can't use `point-at-bol' here due to field boundaries
-;;                 (forward-line 0)
-;;                 (point))))
-;;     (unless (= beg end)
-;;       (delete-region beg end)
-;;       (save-excursion
-;;         (goto-char beg)
-;;         (insert "*** output flushed ***\n")))))
-;;
-;;
-;; (progn
-;;   (if (get-text-property (point) 'field) 
-;;       (comint-previous-prompt 1)
-;;     (goto-char (point-at-bol)))
-;;   ())
+(defkey comint-mode-map "C-c M-w" 'comint-copy-previous-output)
+
+(defun comint-delete-output ()
+  "Delete all output from interpreter since previous input.
+Does not delete the prompt."
+  (interactive)
+  (destructuring-bind (beg end) (comint-boundaries-of-previous-output)
+    (when (> end beg)
+      (delete-region beg end)
+      (save-excursion
+        (goto-char beg)
+        (insert "*** output flushed ***")))))
 
 (defvar shell-man-function #'woman
   "*Function run to get the manual page for a given command.
