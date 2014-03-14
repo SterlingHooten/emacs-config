@@ -1005,6 +1005,15 @@ emulate -LR zsh
 (add-to-list 'auto-insert-alist '("\\.pl\\'" . "header.pl"))
 
 
+;;; tempo
+(put 'tempo-define-template 'lisp-indent-function 1)
+(defun setup-tempo-mode ()
+  "Setup keybindings for `tempo'."
+  (local-defkey "C-c C-<tab>" 'tempo-complete-tag)
+  (local-defkey "C-c M-n" 'tempo-forward-mark)
+  (local-defkey "C-c M-n" 'tempo-backward-mark))
+
+
 ;;; winner
 (when (require-soft 'winner)
   (winner-mode +1)
@@ -1466,16 +1475,21 @@ With prefix arg clear the buffers content."
 
 (setq perl-indent-level 2)
 
+(defvar perl-tempo-tags nil)
+
 (tempo-define-template "perl-dumper"
-   '("print '### " (P "Variable: " var) ": ', Dumper(\\" (s var) "), \"\\n\";")
-   "dumper"
-   "Insert a Perl print statement for a given variable using `Data::Dumper'.")
+  '("print '### " (P "Variable: " var) ": ', Dumper(\\" (s var) "), \"\\n\";")
+  "dumper"
+  "Insert a Perl print statement for a given variable using `Data::Dumper'."
+  'perl-tempo-tags)
 
 ;; (define-abbrev perl-mode-abbrev-table "dump" "" 'tempo-template-perl-dumper)
 
 (add-hook 'cperl-mode-hook
 	  (lambda ()
             (cperl-lazy-install)
+            (setup-tempo-mode)
+            (tempo-use-tag-list 'perl-tempo-tags)
             (when (fboundp 'skeleton-pair-insert-maybe)
               (fset 'cperl-electric-paren 'skeleton-pair-insert-maybe)
               (fset 'cperl-electric-rparen 'self-insert-command))
@@ -1519,7 +1533,33 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 ;; (setq makefile-electric-keys t)
 (add-hook 'makefile-mode-hook
           (lambda ()
+            (setup-tempo-mode)
+            (tempo-use-tag-list 'make-tempo-tags)
             (modify-syntax-entry ?. "_"  makefile-mode-syntax-table)))
+
+(defvar make-tempo-tags nil)
+
+(tempo-define-template "make-define"
+  '(& "define " (P "Macro name: " macro) "\n"
+      > p "\n"
+      "endef # " (s macro))
+  "define"
+  "Insert a macro definition."
+  'make-tempo-tags)
+
+(tempo-define-template "make-phony"
+  '(& ".PHONY: " (P "Target name: " target) "\n"
+      > (s target) ": ")
+  "phony"
+  "Insert a phony target."
+  'make-tempo-tags)
+
+(tempo-define-template "make-var-target"
+  '(& (P "Variable name: " var) " := " p  "\n"
+      > "$(" (s var) "): " p)
+  "target"
+  "Insert a target for a variable."
+  'make-tempo-tags)
 
 
 ;;; Sendmail configuration
