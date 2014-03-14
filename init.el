@@ -1337,10 +1337,6 @@ Redefined to banish the mouse to the corner of the frame."
 (set-time-zone-rule nil)
 
 ;;; Common modes stuff
-;; Add some suffix defs to auto-mode-alist:
-(dolist (f (list auto-mode-alist interpreter-mode-alist))
-  (while (rassq 'perl-mode f)
-    (setcdr (rassq 'perl-mode f) 'cperl-mode)))
 (setq auto-mode-alist (append '(("\\.\\([bB][aA][tT]\\|[cC][mM][dD]\\)\\'" . ntcmd-mode)
                                 ("[^/]\\.dired\\'" . dired-virtual-mode)
                                 ("\\.bash_\\(functions\\|aliases\\)\\'" . sh-mode)
@@ -1465,8 +1461,9 @@ With prefix arg clear the buffers content."
 
 
 ;;; Perl mode
-;; use cperl-mode as default
-;; (defalias 'perl-mode 'cperl-mode)
+(dolist (f (list auto-mode-alist interpreter-mode-alist))
+  (while (rassq 'perl-mode f)
+    (setcdr (rassq 'perl-mode f) 'cperl-mode)))
 (setq cperl-hairy nil)
 (setq cperl-font-lock t)
 (setq cperl-clobber-lisp-bindings nil)
