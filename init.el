@@ -1113,6 +1113,7 @@ Redefined to banish the mouse to the corner of the frame."
             (lambda ()
               (font-lock-add-keywords nil '(("\\<\\(TODO\\|FIXME\\):" 1 'font-lock-warning-face prepend))))))
 
+
 ;;; Keybindings
 (when running-nt
   (global-defkey "<apps>" 'undo))
@@ -1317,6 +1318,7 @@ Redefined to banish the mouse to the corner of the frame."
 (global-defkey "<print>"        'ps-spool-buffer-with-faces)
 (global-defkey "S-<print>"      'set-default-printer)
 
+
 ;;; Time (and date) display setup.
 (display-time-mode 1)
 (setq display-time-interval 5)
@@ -1332,15 +1334,9 @@ Redefined to banish the mouse to the corner of the frame."
     (setcdr (rassq 'perl-mode f) 'cperl-mode)))
 (setq auto-mode-alist (append '(("\\.\\([bB][aA][tT]\\|[cC][mM][dD]\\)\\'" . ntcmd-mode)
                                 ("[^/]\\.dired\\'" . dired-virtual-mode)
-                                ("\\.fi\\'" . fortran-mode)
                                 ("\\.bash_\\(functions\\|aliases\\)\\'" . sh-mode)
-                                ("\\.\\(SCORE\\|ADAPT\\)\\'" . gnus-score-mode)
                                 ("\\.mak\\'" . makefile-mode)
-                                ("\\.xslt?\\'" . xml-mode)
-                                ("\\.col\\'" . c-mode)
-                                ("\\.hol\\'" . c-mode)
-                                ("\\.kgs\\'" . c-mode)
-                                ("\\.dtx\\'" . latex-mode))
+                                ("\\.xslt?\\'" . xml-mode))
                               auto-mode-alist))
 
 ;;; kill-ring
@@ -1353,15 +1349,6 @@ Redefined to banish the mouse to the corner of the frame."
 
 (when (require-soft 'browse-kill-ring)
   (global-defkey "<f11>" 'browse-kill-ring))
-
-;; From http://lists.gnu.org/archive/html/emacs-devel/2008-03/msg00128.html
-;; See also http://svn.red-bean.com/repos/kfogel/trunk/code/yank-match/
-(defun insert-yank-from-kill-ring (string)
-  "Insert the selected item from the kill-ring in the minibuffer history.
-Use minibuffer navigation and search commands to browse the kill-ring
-in the minibuffer history."
-  (interactive (list (read-string "Yank from kill-ring: " nil 'kill-ring)))
-  (insert-for-yank string))
 
 (setq kill-do-not-save-duplicates t)
 
