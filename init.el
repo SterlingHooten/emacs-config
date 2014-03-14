@@ -1493,6 +1493,188 @@ With prefix arg clear the buffers content."
 	    (set-compile-command "perl -cw %s")))
 
 
+;;; C/C++
+
+;; Thank you, Joachim Baumann.
+;; http://www.lysator.liu.se/~davidk/elisp/tempo-examples.html
+
+(defvar c-tempo-tags nil
+  "Tempo tags for C mode")
+
+(defvar c++-tempo-tags nil
+  "Tempo tags for C++ mode")
+
+;;; C-Mode Templates and C++-Mode Templates (uses C-Mode Templates also)
+(require 'tempo)
+(add-hook 'c-mode-hook '(lambda ()
+			  (tempo-use-tag-list 'c-tempo-tags)
+			  ))
+
+(add-hook 'c++-mode-hook '(lambda ()
+			    (tempo-use-tag-list 'c-tempo-tags)
+			    (tempo-use-tag-list 'c++-tempo-tags)
+			    ))
+
+
+;;; Preprocessor Templates (appended to c-tempo-tags)
+
+(tempo-define-template "c-include"
+  '("#include <" r ".h>" > n)
+  "#include"
+  "Insert a `#include <>' preprocessor macro."
+  'c-tempo-tags)
+
+(tempo-define-template "c-ifdef"
+  '("#ifdef " (p "ifdef-clause: " clause) > n> p n
+    "#else /* !(" (s clause) ") */" n> p n
+    "#endif /* " (s clause)" */" n>)
+  "#ifdef"
+  "Insert a `#ifdef ... #else ... #endif' preprocessor macro."
+  'c-tempo-tags)
+
+(tempo-define-template "c-ifndef"
+  '("#ifndef " (p "ifndef-clause: " clause) > n
+    "#define " (s clause) n> p n
+    "#endif /* " (s clause)" */" n>)
+  "#ifndef"
+  "Insert a `#ifndef X #define X Y #endif' preprocessor macro."
+  'c-tempo-tags)
+
+;; C Templates
+
+(tempo-define-template "c-if"
+  '(> "if(" (p "if-clause: " clause) ")"  n>
+      "{" > n> r n
+      "} /* end of if(" (s clause) ") */" > n>)
+  "if"
+  "Insert a C `if' statement."
+  'c-tempo-tags)
+
+(tempo-define-template "c-else"
+  '(> "else" n>
+      "{" > n> r n
+      "} /* end of else */" > n>)
+  "else"
+  "Insert a C `else' statement."
+  'c-tempo-tags)
+
+(tempo-define-template "c-if-else"
+  '(> "if(" (p "if-clause: " clause) ")"  n>
+      "{" > n> r n
+      "} /* end of if(" (s clause) ") */" > n>
+      > "else" n>
+      "{" > n> r n
+      "} /* end of if(" (s clause) ")else */" > n>)
+  "ifelse"
+  "Insert a C `if ... else' statement."
+  'c-tempo-tags)
+
+(tempo-define-template "c-while"
+  '(> "while(" (p "while-clause: " clause) ")" >  n>
+      "{" > n> r n
+      "} /* end of while(" (s clause) ") */" > n>)
+  "while"
+  "Insert a C `while' statement"
+  'c-tempo-tags)
+
+(tempo-define-template "c-for"
+  '(> "for(" (p "for-clause: " clause) ")" >  n>
+      "{" > n> r n
+      "} /* end of for(" (s clause) ") */" > n>)
+  "for"
+  "Insert a C `for' statement."
+  'c-tempo-tags)
+
+(tempo-define-template "c-for-i"
+  '(> "for(" (p "variable: " var) " = 0; " (s var)
+      " < "(p "upper bound: " ub)"; " (s var) "++)" >  n>
+      "{" > n> r n
+      "} /* end of for(" (s var) " = 0; "
+      (s var) " < " (s ub) "; " (s var) "++) */" > n>)
+  "fori"
+  "Insert a C `for' loop: for(x = 0; x < ..; x++)."
+  'c-tempo-tags)
+
+(tempo-define-template "c-for"
+  '(> "for(" (p "for-clause: " clause) ")" >  n>
+      "{" > n> r n
+      "} /* end of for(" (s clause) ") */" > n>)
+  "for"
+  "Insert a C `for' statement."
+  'c-tempo-tags)
+
+(tempo-define-template "c-main"
+  '(> "main(int argc, char *argv[])" >  n>
+      "{" > n> r n
+      "} /* end of main() */" > n>)
+  "main"
+  "Insert a template for a C main function."
+  'c-tempo-tags)
+
+(tempo-define-template "c-if-malloc"
+  '(> "if((" (p "variable: " var) " = ("
+      (p "type: " type) " *) malloc(sizeof(" (s type)
+      "))) == (" (s type) " *) NULL)" n>
+      "{" > n> r n
+      "} /* end of if((" (s var) " = (" (s type)
+      " *) malloc...) == NULL) */" > n>)
+  "ifmalloc"
+  "Insert a C `if (malloc ...)' call."
+  'c-tempo-tags)
+
+(tempo-define-template "c-switch"
+  '(> "switch(" (p "switch-condition: " clause) ")" >  n>
+      "{" > n
+      "case " (p "first value: ") ":" > n> p n
+      "break;" > n> p n
+      "default:" > n> p n
+      "break;" > n
+      "} /* end of switch(" (s clause) ") */" > n>)
+  "switch"
+  "Insert a C `switch' statement."
+  'c-tempo-tags)
+
+(tempo-define-template "c-case"
+  '(n "case " (p "value: ") ":" > n> p n
+      "break;" > n> p)
+  "case"
+  "Insert a C `case' statement."
+  'c-tempo-tags)
+
+;; C++ Templates
+
+(tempo-define-template "c++-class"
+  '("class " (p "classname: " class) p n "{" n "public:" n>
+
+    (s class) "();"
+    (indent-for-comment) "the default constructor" n>
+
+    (s class)
+    "(const " (s class) "&rhs);"
+    (indent-for-comment) "the copy constructor" n>
+
+    (s class)
+    "& operator=(const " (s class) "&rhs);"
+    (indent-for-comment) "the assignment operator" n>
+
+    n> "// the default address-of operators" n>
+    "// "(s class)
+    "* operator&()             { return this; };" n>
+    "// const "(s class)
+    "* operator&() const { return this; };" n
+
+
+    n > "~" (s class) "();"
+    (indent-for-comment) "the destructor" n n>
+    p n
+    "protected:" n> p n
+    "private:" n> p n
+    "};\t// end of class " (s class) n>)
+  "class"
+  "Insert a template for a class definition."
+  'c++-tempo-tags)
+
+
 ;;; PHP
 (require-soft 'php-mode)
 
