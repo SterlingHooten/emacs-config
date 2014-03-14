@@ -1466,14 +1466,13 @@ With prefix arg clear the buffers content."
 
 (setq perl-indent-level 2)
 
-(defun perl-insert-dumper (var)
-  "Insert a Perl print statement to print out variable VAR.
-If VAR begins with one of `@%$' use `Data::Dumper'."
-  (interactive "*MVariable: ")
-  (insert
-   (format (if (string-match "^[@%$].+" var)
-               "print \"+++ \\%s: \", Dumper(\\%s), \"\\n\";"
-             "print \"+++ %s: $%s\\n\";") var var)))
+(tempo-define-template "perl-dumper"
+   '("print '### " (P "Variable: " var) ": ', Dumper(\\" (s var) "), \"\\n\";")
+   "dumper"
+   "Insert a Perl print statement for a given variable using `Data::Dumper'.")
+
+;; (define-abbrev perl-mode-abbrev-table "dump" "" 'tempo-template-perl-dumper)
+
 (add-hook 'cperl-mode-hook
 	  (lambda ()
             (cperl-lazy-install)
