@@ -593,16 +593,6 @@ Assumes that the frame is only split into two."
 
 (define-key ctl-x-4-map "t" 'toggle-frame-split)
 
-(defun move-to-window-top ()
-  "*Move the point to the top of the current window."
-  (interactive)
-  (move-to-window-line 0))
-
-(defun move-to-window-bottom ()
-  "*Move the point to the the bottom of the current window."
-  (interactive)
-  (move-to-window-line -1))
-
 (global-defkey "C-<backspace>" 'kill-backward-up-list)
 
 (defun copy-sexp (arg)                  ; adapted from `kill-sexp'
@@ -1139,7 +1129,7 @@ Redefined to banish the mouse to the corner of the frame."
 (define-key key-translation-map "\C-z8" 'iso-transl-ctl-x-8-map)
 
 ;; put `previous-line' in the same hand as `next-line' in Dvorak layout
-(global-defkey "C-h"     'previous-line)
+(global-defkey "C-h" 'previous-line)
 (global-defkey "C-x C-h" help-map)
 
 (global-defkey "C-M-<backspace>" 'backward-kill-sexp)
@@ -1204,6 +1194,7 @@ Redefined to banish the mouse to the corner of the frame."
 (bind-with-new-map (current-global-map) "C-c m"
   ("a" . 'abbrev-mode)
 ;; ("b" . 'toggle-skeleton-pair)         ; "b" as "brackets"
+  ("d" . 'toggle-window-dedicated)
   ("f" . 'auto-fill-mode)
   ("s" . 'flyspell-mode)
   ("p" . 'autopair-mode)
@@ -1217,9 +1208,9 @@ Redefined to banish the mouse to the corner of the frame."
            (redraw-frame (selected-frame)))))
 
 (global-defkey "C-c j" (make-sparse-keymap))
-(global-defkey "C-c j h"        (lambda () (interactive) (dired     "~")))
-(global-defkey "C-c j D"        (lambda () (interactive) (dired     (concat (or (getenv "USERPROFILE") "~") "/Downloads"))))
-(global-defkey "C-c j p"        (lambda () (interactive) (dired     "e:/qx29999/projs")))
+(global-defkey "C-c j h"        (lambda () (interactive) (dired "~")))
+(global-defkey "C-c j D"        (lambda () (interactive) (dired (concat (or (getenv "USERPROFILE") "~") "/Downloads"))))
+(global-defkey "C-c j p"        (lambda () (interactive) (dired "e:/qx29999/projs")))
 (global-defkey "C-c j d"        (lambda () (interactive) (find-library "init-dired")))
 (global-defkey "C-c j e"        (lambda () (interactive) (find-file user-init-file)))
 (global-defkey "C-c j m"        (lambda () (interactive) (find-library "message_rc")))
@@ -1272,13 +1263,6 @@ Redefined to banish the mouse to the corner of the frame."
 (global-defkey "<home>"         'beginning-of-line)
 (global-defkey "<end>"          'end-of-line)
 
-(global-defkey "C-<home>"       'move-to-window-top)
-(global-defkey "C-<end>"        'move-to-window-bottom)
-
-(global-defkey "C-<prior>"      'move-to-window-top)
-(global-defkey "C-<next>"       'move-to-window-bottom)
-
-(global-defkey "C-x <left>"  'windmove-left)
 (global-defkey "C-x <right>" 'windmove-right)
 (global-defkey "C-x <up>"    'windmove-up)
 (global-defkey "C-x <down>"  'windmove-down)
@@ -1311,8 +1295,6 @@ Redefined to banish the mouse to the corner of the frame."
 
 (global-defkey "<f10>"           'call-last-kbd-macro)
 (global-defkey "S-<f10>"         'apply-macro-to-region-lines)
-
-;; (global-defkey "<f12>"           'toggle-window-dedicated)
 
 ;; Make <f12> act like Hyper, for keyboards without it. Just like
 ;; <f11> acts as Meta on older DEC terminals.
