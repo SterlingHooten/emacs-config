@@ -433,6 +433,10 @@ Subject to `buffer-ignore-regexp'."
       (message "Done.")))))
 
 (global-defkey "M-i" 'other-window-or-other-buffer)
+(global-defkey "M-I" (lambda ()
+                       (interactive)
+                       (other-window-or-other-buffer -1)))
+
 ;; (display-buffers-matching (lambda (b) (with-current-buffer b (string-match "shell-mode" (symbol-name major-mode)))))
 ;; (display-buffers-matching (lambda (b) (with-current-buffer b (string-match "org-mode" (symbol-name major-mode)))))
 
