@@ -1534,93 +1534,93 @@ With prefix arg clear the buffers content."
 ;; C Templates
 
 (tempo-define-template "c-if"
-  '(> "if(" (p "if-clause: " clause) ")"  n>
-      "{" > n> r n
-      "} /* end of if(" (s clause) ") */" > n>)
+  '(> "if (" (p "if-clause: " clause) ") {"  n>
+      > n> r n
+      "} /* if (" (s clause) ") */" > n>)
   "if"
   "Insert a C `if' statement."
   'c-tempo-tags)
 
 (tempo-define-template "c-else"
-  '(> "else" n>
-      "{" > n> r n
-      "} /* end of else */" > n>)
+  '(> "else {" n>
+      > n> r n
+      "} /* else */" > n>)
   "else"
   "Insert a C `else' statement."
   'c-tempo-tags)
 
 (tempo-define-template "c-if-else"
-  '(> "if(" (p "if-clause: " clause) ")"  n>
-      "{" > n> r n
-      "} /* end of if(" (s clause) ") */" > n>
-      > "else" n>
-      "{" > n> r n
-      "} /* end of if(" (s clause) ")else */" > n>)
+  '(> "if " (p "if-clause: " clause) ") {"  n>
+      > n> r n
+      "} /* if(" (s clause) ") */" > n>
+      > "else {" n>
+      > n> r n
+      "} /* if (" (s clause) ")else */" > n>)
   "ifelse"
   "Insert a C `if ... else' statement."
   'c-tempo-tags)
 
 (tempo-define-template "c-while"
-  '(> "while(" (p "while-clause: " clause) ")" >  n>
-      "{" > n> r n
-      "} /* end of while(" (s clause) ") */" > n>)
+  '(> "while (" (p "while-clause: " clause) ") {" >  n>
+      > n> r n
+      "} /* while (" (s clause) ") */" > n>)
   "while"
   "Insert a C `while' statement"
   'c-tempo-tags)
 
 (tempo-define-template "c-for"
-  '(> "for(" (p "for-clause: " clause) ")" >  n>
-      "{" > n> r n
-      "} /* end of for(" (s clause) ") */" > n>)
+  '(> "for (" (p "for-clause: " clause) ") {" >  n>
+      > n> r n
+      "} /* for (" (s clause) ") */" > n>)
   "for"
   "Insert a C `for' statement."
   'c-tempo-tags)
 
 (tempo-define-template "c-for-i"
-  '(> "for(" (p "variable: " var) " = 0; " (s var)
-      " < "(p "upper bound: " ub)"; " (s var) "++)" >  n>
-      "{" > n> r n
-      "} /* end of for(" (s var) " = 0; "
+  '(> "for (" (p "variable: " var) " = 0; " (s var)
+      " < "(p "upper bound: " ub)"; " (s var) "++) {" >  n>
+      > n> r n
+      "} /* for (" (s var) " = 0; "
       (s var) " < " (s ub) "; " (s var) "++) */" > n>)
   "fori"
-  "Insert a C `for' loop: for(x = 0; x < ..; x++)."
+  "Insert a C `for' loop: for (x = 0; x < ..; x++)."
   'c-tempo-tags)
 
 (tempo-define-template "c-for"
-  '(> "for(" (p "for-clause: " clause) ")" >  n>
-      "{" > n> r n
-      "} /* end of for(" (s clause) ") */" > n>)
+  '(> "for (" (p "for-clause: " clause) ") {" >  n>
+      > n> r n
+      "} /* for (" (s clause) ") */" > n>)
   "for"
   "Insert a C `for' statement."
   'c-tempo-tags)
 
 (tempo-define-template "c-main"
-  '(> "main(int argc, char *argv[])" >  n>
-      "{" > n> r n
-      "} /* end of main() */" > n>)
+  '(> "int main(int argc, char *argv[]) {" >  n>
+      > n> r n
+      "} /* main() */" > n>)
   "main"
-  "Insert a template for a C main function."
+  "Insert a template for a C `main' function."
   'c-tempo-tags)
 
 (tempo-define-template "c-if-malloc"
-  '(> "if((" (p "variable: " var) " = ("
+  '(> "if ((" (p "variable: " var) " = ("
       (p "type: " type) " *) malloc(sizeof(" (s type)
-      "))) == (" (s type) " *) NULL)" n>
-      "{" > n> r n
-      "} /* end of if((" (s var) " = (" (s type)
+      "))) == (" (s type) " *) NULL) {" n>
+      > n> r n
+      "} /* if ((" (s var) " = (" (s type)
       " *) malloc...) == NULL) */" > n>)
   "ifmalloc"
   "Insert a C `if (malloc ...)' call."
   'c-tempo-tags)
 
 (tempo-define-template "c-switch"
-  '(> "switch(" (p "switch-condition: " clause) ")" >  n>
-      "{" > n
+  '(> "switch (" (p "switch-condition: " clause) ") {" >  n>
+      > n
       "case " (p "first value: ") ":" > n> p n
       "break;" > n> p n
       "default:" > n> p n
       "break;" > n
-      "} /* end of switch(" (s clause) ") */" > n>)
+      "} /* switch (" (s clause) ") */" > n>)
   "switch"
   "Insert a C `switch' statement."
   'c-tempo-tags)
@@ -1660,7 +1660,7 @@ With prefix arg clear the buffers content."
     p n
     "protected:" n> p n
     "private:" n> p n
-    "};\t// end of class " (s class) n>)
+    "};\t// class " (s class) n>)
   "class"
   "Insert a template for a class definition."
   'c++-tempo-tags)
