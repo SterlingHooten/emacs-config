@@ -946,6 +946,7 @@ Return the new value of VAR."
 
   (setq ido-ignore-buffers '("\\` " "\\*\\(?:Quail \\)?Completions\\*"))
   (setq ido-show-dot-for-dired t)
+  (setq ido-use-filename-at-point 'guess)
 
   (add-hook 'ido-setup-hook
             (lambda ()
