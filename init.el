@@ -1587,7 +1587,7 @@ With prefix arg clear the buffers content."
 (tempo-define-template "c-if"
   '(> "if (" (p "if-clause: " clause) ") {"  n>
       > n> r n
-      "} /* if (" (s clause) ") */" > n>)
+      "}" (s clause) ") */" > n>)
   "if"
   "Insert a C `if' statement."
   'c-tempo-tags)
@@ -1595,7 +1595,7 @@ With prefix arg clear the buffers content."
 (tempo-define-template "c-else"
   '(> "else {" n>
       > n> r n
-      "} /* else */" > n>)
+      "}" > n>)
   "else"
   "Insert a C `else' statement."
   'c-tempo-tags)
@@ -1606,7 +1606,7 @@ With prefix arg clear the buffers content."
       "} /* if(" (s clause) ") */" > n>
       > "else {" n>
       > n> r n
-      "} /* if (" (s clause) ")else */" > n>)
+      "}" > n>)
   "ifelse"
   "Insert a C `if ... else' statement."
   'c-tempo-tags)
