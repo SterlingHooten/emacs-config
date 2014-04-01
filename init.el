@@ -1120,11 +1120,6 @@ Redefined to banish the mouse to the corner of the frame."
   (define-key global-map (kbd "C-c C-SPC") 'ace-jump-mode))
 
 
-;;; multiple cursors
-(add-to-path 'load-path (concat user-emacs-directory "lib/multiple-cursors"))
-(require-soft 'multiple-cursors)
-
-
 ;;; Time-stamp 
 (add-hook 'write-file-hooks 'time-stamp)
 (setq time-stamp-active t)
