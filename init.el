@@ -902,19 +902,6 @@ Return the new value of VAR."
 (global-defkey "C-," 'chop-move-up)
 (global-defkey "C-." 'chop-move-down)
 
-(when (require-soft 'autopair)
-  (defun autopair-dont-pair-before-words (action pair pos-before)
-    (if (eq action 'opening)
-        (let ((char-after-point (char-after (1+ pos-before))))
-          (if (and char-after-point
-                   (eq (char-syntax char-after-point) ?w))
-              t
-            (autopair-default-handle-action action pair pos-before)))
-      t))
-  (setq autopair-handle-action-fns '(autopair-dont-pair-before-words))
-  (autopair-global-mode 1)
-  (setq autopair-autowrap t))
-
 ;;; Shell-script
 (autoload 'sh-mode "sh-script" 
   "Major mode for editing shell scripts" t nil)
@@ -1217,7 +1204,7 @@ Redefined to banish the mouse to the corner of the frame."
   ("d" . 'toggle-window-dedicated)
   ("f" . 'auto-fill-mode)
   ("s" . 'flyspell-mode)
-  ("p" . 'autopair-mode)
+  ("p" . 'electric-pair-mode)
   ("P" . 'paredit-mode)
   ("l" . 'longlines-mode)
   ("m" . 'toggle-mouse-avoidance-mode)
