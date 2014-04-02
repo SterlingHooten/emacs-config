@@ -986,25 +986,9 @@ Return the new value of VAR."
 ;;; autoinsert
 (setq auto-insert-directory (concat user-emacs-directory "auto-insert/"))
 (auto-insert-mode 1)
-(add-to-list 'auto-insert-alist '(("/\\.?lib/zsh/" . "ZSH function")
-                                  "Short description: "
-                                  '(shell-script-mode)
-                                  "#!/usr/bin/env zsh
-## Emilio Lopes <eclig@gmx.net>
-
-## " (file-name-nondirectory (buffer-file-name)) " --- " str "
-
-## THIS FILE IS IN THE PUBLIC DOMAIN.  USE AT YOUR OWN RISK!
-
-# " (file-name-nondirectory (buffer-file-name)) " () {
-
-emulate -LR zsh
-
-" _ "
-
-# }\n"))
-(add-to-list 'auto-insert-alist '(perl-mode . "header.pl"))
-(add-to-list 'auto-insert-alist '("\\.pl\\'" . "header.pl"))
+(add-to-list 'auto-insert-alist '(perl-mode . "template.pl"))
+(add-to-list 'auto-insert-alist '("\\.pl\\'" . "template.pl"))
+(add-to-list 'auto-insert-alist '(sh-mode . "template.bash"))
 
 
 ;;; tempo
