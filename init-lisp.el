@@ -3,7 +3,7 @@
 ;;; Stuff common to all Lisp modes
 
 (mapc (lambda (mode)
-        (font-lock-add-keywords mode '(("[()]" 0 '((:foreground "grey60"))))))
+        (font-lock-add-keywords mode '(("[()]" 0 '((:foreground "grey80"))))))
       '(emacs-lisp-mode
         lisp-mode
         lisp-interaction-mode
