@@ -935,6 +935,8 @@ Return the new value of VAR."
   (setq ido-show-dot-for-dired t)
   (setq ido-use-filename-at-point 'guess)
 
+  (setq ido-auto-merge-work-directories-length -1)
+
   (add-hook 'ido-setup-hook
             (lambda ()
               (when (and (boundp 'ido-vertical-mode)
