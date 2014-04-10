@@ -1086,10 +1086,10 @@ Redefined to banish the mouse to the corner of the frame."
   (setq ace-jump-mode-scope 'window)
 
   (setq ace-jump-mode-submode-list
-        '(ace-jump-line-mode
-          ace-jump-word-mode
+        '(ace-jump-word-mode
+          ace-jump-line-mode
           ace-jump-char-mode))
-
+  (define-key global-map (kbd "S-SPC") 'ace-jump-word-mode)
   (define-key global-map (kbd "C-c C-SPC") 'ace-jump-mode))
 
 
