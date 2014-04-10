@@ -666,6 +666,19 @@ in current frame."
 ;;     (if winfunc (funcall winfunc) (delete-other-windows))
 ;;     (recursive-edit)))
 
+;; Thank you, grayswx.
+;; http://paste.lisp.org/display/135818
+(defun narrow-to-region-indirect-buffer (start end)
+  "Create and switch to a copy of the current buffer narrowed to region."
+  (interactive "r")
+  (if (get major-mode 'no-clone-indirect)
+      (error "Cannot indirectly clone a buffer in %s mode" mode-name))
+  (with-current-buffer (clone-indirect-buffer (buffer-name) 'display)
+    (narrow-to-region start end)
+    (deactivate-mark)))
+
+(define-key global-map (kbd "C-x n b") 'narrow-to-region-indirect-buffer)
+
 (defun insert-date (&optional arg)
   "*Insert date in current buffer using German format DD.MM.YYYY.
 With optional prefix argument use ISO format instead."
