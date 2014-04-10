@@ -2265,7 +2265,7 @@ A new buffer is created containing the disc file's contents and
   "*Add the name of the visited file to `file-name-history'."
   (let ((fn (or buffer-file-name
                 (and (eq major-mode 'dired-mode) default-directory))))
-    (when fn
+    (when (and fn (not (string= fn "")))
       (setq file-name-history (cons fn (delete fn file-name-history)))))
   nil)
 
