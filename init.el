@@ -857,6 +857,9 @@ Return the new value of VAR."
       (setq buf (format "*Async Shell Command*<%d>" i)))))
 
 ;;; Packages
+;; elpa
+(require-soft 'init-elpa)
+
 ;; sooner or later it will be loaded, so do it now.
 (require 'tramp)
 
@@ -1004,6 +1007,10 @@ Return the new value of VAR."
 (add-to-list 'auto-insert-alist '(perl-mode . "template.pl"))
 (add-to-list 'auto-insert-alist '("\\.pl\\'" . "template.pl"))
 (add-to-list 'auto-insert-alist '(sh-mode . "template.bash"))
+
+
+;;; IDE functionality
+(require-soft 'init-ide)
 
 
 ;;; tempo

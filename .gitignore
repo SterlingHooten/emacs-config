@@ -8,3 +8,8 @@ server/
 abbrev_defs
 /eshell/lastdir
 /eshell/history
+/elpa/*.txt
+/url/cookies
+projectile-bookmarks.eld
+/ac-comphist.dat
+*.cache
