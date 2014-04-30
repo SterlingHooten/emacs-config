@@ -40,6 +40,9 @@
           (column-number-mode +1)
           (savehist-mode +1)))
 
+  (set-face-attribute 'mode-line nil :box nil)
+  (set-face-attribute 'mode-line-inactive nil :box nil)
+
   (setq line-number-display-limit-width 512)
 
   (add-to-list 'default-frame-alist '(cursor-type . box))
