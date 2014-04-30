@@ -134,6 +134,19 @@ This corresponds to the line currently being entered."
 		(select-window this-window))))))
       (set-buffer current))))
 
+(add-hook 'comint-output-filter-functions
+          (lambda (ignored)
+            (when (fboundp 'projectile-project-root)
+              (let* ((projectile-require-project-root nil)
+                     (root (or (projectile-project-root) default-directory))
+                     (lastdir (file-name-nondirectory (substring root 0 -1))))
+                (rename-buffer (format "*shell: %s*" 
+                                       (if (string-equal lastdir "")
+                                           default-directory
+                                         lastdir))
+                               t))))
+          'append)
+
 ;; added the "for '[^']+'" bits for git
 (setq comint-password-prompt-regexp
       (concat
