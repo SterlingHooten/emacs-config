@@ -948,6 +948,7 @@ Return the new value of VAR."
     (ido-vertical-mode +1))
 
   (setq ido-ignore-buffers '("\\` " "\\*\\(?:Quail \\)?Completions\\*"))
+  (setq ido-use-virtual-buffers t)
   (setq ido-show-dot-for-dired t)
   (setq ido-use-filename-at-point 'guess)
 
