@@ -16,4 +16,7 @@
   (eval-after-load "semantic"
     '(setq-default ac-sources (cons 'ac-source-semantic ac-sources))))
 
+(when (require-soft 'projectile)
+  (projectile-mode +1))
+
 (provide 'init-ide)
