@@ -5,7 +5,7 @@
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: https://github.com/bbatsov/projectile
 ;; Keywords: project, convenience
-;; Version: 20140427.251
+;; Version: 20140428.205
 ;; X-Original-Version: 0.10.0
 ;; Package-Requires: ((s "1.6.0") (dash "1.5.0") (pkg-info "0.4"))
 
@@ -1338,6 +1338,12 @@ With a prefix argument ARG prompts you for a directory on which the search is pe
   (projectile-with-default-dir (projectile-project-root)
     (call-interactively 'shell-command)))
 
+(defun projectile-run-async-shell-command-in-root ()
+  "Invoke `async-shell-command' in the project's root."
+  (interactive)
+  (projectile-with-default-dir (projectile-project-root)
+    (call-interactively 'async-shell-command)))
+
 (defun projectile-files-in-project-directory (directory)
   "Return a list of files in DIRECTORY."
   (let ((dir (file-relative-name (expand-file-name directory) (projectile-project-root))))
@@ -1810,6 +1816,7 @@ is chosen."
       (define-key prefix-map (kbd "4 f") 'projectile-find-file-other-window)
       (define-key prefix-map (kbd "4 t") 'projectile-find-implementation-or-test-other-window)
       (define-key prefix-map (kbd "!") 'projectile-run-shell-command-in-root)
+      (define-key prefix-map (kbd "&") 'projectile-run-async-shell-command-in-root)
       (define-key prefix-map (kbd "a") 'projectile-ack)
       (define-key prefix-map (kbd "A") 'projectile-ag)
       (define-key prefix-map (kbd "b") 'projectile-switch-to-buffer)
