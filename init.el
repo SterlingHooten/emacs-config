@@ -1849,6 +1849,7 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 
 ;;; Org-mode
 (setq org-startup-folded nil)           ; no folding on startup
+(setq org-catch-invisible-edits 'error)
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d!/!)")
