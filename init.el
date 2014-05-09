@@ -2181,20 +2181,20 @@ A new buffer is created containing the disc file's contents and
 
 
 ;;; Calc
-(setq calc-full-mode t)
-(setq calc-display-trail nil)
+(add-hook 'calc-load-hook
+          (lambda ()
+            (setq calc-full-mode t)
+            (setq calc-display-trail nil)
+            (setq calc-group-char "\s")
 
-(calc-group-char ?\s)
-
-(defun calc-programmer-mode ()
-  "*Setup `calc' for working with bit patterns."
-  (interactive)
-  (calc-group-char ?\s)
-  (calc-group-digits 4)
-  (calc-radix 16)
-  (calc-leading-zeros 1)
-  (calc-word-size 32))
-
+            (defun calc-programmer-mode ()
+              "*Setup `calc' for working with bit patterns."
+              (interactive)
+              (calc-group-char ?\s)
+              (calc-group-digits 4)
+              (calc-radix 16)
+              (calc-leading-zeros 1)
+              (calc-word-size 32))))
 
 
 ;;; Man
