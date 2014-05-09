@@ -1865,6 +1865,17 @@ An occurence of \"%s\" in COMMAND is substituted by the filename."
 
 (setq org-use-fast-todo-selection t)
 
+(setq org-directory "~/org")
+
+(setq org-default-notes-file (concat org-directory "/notes.org"))
+
+(global-set-key (kbd "C-c c") 'org-capture)
+
+(setq org-capture-templates
+      '(("t" "todo" entry (file (concat org-directory "/toptica/TODO.org"))
+         "* TODO %? %U\n%a\n")
+        ("j" "Journal" entry (file+olp (concat org-directory "/toptica/journal.org") "journal" "tasks")
+         "* %? %U\n  %i\n  %a\n")))
 
 ;;; Shell and Comint
 (defun shell-dwim (&optional create)
