@@ -5,7 +5,7 @@
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: https://github.com/bbatsov/projectile
 ;; Keywords: project, convenience
-;; Version: 20140428.205
+;; Version: 20140507.254
 ;; X-Original-Version: 0.10.0
 ;; Package-Requires: ((s "1.6.0") (dash "1.5.0") (pkg-info "0.4"))
 
@@ -1304,9 +1304,7 @@ With a prefix argument ARG prompts you for a directory on which the search is pe
   "Find tag in project."
   (interactive)
   (let ((tags (if (boundp 'ggtags-mode)
-                  (progn
-                    (ggtags-completion-table)
-                    (projectile--tags ggtags-completion-table))
+                  (projectile--tags (all-completions "" ggtags-completion-table))
                 (visit-tags-table (projectile-project-root) t)
                 (tags-completion-table)
                 (projectile--tags tags-completion-table))))
